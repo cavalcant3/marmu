@@ -6,6 +6,7 @@ import { apiRateLimiter } from "./middlewares/rateLimiter.js";
 import authRoutes from "./routes/authRoutes.js";
 import materialRoutes from "./routes/materialRoutes.js";
 import orcamentoRoutes from "./routes/orcamentoRoutes.js";
+import pedidoRoutes from "./routes/pedidoRoutes.js";
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.get("/health", (_req, res) => {
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/materiais", materialRoutes);
 app.use("/api/v1/orcamentos", orcamentoRoutes);
+app.use("/api/v1/pedidos", pedidoRoutes);
 
 // Placeholder root
 app.get("/", (_req, res) => {
