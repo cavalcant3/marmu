@@ -4,6 +4,8 @@ import helmet from "helmet";
 import logger from "./utils/logger.js";
 import { apiRateLimiter } from "./middlewares/rateLimiter.js";
 import authRoutes from "./routes/authRoutes.js";
+import materialRoutes from "./routes/materialRoutes.js";
+import orcamentoRoutes from "./routes/orcamentoRoutes.js";
 
 const app = express();
 
@@ -19,6 +21,8 @@ app.get("/health", (_req, res) => {
 
 // API routes
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/materiais", materialRoutes);
+app.use("/api/v1/orcamentos", orcamentoRoutes);
 
 // Placeholder root
 app.get("/", (_req, res) => {
