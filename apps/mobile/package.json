@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
+    "@notifee/react-native": "^9.1.8",
     "@react-native-community/netinfo": "^12.0.1",
     "@tanstack/react-query": "^5.101.4",
     "axios": "^1.18.1",
@@ -12,6 +13,7 @@
     "expo-status-bar": "~57.0.1",
     "react": "19.2.3",
     "react-native": "0.86.0",
+    "react-native-html-to-pdf": "^1.3.0",
     "react-native-mmkv": "^4.3.2",
     "react-native-safe-area-context": "~5.7.0",
     "react-native-screens": "~4.26.0",

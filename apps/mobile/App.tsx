@@ -10,6 +10,8 @@ import TabelaPrecosScreen from "./src/screens/TabelaPrecos.js";
 import ListaPedidosScreen from "./src/screens/ListaPedidos.js";
 import DetalhesPedidoScreen from "./src/screens/DetalhesPedido.js";
 import FotoAnotacaoScreen from "./src/screens/FotoAnotacao.js";
+import ListaOrcamentosScreen from "./src/screens/ListaOrcamentos.js";
+import DetalhesOrcamentoScreen from "./src/screens/DetalhesOrcamento.js";
 import { useAuthStore } from "./src/stores/authStore.js";
 
 export default function App() {
@@ -52,6 +54,10 @@ export default function App() {
         <DetalhesPedidoScreen route={{ params: { pedido: pedidoData } }} />
       )}
       {screen === "fotoanotacao" && <FotoAnotacaoScreen />}
+      {screen === "listaorcamentos" && <ListaOrcamentosScreen navigation={navigation} />}
+      {screen === "detalhesorcamento" && (
+        <DetalhesOrcamentoScreen route={{ params: { orcamento: orcamentoData } }} />
+      )}
 
       {screen !== "login" && <Button title="Voltar" onPress={() => setScreen("dashboard")} />}
       <StatusBar style="auto" />

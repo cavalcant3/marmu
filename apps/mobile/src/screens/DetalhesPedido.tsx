@@ -1,8 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import { useNotificacoes } from "../hooks/useNotificacoes.js";
 
 export default function DetalhesPedidoScreen({ route }: any) {
   const { pedido } = route.params;
+  const { agendarLembrete, cancelarLembrete } = useNotificacoes();
+
+  useEffect(() => {
+    // Agenda lembrete ao visualizar o pedido (se ainda não passou)
+    if (pedido.dataEntrega && pedido.status !== "ENTREGUE") {
+      agendarLembrete(pedido.id, pedido.cliente, new Date(pedido.dataEntrega));
+    }
+  }, [pedido]);
+
+  const handleEntregue = async () => {
+    await cancelarLembrete(pedido.id);
+    Alert.alert("Sucesso", "Pedido marcado como entregue!");
+  };
 
   return (
     <View style={styles.container}>
@@ -11,12 +25,11 @@ export default function DetalhesPedidoScreen({ route }: any) {
       <Text>Status: {pedido.status}</Text>
       <Text>Entrega: {pedido.entrega}</Text>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => Alert.alert("Sucesso", "Pedido marcado como entregue!")}
-      >
-        <Text style={styles.buttonText}>✓ Marcar como Entregue</Text>
-      </TouchableOpacity>
+      {pedido.status !== "ENTREGUE" && (
+        <TouchableOpacity style={styles.button} onPress={handleEntregue}>
+          <Text style={styles.buttonText}>✓ Marcar como Entregue</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
