@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import logger from "./utils/logger.js";
+import { apiRateLimiter } from "./middlewares/rateLimiter.js";
 import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
@@ -9,6 +10,7 @@ const app = express();
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
+app.use(apiRateLimiter);
 
 // Health check
 app.get("/health", (_req, res) => {
