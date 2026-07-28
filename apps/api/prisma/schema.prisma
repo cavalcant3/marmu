@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Usuario {
+  id            String     @id @default(uuid())
+  email         String     @unique
+  senha_hash    String
+  nome          String
+  nome_marmoaria String
+  created_at    DateTime   @default(now())
+  updated_at    DateTime   @updatedAt
+
+  materiais     Material[]
+  orcamentos    Orcamento[]
+
+  @@map("usuarios")
+}
+
+model Material {
+  id            String     @id @default(uuid())
+  nome          String
+  tipo          TipoMaterial
+  preco_por_m2  Decimal    @db.Decimal(10, 2)
+  observacoes   String?
+  usuario_id    String
+  created_at    DateTime   @default(now())
+
+  usuario       Usuario    @relation(fields: [usuario_id], references: [id])
+  orcamentos    Orcamento[]
+
+  @@map("materiais")
+}
+
+model Orcamento {
+  id              String           @id @default(uuid())
+  cliente_nome    String
+  comprimento     Decimal          @db.Decimal(10, 2)
+  largura         Decimal          @db.Decimal(10, 2)
+  area            Decimal          @db.Decimal(10, 4)
+  material_id     String
+  preco_sugerido  Decimal          @db.Decimal(10, 2)
+  preco_final     Decimal          @db.Decimal(10, 2)
+  observacoes     String?
+  status          StatusOrcamento  @default(PENDENTE)
+  validade_dias   Int              @default(7)
+  created_at      DateTime         @default(now())
+
+  material        Material         @relation(fields: [material_id], references: [id])
+  usuario_id      String
+  usuario         Usuario          @relation(fields: [usuario_id], references: [id])
+  pedido          Pedido?
+
+  @@map("orcamentos")
+}
+
+model Pedido {
+  id                    String   @id @default(uuid())
+  orcamento_id          String   @unique
+  data_prometida_entrega DateTime
+  data_entrega_real     DateTime?
+  status                StatusPedido @default(PENDENTE)
+  observacoes           String?
+  foto_url              String?
+  created_at            DateTime @default(now())
+
+  orcamento             Orcamento @relation(fields: [orcamento_id], references: [id])
+
+  @@map("pedidos")
+}
+
+enum TipoMaterial {
+  GRANITO
+  MARMORE
+  PORCELANATO
+  OUTRO
+}
+
+enum StatusOrcamento {
+  PENDENTE
+  APROVADO
+  REJEITADO
+  VENCIDO
+}
+
+enum StatusPedido {
+  PENDENTE
+  ENTREGUE
+}
