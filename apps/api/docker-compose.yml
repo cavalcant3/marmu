@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: marmu-db
+    restart: always
+    environment:
+      POSTGRES_USER: marmu
+      POSTGRES_PASSWORD: marmu123
+      POSTGRES_DB: marmu
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build: .
+    container_name: marmu-api
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: "postgresql://marmu:marmu123@db:5432/marmu?schema=public"
+      JWT_SECRET: "marmu-secret-dev"
+      JWT_REFRESH_SECRET: "marmu-refresh-secret-dev"
+      NODE_ENV: development
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+volumes:
+  postgres_data:
