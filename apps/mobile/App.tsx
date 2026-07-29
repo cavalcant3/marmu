@@ -14,6 +14,7 @@ import ListaPedidosScreen from "./src/screens/ListaPedidos";
 import DetalhesPedidoScreen from "./src/screens/DetalhesPedido";
 import FotoAnotacaoScreen from "./src/screens/FotoAnotacao";
 import TabelaPrecosScreen from "./src/screens/TabelaPrecos";
+import EstoqueChapasScreen from "./src/screens/EstoqueChapas";
 import { useAuthStore } from "./src/stores/authStore";
 
 export default function App() {
@@ -76,6 +77,9 @@ export default function App() {
     if (subScreen === "fotoanotacao") {
       return <FotoAnotacaoScreen />;
     }
+    if (subScreen === "estoquechapas") {
+      return <EstoqueChapasScreen navigation={navigation} />;
+    }
 
     switch (currentTab) {
       case "dashboard":
@@ -85,7 +89,7 @@ export default function App() {
       case "pedidos":
         return <ListaPedidosScreen navigation={navigation} />;
       case "precos":
-        return <TabelaPrecosScreen />;
+        return <TabelaPrecosScreen navigation={navigation} />;
       default:
         return <DashboardScreen navigation={navigation} />;
     }
@@ -101,7 +105,7 @@ export default function App() {
 
       {/* Floating Action Button for Novo Orçamento */}
       {!subScreen && (
-        <Fab label="+ Novo Orçamento" onPress={() => navigation.navigate("novoorcamento")} />
+        <Fab label="Novo Orçamento" onPress={() => navigation.navigate("novoorcamento")} />
       )}
 
       {/* Bottom Navigation Tab Bar */}

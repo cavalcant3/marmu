@@ -138,7 +138,7 @@ export default function DashboardScreen({ navigation }: any) {
         <Text style={styles.bannerSub}>Você tem 42 chapas de granito e mármore prontas para corte.</Text>
         <TouchableOpacity
           style={styles.bannerButton}
-          onPress={() => navigation.navigate("tabelaprecos")}
+          onPress={() => navigation.navigate("estoquechapas")}
         >
           <Text style={styles.bannerBtnText}>Ver Inventário</Text>
           <Ionicons name="arrow-forward" size={16} color={colors.onSecondaryFixed} style={{ marginLeft: 6 }} />
