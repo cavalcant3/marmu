@@ -1,7 +1,14 @@
 import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import pg from "pg";
+
+const connectionString = process.env.DATABASE_URL || "postgresql://marmu:marmu123@localhost:5432/marmu?schema=public";
+
+const pool = new pg.Pool({ connectionString });
+const adapter = new PrismaPg(pool);
 
 const prisma = new PrismaClient({
-  datasourceUrl: process.env.DATABASE_URL,
+  adapter,
   log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
 });
 

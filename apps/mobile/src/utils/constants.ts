@@ -1,2 +1,2 @@
-export const API_BASE_URL = "https://api.marmu.app";
+export const API_BASE_URL = "http://localhost:3010";
 export const APP_NAME = "Marmu";

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .bento-card {
+            transition: transform 0.2s ease-in-out;
+        }
+        .bento-card:active {
+            transform: scale(0.98);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#d8e3fb",
+                        "surface-container-highest": "#d3e4fe",
+                        "tertiary-container": "#3c2300",
+                        "outline-variant": "#c5c6cd",
+                        "on-secondary-container": "#007432",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "primary": "#091426",
+                        "on-tertiary-container": "#c88000",
+                        "background": "#f8f9ff",
+                        "on-tertiary-fixed": "#2a1700",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#005321",
+                        "on-secondary": "#ffffff",
+                        "surface": "#f8f9ff",
+                        "on-secondary-fixed": "#002109",
+                        "on-primary-fixed": "#111c2d",
+                        "tertiary-fixed": "#ffddb8",
+                        "secondary-fixed-dim": "#4ae176",
+                        "on-primary-fixed-variant": "#3c475a",
+                        "error": "#ba1a1a",
+                        "secondary": "#006e2f",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#213145",
+                        "surface-dim": "#cbdbf5",
+                        "tertiary": "#201100",
+                        "secondary-fixed": "#6bff8f",
+                        "surface-tint": "#545f73",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "on-surface-variant": "#45474c",
+                        "surface-container": "#e5eeff",
+                        "surface-variant": "#d3e4fe",
+                        "on-error": "#ffffff",
+                        "on-background": "#0b1c30",
+                        "on-primary": "#ffffff",
+                        "outline": "#75777d",
+                        "surface-bright": "#f8f9ff",
+                        "on-primary-container": "#8590a6",
+                        "on-error-container": "#93000a",
+                        "surface-container-high": "#dce9ff",
+                        "primary-container": "#1e293b",
+                        "primary-fixed-dim": "#bcc7de",
+                        "inverse-primary": "#bcc7de",
+                        "on-surface": "#0b1c30",
+                        "surface-container-low": "#eff4ff",
+                        "secondary-container": "#6bff8f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "stack-lg": "24px",
+                        "stack-md": "16px",
+                        "touch-min": "48px",
+                        "touch-lg": "56px",
+                        "gutter": "16px",
+                        "stack-sm": "8px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-bold": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "display-num": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "30px", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-bold": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "headline-lg": ["28px", {"lineHeight": "34px", "fontWeight": "700"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "display-num": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface min-h-screen pb-32">
+<!-- Top Navigation Anchor -->
+<header class="bg-surface border-b border-outline-variant flex justify-between items-center px-margin-mobile h-touch-lg w-full sticky top-0 z-40">
+<div class="flex items-center gap-3">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors duration-200">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-primary truncate">Pedido #1024</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors duration-200">
+<span class="material-symbols-outlined text-primary">share</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center overflow-hidden border border-outline-variant">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">person</span>
+</div>
+</div>
+</header>
+<main class="px-margin-mobile pt-stack-lg space-y-stack-lg max-w-2xl mx-auto">
+<!-- Order Identity Header -->
+<div class="flex justify-between items-start">
+<div class="space-y-1">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary">Bancada Cozinha</h2>
+<p class="font-body-md text-on-surface-variant">Cliente: Roberto Silva</p>
+</div>
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-bold text-label-bold border border-tertiary-fixed-dim">
+                Em Produção
+            </span>
+</div>
+<!-- Featured Measurement Image Card -->
+<div class="relative group rounded-xl overflow-hidden border border-outline-variant bg-surface-container shadow-sm aspect-video">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="A professional architectural photograph of a modern, unfinished kitchen space with exposed concrete and brick. Digital white measurement lines and annotations are superimposed over the countertop area, indicating precise dimensions like '2.40m' and '0.60m'. The lighting is bright and industrial, reflecting a construction site atmosphere with high clarity and a neutral color palette of grays and off-whites." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAdu14cYM6ojKH6IDYNoaTTub6potCZ9YLSu_o9BtnwQYJ1e1HTf3PcOjiaVwsDjy-5N0tc62DkP6nyulD-N0k3EUJCKKf9dPqDeMK4dvc6tUvpl1g61xr4ayByWalr9UENcYqDOyxlWz4CZW_eerLS_0pRziIaHyze8zlNWm31iO661eXn_uWhMp9vMS8GFZrCXBQnlzbtv8_AtTO-7jc7rlX0GyZXwVnT0x3PhV5oL06alH3xVIu7aQ')"></div>
+<div class="absolute bottom-4 right-4">
+<button class="bg-primary text-on-primary flex items-center gap-2 px-4 py-2 rounded-lg shadow-lg font-label-bold text-label-bold transition-all active:scale-95">
+<span class="material-symbols-outlined text-sm">fullscreen</span>
+                    VER DETALHES TÉCNICOS
+                </button>
+</div>
+</div>
+<!-- Bento Details Grid -->
+<div class="grid grid-cols-2 gap-gutter">
+<!-- Material Info -->
+<div class="col-span-2 md:col-span-1 bento-card p-5 rounded-xl border border-outline-variant bg-surface-container-lowest flex flex-col justify-between">
+<div class="space-y-2">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-xl">layers</span>
+<span class="font-label-bold text-label-bold uppercase tracking-wider">Material</span>
+</div>
+<p class="font-headline-md text-headline-md text-primary">Granito Via Láctea</p>
+</div>
+<p class="font-body-md text-on-surface-variant mt-3">Acabamento Escovado - 20mm</p>
+</div>
+<!-- Delivery Date -->
+<div class="col-span-1 bento-card p-5 rounded-xl border border-outline-variant bg-surface-container-lowest flex flex-col justify-between">
+<div class="space-y-2">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-xl">event</span>
+<span class="font-label-bold text-label-bold uppercase tracking-wider">Entrega</span>
+</div>
+<p class="font-headline-md text-headline-md text-primary">12 Out</p>
+</div>
+<p class="font-body-md text-on-surface-variant mt-3">Próximo Sábado</p>
+</div>
+<!-- Total Price / Value -->
+<div class="col-span-1 bento-card p-5 rounded-xl border border-outline-variant bg-primary-container text-on-primary-container flex flex-col justify-between">
+<div class="space-y-2">
+<div class="flex items-center gap-2 opacity-80">
+<span class="material-symbols-outlined text-xl">payments</span>
+<span class="font-label-bold text-label-bold uppercase tracking-wider">Valor</span>
+</div>
+<p class="font-headline-md text-headline-md text-primary-fixed">R$ 4.250</p>
+</div>
+<p class="font-body-md opacity-80 mt-3">Pendente: R$ 0</p>
+</div>
+<!-- Stepper Progress -->
+<div class="col-span-2 p-5 rounded-xl border border-outline-variant bg-surface-container-low">
+<span class="font-label-bold text-label-bold uppercase tracking-wider text-on-surface-variant block mb-6">Status do Workflow</span>
+<div class="flex items-center justify-between relative px-2">
+<!-- Progress Line Background -->
+<div class="absolute top-4 left-4 right-4 h-1 bg-outline-variant -z-10"></div>
+<!-- Active Progress Line -->
+<div class="absolute top-4 left-4 w-2/3 h-1 bg-secondary -z-10 transition-all duration-700"></div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-secondary text-on-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Medição</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-secondary text-on-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Corte</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-white border-4 border-secondary flex items-center justify-center"></div>
+<span class="font-label-bold text-label-bold text-secondary">Produção</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-white border-2 border-outline-variant flex items-center justify-center"></div>
+<span class="font-label-md text-label-md text-outline">Entrega</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Contact/Notes Section -->
+<div class="p-5 rounded-xl border border-outline-variant bg-surface-container-lowest space-y-4">
+<h3 class="font-label-bold text-label-bold uppercase tracking-wider text-on-surface-variant">Notas do Projeto</h3>
+<p class="font-body-md text-on-surface">
+                "Cuidado redobrado com o furo do cooktop. Cliente solicitou acabamento em bisotê simples nas bordas frontais."
+            </p>
+<div class="flex gap-4 pt-2">
+<button class="flex-1 h-touch-lg bg-on-secondary-container text-white rounded-xl flex items-center justify-center gap-2 font-label-bold transition-all active:scale-95">
+<span class="material-symbols-outlined">chat</span>
+                    WhatsApp
+                </button>
+<button class="flex-1 h-touch-lg border border-outline text-primary rounded-xl flex items-center justify-center gap-2 font-label-bold transition-all active:scale-95">
+<span class="material-symbols-outlined">call</span>
+                    Ligar
+                </button>
+</div>
+</div>
+</main>
+<!-- Fixed Bottom Action Bar -->
+<div class="fixed bottom-20 left-0 w-full px-margin-mobile py-4 bg-background/80 backdrop-blur-md z-40">
+<button class="w-full h-touch-lg bg-primary text-on-primary rounded-xl font-headline-md text-headline-md flex items-center justify-center gap-3 shadow-xl transition-all active:scale-95 active:bg-primary/90" id="delivered-btn" onclick="markAsDelivered()">
+<span class="material-symbols-outlined">local_shipping</span>
+            Marcar como Entregue
+        </button>
+</div>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-0 left-0 w-full h-20 flex justify-around items-center px-2 bg-surface border-t border-outline-variant z-50">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md mt-1">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-label-md text-label-md mt-1">Quotes</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1 transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="conveyor_belt" style="font-variation-settings: 'FILL' 1;">conveyor_belt</span>
+<span class="font-label-md text-label-md mt-1 font-bold">Orders</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-label-md text-label-md mt-1">Prices</span>
+</a>
+</nav>
+<script>
+        function markAsDelivered() {
+            const btn = document.getElementById('delivered-btn');
+            btn.classList.remove('bg-primary');
+            btn.classList.add('bg-secondary');
+            btn.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Entregue com Sucesso';
+            
+            // Haptic-like feedback animation
+            btn.animate([
+                { transform: 'scale(1)' },
+                { transform: 'scale(1.05)' },
+                { transform: 'scale(1)' }
+            ], {
+                duration: 400,
+                easing: 'ease-out'
+            });
+
+            // Redirect simulation
+            setTimeout(() => {
+                alert("Pedido #1024 finalizado e arquivado.");
+            }, 500);
+        }
+    </script>
+</body></html>

@@ -4,7 +4,7 @@ async function main() {
   const usuario = await prisma.usuario.create({
     data: {
       email: "joao@cncmarmores.com",
-      senha_hash: "$2a$12$hashedpasswordplaceholder",
+      senha_hash: "$2b$12$33Gt.L3oJi.NnzZRVRZRueNLLwpePdswvxmHSIlyrobLjtprOoqIa",
       nome: "João da Silva",
       nome_marmoaria: "CNC Mármores e Granitos",
     },

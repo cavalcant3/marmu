@@ -1,4 +1,4 @@
-import { MMKV } from "react-native-mmkv";
+import { MMKV } from "../utils/storage";
 
 const storage = new MMKV({ id: "marmu-sqlite" });
 
@@ -18,7 +18,7 @@ export const SQLite = {
 
 export function initDatabase() {
   // Initialize tables
-  SQLite.exec(require("./schema.js").ORCAMENTOS_TABLE);
-  SQLite.exec(require("./schema.js").PEDIDOS_TABLE);
-  SQLite.exec(require("./schema.js").MATERIAIS_TABLE);
+  SQLite.exec(require("./schema").ORCAMENTOS_TABLE);
+  SQLite.exec(require("./schema").PEDIDOS_TABLE);
+  SQLite.exec(require("./schema").MATERIAIS_TABLE);
 }

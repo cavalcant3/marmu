@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Marmu - Orçamento Passo 1.3</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-material {
+            border: 2px solid #091426 !important;
+            background-color: #f8f9ff !important;
+        }
+        .custom-checkbox:checked {
+            background-color: #006e2f;
+            border-color: #006e2f;
+        }
+        /* Fluid grid and vertical rhythm */
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed": "#d8e3fb",
+                      "surface-container-highest": "#d3e4fe",
+                      "tertiary-container": "#3c2300",
+                      "outline-variant": "#c5c6cd",
+                      "on-secondary-container": "#007432",
+                      "on-tertiary": "#ffffff",
+                      "inverse-on-surface": "#eaf1ff",
+                      "primary": "#091426",
+                      "on-tertiary-container": "#c88000",
+                      "background": "#f8f9ff",
+                      "on-tertiary-fixed": "#2a1700",
+                      "tertiary-fixed-dim": "#ffb95f",
+                      "error-container": "#ffdad6",
+                      "on-secondary-fixed-variant": "#005321",
+                      "on-secondary": "#ffffff",
+                      "surface": "#f8f9ff",
+                      "on-secondary-fixed": "#002109",
+                      "on-primary-fixed": "#111c2d",
+                      "tertiary-fixed": "#ffddb8",
+                      "secondary-fixed-dim": "#4ae176",
+                      "on-primary-fixed-variant": "#3c475a",
+                      "error": "#ba1a1a",
+                      "secondary": "#006e2f",
+                      "surface-container-lowest": "#ffffff",
+                      "inverse-surface": "#213145",
+                      "surface-dim": "#cbdbf5",
+                      "tertiary": "#201100",
+                      "secondary-fixed": "#6bff8f",
+                      "surface-tint": "#545f73",
+                      "on-tertiary-fixed-variant": "#653e00",
+                      "on-surface-variant": "#45474c",
+                      "surface-container": "#e5eeff",
+                      "surface-variant": "#d3e4fe",
+                      "on-error": "#ffffff",
+                      "on-background": "#0b1c30",
+                      "on-primary": "#ffffff",
+                      "outline": "#75777d",
+                      "surface-bright": "#f8f9ff",
+                      "on-primary-container": "#8590a6",
+                      "on-error-container": "#93000a",
+                      "surface-container-high": "#dce9ff",
+                      "primary-container": "#1e293b",
+                      "primary-fixed-dim": "#bcc7de",
+                      "inverse-primary": "#bcc7de",
+                      "on-surface": "#0b1c30",
+                      "surface-container-low": "#eff4ff",
+                      "secondary-container": "#6bff8f"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "20px",
+                      "stack-lg": "24px",
+                      "stack-md": "16px",
+                      "touch-min": "48px",
+                      "touch-lg": "56px",
+                      "gutter": "16px",
+                      "stack-sm": "8px"
+              },
+              "fontFamily": {
+                      "body-lg": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "label-md": ["Inter"],
+                      "body-md": ["Inter"],
+                      "label-bold": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "display-num": ["Inter"]
+              },
+              "fontSize": {
+                      "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "30px", "fontWeight": "700"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-bold": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "headline-lg": ["28px", {"lineHeight": "34px", "fontWeight": "700"}],
+                      "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "display-num": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col pb-32">
+<!-- TopAppBar -->
+<header class="bg-surface text-primary font-headline-lg-mobile text-headline-lg-mobile docked full-width top-0 border-b border-outline-variant flex justify-between items-center px-margin-mobile h-touch-lg w-full z-50 sticky top-0">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary cursor-pointer">arrow_back</span>
+<span class="font-bold tracking-tight">Marmu</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="settings">settings</span>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a stone worker in a workshop, wearing a dark polo shirt and safety glasses. The lighting is crisp and industrial, with a background of large granite slabs. High-contrast, clean professional photography aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWZSo1e2jrvkeGE0_p9WOmFNcJDEwCeIO9ikF0IRyhBKIYCWsuPdFmqInDvJ4tdDzjbV638lk-_CqK2-lS4Hdkj9XKkje-Ctr0HWCx6_upnqDGEFR5fYx8V9pWXr_FWCgrXt1FlsLy4kVGVgdMomr8CHnigYB1LJIHkOlEN18UiJpsD9IIUrkuM1E2x7tOJPDzpr_h7yrm68OYZZOTdzav1tS-BDRAEVGxw0INjgRFrQXC__XyEctRUg"/>
+</div>
+</div>
+</header>
+<main class="flex-grow px-margin-mobile pt-stack-lg">
+<!-- Stepper -->
+<section class="mb-stack-lg">
+<div class="flex items-center justify-between px-2">
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-secondary text-on-secondary flex items-center justify-center text-label-bold font-label-bold">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+</div>
+<div class="flex-grow h-1 bg-secondary mx-2"></div>
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-secondary text-on-secondary flex items-center justify-center text-label-bold font-label-bold">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+</div>
+<div class="flex-grow h-1 bg-secondary mx-2"></div>
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full border-4 border-primary bg-surface flex items-center justify-center text-label-bold font-label-bold text-primary">3</div>
+</div>
+<div class="flex-grow h-1 bg-outline-variant mx-2"></div>
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-outline-variant flex items-center justify-center text-label-bold font-label-bold text-on-surface-variant opacity-50">4</div>
+</div>
+<div class="flex-grow h-1 bg-outline-variant mx-2"></div>
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-outline-variant flex items-center justify-center text-label-bold font-label-bold text-on-surface-variant opacity-50">5</div>
+</div>
+</div>
+<div class="mt-4 text-center">
+<h1 class="font-headline-md text-headline-md text-primary">Material e Acabamento</h1>
+<p class="font-label-md text-label-md text-on-surface-variant">Personalize os detalhes da sua peça</p>
+</div>
+</section>
+<!-- Material Selection Cards -->
+<section class="mb-stack-lg">
+<h2 class="font-label-bold text-label-bold uppercase text-on-surface-variant mb-4">Selecione o Material</h2>
+<div class="grid grid-cols-1 gap-4">
+<!-- Card 1: Granito -->
+<div class="active-material relative overflow-hidden rounded-xl bg-surface-container-low border border-outline-variant p-stack-sm flex items-start gap-4 h-[120px] shadow-sm cursor-pointer transition-all hover:bg-surface-container-high active:scale-[0.98]">
+<div class="w-24 h-full rounded-lg bg-surface-variant overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Close-up macro texture of Granito Preto São Gabriel stone. Deep charcoal and black crystalline patterns with subtle grey flecks. The lighting highlights the polished, reflective industrial finish typical of high-quality workshop masonry." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQXPci0FHbGghHAt064zg_uoHjAOjfVd5kedVWgNHMc_CLtAwWrbHdn71PGAUDOHhXUXeObEIRFsh_J9iN4qRx9TkQpW7WexS6-wVIbt-Ri9ZB0ggjPalI3tA-T1NZoCX61CBhnfBsUT_z3Czsluha1twLPPN2bwVCCR1HmTDuHm29EpDgTM9EuJ2Be8XgPfQm3FLqmOAlRYDhFvaHo-VMLPzs8-Jm_0vimKKEva5xfXb9S-DGAAJF5A"/>
+</div>
+<div class="flex flex-col justify-between py-1 h-full flex-grow">
+<div>
+<span class="font-label-bold text-label-bold text-on-surface-variant uppercase text-[10px]">Granito</span>
+<h3 class="font-headline-md text-headline-md leading-tight">Preto São Gabriel</h3>
+</div>
+<p class="font-label-bold text-label-bold text-secondary">R$ 280/m²</p>
+</div>
+<div class="absolute top-3 right-3 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<!-- Card 2: Mármore -->
+<div class="relative overflow-hidden rounded-xl bg-surface-container-lowest border border-outline-variant p-stack-sm flex items-start gap-4 h-[120px] cursor-pointer transition-all hover:bg-surface-container-low active:scale-[0.98]">
+<div class="w-24 h-full rounded-lg bg-surface-variant overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Elegant close-up of Mármore Branco Carrara. Pure white background with soft, flowing grey veins. The aesthetic is clean, luxurious, and architectural, shot in bright daylight to emphasize the premium material quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBz3a0Dguz51LHA4dc0pj8JkZorAIA3VY9KPpoYaUcS7u24e4MxM8krQfPpy4Qv0bQ7dXTxItMW6snmiS3nVa4lVAe6TpTyma9gGqFnxzgc4FzEgmEB9bIkf9TeuTWvPXFrm6Bd_ySqsW5C7sb7suICKyqrXr-WWQULK6hSUltas9Yw3Wja-McIGxxinpUQE78_sgzfewdBfmnfihA5OQXbmu5OdM8M6FbePJ09peEqeYTk4MuUJ8S3Ig"/>
+</div>
+<div class="flex flex-col justify-between py-1 h-full flex-grow">
+<div>
+<span class="font-label-bold text-label-bold text-on-surface-variant uppercase text-[10px]">Mármore</span>
+<h3 class="font-headline-md text-headline-md leading-tight">Branco Carrara</h3>
+</div>
+<p class="font-label-bold text-label-bold text-secondary">R$ 1.200/m²</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Finishes Section -->
+<section class="mb-stack-lg">
+<h2 class="font-label-bold text-label-bold uppercase text-on-surface-variant mb-4">Acabamento e Serviços</h2>
+<div class="bg-surface-container-low rounded-xl p-4 border border-outline-variant space-y-2">
+<label class="flex items-center justify-between h-touch-lg px-2 rounded-lg hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="flex items-center gap-3">
+<input checked="" class="w-6 h-6 rounded border-outline text-secondary focus:ring-secondary custom-checkbox" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface">Bisote</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">+ R$ 45,00/m</span>
+</label>
+<div class="h-px bg-outline-variant mx-2"></div>
+<label class="flex items-center justify-between h-touch-lg px-2 rounded-lg hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="flex items-center gap-3">
+<input class="w-6 h-6 rounded border-outline text-secondary focus:ring-secondary custom-checkbox" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface">Boleado</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">+ R$ 60,00/m</span>
+</label>
+<div class="h-px bg-outline-variant mx-2"></div>
+<label class="flex items-center justify-between h-touch-lg px-2 rounded-lg hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="flex items-center gap-3">
+<input checked="" class="w-6 h-6 rounded border-outline text-secondary focus:ring-secondary custom-checkbox" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface">Cuba Embutida</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">+ R$ 150,00</span>
+</label>
+</div>
+</section>
+<!-- Summary Preview -->
+<section class="mb-stack-lg">
+<div class="bg-primary text-white rounded-xl p-stack-md flex justify-between items-center shadow-lg">
+<div class="flex flex-col">
+<span class="text-on-primary-container font-label-md text-label-md">Resumo do Material</span>
+<span class="font-label-bold text-label-bold">3,0 m² • Preto S. Gabriel</span>
+</div>
+<div class="text-right">
+<span class="block text-on-primary-container font-label-md text-label-md">Valor Total</span>
+<span class="font-display-num text-[32px] leading-none">R$ 840,00</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Sticky Footer Navigation -->
+<footer class="fixed bottom-0 left-0 w-full bg-surface border-t border-outline-variant px-margin-mobile py-4 flex items-center justify-between gap-4 z-[60] shadow-[0_-4px_20px_-5px_rgba(0,0,0,0.1)]">
+<button class="flex-shrink-0 h-touch-lg w-14 rounded-xl border border-outline flex items-center justify-center text-primary active:scale-95 transition-transform">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<button class="flex-grow h-touch-lg bg-primary text-on-primary font-headline-md text-headline-md rounded-xl shadow-md active:scale-[0.98] transition-transform flex items-center justify-center gap-2">
+            Continuar
+            <span class="material-symbols-outlined">chevron_right</span>
+</button>
+</footer>
+<script>
+        // Micro-interactions for selection feedback
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                // Future logic: Recalculate total
+                console.log('Price updated based on selection');
+            });
+        });
+
+        // Simple selection toggle for material cards
+        const materialCards = document.querySelectorAll('.grid > div');
+        materialCards.forEach(card => {
+            card.addEventListener('click', function() {
+                materialCards.forEach(c => {
+                    c.classList.remove('active-material');
+                    const check = c.querySelector('.absolute.top-3.right-3');
+                    if (check) check.classList.add('hidden');
+                });
+                this.classList.add('active-material');
+                let check = this.querySelector('.absolute.top-3.right-3');
+                if (!check) {
+                    const checkDiv = document.createElement('div');
+                    checkDiv.className = 'absolute top-3 right-3 text-primary';
+                    checkDiv.innerHTML = '<span class="material-symbols-outlined" style="font-variation-settings: \'FILL\' 1;">check_circle</span>';
+                    this.appendChild(checkDiv);
+                } else {
+                    check.classList.remove('hidden');
+                }
+            });
+        });
+    </script>
+</body></html>

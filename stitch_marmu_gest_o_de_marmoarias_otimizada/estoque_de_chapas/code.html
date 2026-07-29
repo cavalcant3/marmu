@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-br"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Estoque de Chapas - Marmu</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed": "#002109",
+                    "secondary-fixed": "#6bff8f",
+                    "on-tertiary-container": "#c88000",
+                    "error": "#ba1a1a",
+                    "surface-container-highest": "#d3e4fe",
+                    "inverse-primary": "#bcc7de",
+                    "on-tertiary-fixed": "#2a1700",
+                    "on-secondary": "#ffffff",
+                    "inverse-surface": "#213145",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-fixed-variant": "#3c475a",
+                    "on-secondary-container": "#007432",
+                    "tertiary-container": "#3c2300",
+                    "secondary-fixed-dim": "#4ae176",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-variant": "#d3e4fe",
+                    "on-tertiary-fixed-variant": "#653e00",
+                    "surface-container-high": "#dce9ff",
+                    "background": "#f8f9ff",
+                    "surface": "#f8f9ff",
+                    "secondary-container": "#6bff8f",
+                    "on-primary-fixed": "#111c2d",
+                    "on-error": "#ffffff",
+                    "outline": "#75777d",
+                    "primary-fixed": "#d8e3fb",
+                    "surface-container": "#e5eeff",
+                    "on-tertiary": "#ffffff",
+                    "tertiary": "#201100",
+                    "surface-container-low": "#eff4ff",
+                    "outline-variant": "#c5c6cd",
+                    "surface-tint": "#545f73",
+                    "primary-container": "#1e293b",
+                    "tertiary-fixed-dim": "#ffb95f",
+                    "surface-dim": "#cbdbf5",
+                    "on-surface-variant": "#45474c",
+                    "on-error-container": "#93000a",
+                    "on-primary-container": "#8590a6",
+                    "on-primary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-surface": "#0b1c30",
+                    "tertiary-fixed": "#ffddb8",
+                    "surface-bright": "#f8f9ff",
+                    "primary-fixed-dim": "#bcc7de",
+                    "primary": "#091426",
+                    "secondary": "#006e2f",
+                    "on-secondary-fixed-variant": "#005321",
+                    "on-background": "#0b1c30"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-lg": "24px",
+                    "margin-mobile": "20px",
+                    "gutter": "16px",
+                    "touch-min": "48px",
+                    "touch-lg": "56px",
+                    "stack-sm": "8px",
+                    "stack-md": "16px"
+            },
+            "fontFamily": {
+                    "label-md": ["Inter"],
+                    "label-bold": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "display-num": ["Inter"]
+            },
+            "fontSize": {
+                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "label-bold": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "30px", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}],
+                    "headline-lg": ["28px", {"lineHeight": "34px", "fontWeight": "700"}],
+                    "display-num": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+        }
+        .slab-card:active { transform: scale(0.98); }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-surface sticky top-0 z-40 flex justify-between items-center px-margin-mobile h-touch-lg w-full border-b border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional close-up headshot of a stone warehouse manager wearing a clean polo shirt. The background is a slightly blurred industrial showroom with high-end marble slabs, creating a reliable and expert atmosphere. Bright natural lighting emphasizes the high-utility and professional tone of the brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuARYl3UsOEO0zFuKjzFxp4fIYm2ST3gkggLvcJhQav7JiadyhnHFDOBSMN9k6GXrSrnR-GX6MiLeOwW6knor9x9mMFPW8aHHMYvwiAWKfWHbL7RKEr-MBagajNamyf8wYKRvJjweqX7IxxzgxkuRtdi1vlcGyEOWZPzqr99hyCYlQs6wMwuggRrCNMJy2ly7RE4zwI9dUyZpCkplf12yrLU9Q9DYd1DNQoxPpwlVGvWnCW35Qv11PqSxA"/>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary">Marmu</h1>
+</div>
+<button class="w-12 h-12 flex items-center justify-center text-primary hover:bg-surface-container-low transition-colors duration-200">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</header>
+<main class="px-margin-mobile pt-stack-lg">
+<!-- Title & Search -->
+<div class="mb-stack-lg">
+<h2 class="font-headline-lg text-headline-lg mb-stack-md">Estoque de Chapas</h2>
+<div class="relative group">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="w-full h-touch-lg pl-12 pr-4 bg-surface-container-low border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none text-body-md" placeholder="Filtrar por material..." type="text"/>
+</div>
+</div>
+<!-- Inventory Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Slab Card 1 -->
+<div class="slab-card bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden flex flex-col transition-transform duration-200 shadow-sm">
+<div class="relative h-64 w-full">
+<img class="w-full h-full object-cover" data-alt="A high-resolution, full-frame macro shot of a 'Granito Via Láctea' stone slab. The material is deep black with swirling, galactic-like white and silver veins that create a dynamic and premium visual pattern. The surface is polished and reflects soft studio lighting, showcasing its unique natural textures." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBybP5HVbsj_SEqNrQt-8M8Hi2ABAtt037LPOkhbw0qc8B23HIFeTmLOIHCvRbieJJsi0AGBtWtQQRIylpJRGpfkv02Tx_krYrcgHr66EpTDuofJWJVgQW69IQEKZTMZ8byEc_pForXk0UkijUhmkDXjTsfRDg8svj521m0vhNEUaeJ3QW66JbHySlBDOcMS7vZqL6ErIRkvnsLoKCy0VgChOwgCrzC96Y-rWsevZ1Ae42dVCpNigh9Ag"/>
+<div class="absolute top-4 right-4">
+<span class="bg-secondary-container text-on-secondary-container font-label-bold text-label-md px-3 py-1 rounded-full shadow-sm">
+                            Pronta Entrega
+                        </span>
+</div>
+</div>
+<div class="p-stack-md flex flex-col gap-2">
+<div class="flex justify-between items-start">
+<h3 class="font-headline-md text-headline-md text-primary">Granito Via Láctea</h3>
+<span class="font-display-num text-primary text-xl">12</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">straighten</span>
+<p class="font-body-md text-body-md">2.80 x 1.60m</p>
+</div>
+<div class="mt-stack-sm flex justify-between items-center">
+<span class="font-label-md text-label-md text-outline uppercase tracking-wider">Disponíveis</span>
+<button class="h-touch-min px-4 bg-primary text-on-primary rounded-lg font-label-bold text-label-md flex items-center gap-2">
+                            Detalhes
+                        </button>
+</div>
+</div>
+</div>
+<!-- Slab Card 2 -->
+<div class="slab-card bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden flex flex-col transition-transform duration-200 shadow-sm">
+<div class="relative h-64 w-full">
+<img class="w-full h-full object-cover" data-alt="A detailed wide shot of a 'Quartzito Michelangelo' stone slab. The stone has a creamy white background with delicate, rhythmic golden and gray veins that flow across the surface like a landscape painting. The lighting is bright and even, highlighting the sturdy and elegant nature of the industrial workshop inventory." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVjmY3wdWQTOdvjmNI4K9yfsZPZiEOp4UxMZ0W-yiOt9XGiBAhgDcT4uz--wcmqEdsAmia_FSCiHLnrCkfvqZGl-mn_ameRQ3qsU5MEJ4kYwnMheeDeO4AAhnHIr2fAp3wjtmDk8c-vH38eJ3kPZHESvIHiTabKwVaXo5EfvdUmb839Bf4HDATNE8TebVHvAp0TIdOcUO_2c-lF1VPWGX61LKOL6EVh9jnApnKMEts0l1TYsFthlOsnQ"/>
+<div class="absolute top-4 right-4">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed font-label-bold text-label-md px-3 py-1 rounded-full shadow-sm">
+                            Chapa Única
+                        </span>
+</div>
+</div>
+<div class="p-stack-md flex flex-col gap-2">
+<div class="flex justify-between items-start">
+<h3 class="font-headline-md text-headline-md text-primary">Quartzito Michelangelo</h3>
+<span class="font-display-num text-primary text-xl">01</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">straighten</span>
+<p class="font-body-md text-body-md">3.10 x 1.95m</p>
+</div>
+<div class="mt-stack-sm flex justify-between items-center">
+<span class="font-label-md text-label-md text-outline uppercase tracking-wider">Disponíveis</span>
+<button class="h-touch-min px-4 bg-primary text-on-primary rounded-lg font-label-bold text-label-md flex items-center gap-2">
+                            Detalhes
+                        </button>
+</div>
+</div>
+</div>
+<!-- Slab Card 3 -->
+<div class="slab-card bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden flex flex-col transition-transform duration-200 shadow-sm">
+<div class="relative h-64 w-full">
+<img class="w-full h-full object-cover" data-alt="Close-up photograph of a 'Mármore Carrara' slab, characterized by its classic bright white surface and soft, smoky gray feathered veins. The lighting is diffused and professional, emphasizing the pristine quality and luxurious feel of the natural stone. Perfect for a clean, modern light-mode inventory application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqk4pr1IxUPy9fC1VSKsY2eQ2X5ggBIqBfNpUd7NRp4aBQWuiryzJ62W992DbDD1FRs-mD1zWf_QS6sXDIhSJLztsNnF3VnlN5fxtUfXOxfw12-C4qq8T1zRIcRKYTX2y0hTPDnr4jm2L08UIBkQ08j6FA6rdhhD9THdgN8__qWf9XVdzfPM1fp937Nyo829qBqsZ2o_Mp3Z-Szc143c_A-9WAfhZtvbsUhAho4KmQ_oS69irhTVcihg"/>
+<div class="absolute top-4 right-4">
+<span class="bg-secondary-container text-on-secondary-container font-label-bold text-label-md px-3 py-1 rounded-full shadow-sm">
+                            Pronta Entrega
+                        </span>
+</div>
+</div>
+<div class="p-stack-md flex flex-col gap-2">
+<div class="flex justify-between items-start">
+<h3 class="font-headline-md text-headline-md text-primary">Mármore Carrara</h3>
+<span class="font-display-num text-primary text-xl">08</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">straighten</span>
+<p class="font-body-md text-body-md">2.60 x 1.50m</p>
+</div>
+<div class="mt-stack-sm flex justify-between items-center">
+<span class="font-label-md text-label-md text-outline uppercase tracking-wider">Disponíveis</span>
+<button class="h-touch-min px-4 bg-primary text-on-primary rounded-lg font-label-bold text-label-md flex items-center gap-2">
+                            Detalhes
+                        </button>
+</div>
+</div>
+</div>
+<!-- Slab Card 4 -->
+<div class="slab-card bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden flex flex-col transition-transform duration-200 shadow-sm">
+<div class="relative h-64 w-full">
+<img class="w-full h-full object-cover" data-alt="Macro view of a 'Quartzito Verde Bamboo' slab with striking vertical green and charcoal bands that resemble bamboo stalks. The stone is shown with a semi-matte finish, revealing deep textures and high-contrast patterns. The overall mood is sophisticated and organic, fitting for a premium trade showroom." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPzrQSUU2mbeE3YQIGDHR_JQqXlMXvMpMkbmuuV0Ni5JOtCccax4LqsuMw1y3Wecy01TFMmz8VPFkLt2kiXTncrGdml21UMqVXzdu5C-Xm0It4IMSlp5KKwLwmous8C-gSETJpK6Sc654KPnPwsQfFp_6NDdHbNVeRf2zT6dRQ77IekMwRr_269jr0S4aHhpchWEoDDzAbIDwstpXxDYlusmVremA12gb7yxeGmHlU3Kwqj2lJASxCjA"/>
+<div class="absolute top-4 right-4">
+<span class="bg-secondary-container text-on-secondary-container font-label-bold text-label-md px-3 py-1 rounded-full shadow-sm">
+                            Pronta Entrega
+                        </span>
+</div>
+</div>
+<div class="p-stack-md flex flex-col gap-2">
+<div class="flex justify-between items-start">
+<h3 class="font-headline-md text-headline-md text-primary">Verde Bamboo</h3>
+<span class="font-display-num text-primary text-xl">05</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">straighten</span>
+<p class="font-body-md text-body-md">2.95 x 1.75m</p>
+</div>
+<div class="mt-stack-sm flex justify-between items-center">
+<span class="font-label-md text-label-md text-outline uppercase tracking-wider">Disponíveis</span>
+<button class="h-touch-min px-4 bg-primary text-on-primary rounded-lg font-label-bold text-label-md flex items-center gap-2">
+                            Detalhes
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB for adding new slab -->
+<button class="fixed bottom-24 right-6 w-14 h-14 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center shadow-xl hover:scale-105 active:scale-95 transition-transform z-40">
+<span class="material-symbols-outlined" style="font-size: 32px;">add</span>
+</button>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full h-20 flex justify-around items-center px-2 bg-surface border-t border-outline-variant z-50">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1 transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">description</span>
+<span class="font-label-md text-label-md">Quotes</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">conveyor_belt</span>
+<span class="font-label-md text-label-md">Orders</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-md text-label-md">Prices</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interaction for cards
+        document.querySelectorAll('.slab-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.classList.add('shadow-md');
+            });
+            card.addEventListener('mouseleave', () => {
+                card.classList.remove('shadow-md');
+            });
+        });
+
+        // Search highlight mock logic
+        const searchInput = document.querySelector('input');
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            document.querySelectorAll('.slab-card').forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                if (title.includes(term)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body></html>

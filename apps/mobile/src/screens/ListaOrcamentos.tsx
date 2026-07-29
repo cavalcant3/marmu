@@ -1,72 +1,127 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, FlatList, TouchableOpacity, StyleSheet } from "react-native";
-
-const mockOrcamentos = [
-  { id: "1", cliente: "Carlos Lima", descricao: "Bancada", valor: 1200, status: "PENDENTE" },
-  { id: "2", cliente: "Ana Costa", descricao: "Pia banheiro", valor: 890, status: "APROVADO" },
-  { id: "3", cliente: "João da Silva", descricao: "Bancada", valor: 420, status: "REJEITADO" },
-];
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput } from "react-native";
+import { colors } from "../theme/colors";
+import Badge from "../components/ui/Badge";
 
 export default function ListaOrcamentosScreen({ navigation }: any) {
-  const [busca, setBusca] = useState("");
-  const [filtro, setFiltro] = useState("TODOS");
+  const [search, setSearch] = useState("");
 
-  const filtrados = mockOrcamentos
-    .filter((o) => {
-      if (filtro !== "TODOS" && o.status !== filtro) return false;
-      return (
-        o.cliente.toLowerCase().includes(busca.toLowerCase()) ||
-        o.descricao.toLowerCase().includes(busca.toLowerCase())
-      );
-    });
+  const orcamentos = [
+    {
+      id: "ORC-2026-001",
+      cliente: "João da Silva",
+      projeto: "Bancada Cozinha",
+      area: 1.44,
+      material: "Granito Preto São Gabriel",
+      valor: "R$ 403,20",
+      status: "Pendente",
+      data: "27/07/2026",
+    },
+    {
+      id: "ORC-2026-002",
+      cliente: "Maria Oliveira",
+      projeto: "Lavatório Banheiro",
+      area: 0.85,
+      material: "Mármore Carrara",
+      valor: "R$ 680,00",
+      status: "Aprovado",
+      data: "26/07/2026",
+    },
+    {
+      id: "ORC-2026-003",
+      cliente: "Carlos Eduardo",
+      projeto: "Ilha Gourmet",
+      area: 3.10,
+      material: "Porcelanato Calacatta",
+      valor: "R$ 1.550,00",
+      status: "Vencido",
+      data: "15/07/2026",
+    },
+  ];
 
-  const statusColor: any = {
-    PENDENTE: "#FFA000",
-    APROVADO: "#2E7D32",
-    REJEITADO: "#C62828",
-  };
+  const filtered = orcamentos.filter((o) =>
+    o.cliente.toLowerCase().includes(search.toLowerCase()) ||
+    o.projeto.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Orçamentos</Text>
+    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      <Text style={styles.title}>Histórico de Orçamentos</Text>
+
       <TextInput
-        style={styles.input}
-        placeholder="Buscar por cliente..."
-        value={busca}
-        onChangeText={setBusca}
+        style={styles.searchBar}
+        placeholder="🔍 Buscar por cliente ou material..."
+        placeholderTextColor={colors.onSurfaceVariant}
+        value={search}
+        onChangeText={setSearch}
       />
-      <View style={styles.filtros}>
-        {["TODOS", "PENDENTE", "APROVADO", "REJEITADO"].map((f) => (
-          <TouchableOpacity key={f} onPress={() => setFiltro(f)}>
-            <Text style={filtro === f ? styles.filtroAtivo : styles.filtro}>{f}</Text>
+
+      <View style={styles.list}>
+        {filtered.map((orc) => (
+          <TouchableOpacity
+            key={orc.id}
+            style={styles.orcCard}
+            onPress={() => navigation.navigate("visualizarorcamento", { orcamento: orc })}
+          >
+            <View style={styles.cardHeader}>
+              <Text style={styles.orcId}>{orc.id}</Text>
+              <Badge
+                label={orc.status}
+                variant={
+                  orc.status === "Aprovado"
+                    ? "success"
+                    : orc.status === "Vencido"
+                    ? "danger"
+                    : "warning"
+                }
+              />
+            </View>
+
+            <Text style={styles.clienteName}>{orc.cliente}</Text>
+            <Text style={styles.projetoSub}>{orc.projeto} • {orc.material}</Text>
+
+            <View style={styles.cardFooter}>
+              <Text style={styles.dateText}>Criado em {orc.data}</Text>
+              <Text style={styles.valorText}>{orc.valor}</Text>
+            </View>
           </TouchableOpacity>
         ))}
       </View>
-      <FlatList
-        data={filtrados}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.item}
-            onPress={() => navigation.navigate("DetalhesOrcamento", { orcamento: item })}
-          >
-            <Text style={styles.cliente}>{item.cliente}</Text>
-            <Text>{item.descricao} — R$ {item.valor}</Text>
-            <Text style={{ color: statusColor[item.status] }}>{item.status}</Text>
-          </TouchableOpacity>
-        )}
-      />
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: "#fff" },
-  title: { fontSize: 24, fontWeight: "bold", marginBottom: 12 },
-  input: { height: 48, borderWidth: 1, borderColor: "#ddd", borderRadius: 8, paddingHorizontal: 16, marginBottom: 12 },
-  filtros: { flexDirection: "row", marginBottom: 12 },
-  filtro: { marginRight: 12, color: "#666" },
-  filtroAtivo: { marginRight: 12, color: "#1976D2", fontWeight: "bold" },
-  item: { padding: 14, borderBottomWidth: 1, borderBottomColor: "#eee" },
-  cliente: { fontSize: 16, fontWeight: "600" },
+  container: { flex: 1, backgroundColor: colors.background },
+  content: { padding: 20, paddingBottom: 110 },
+  title: { fontSize: 24, fontWeight: "800", color: colors.primary, marginBottom: 16 },
+
+  searchBar: {
+    height: 48,
+    backgroundColor: colors.surfaceContainerLowest,
+    borderWidth: 1,
+    borderColor: colors.outlineVariant,
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    fontSize: 14,
+    color: colors.onSurface,
+    marginBottom: 16,
+  },
+
+  list: { gap: 12 },
+  orcCard: {
+    backgroundColor: colors.surfaceContainerLowest,
+    borderWidth: 1,
+    borderColor: colors.outlineVariant,
+    borderRadius: 14,
+    padding: 16,
+  },
+  cardHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+  orcId: { fontSize: 12, fontWeight: "700", color: colors.onSurfaceVariant },
+  clienteName: { fontSize: 18, fontWeight: "800", color: colors.primary, marginTop: 4 },
+  projetoSub: { fontSize: 14, color: colors.onSurfaceVariant, marginTop: 2, marginBottom: 12 },
+
+  cardFooter: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+  dateText: { fontSize: 12, color: colors.onSurfaceVariant },
+  valorText: { fontSize: 16, fontWeight: "800", color: colors.secondary },
 });

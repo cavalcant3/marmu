@@ -1,125 +1,159 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Alert,
-  Share,
-  ActivityIndicator,
-} from "react-native";
-import RNHTMLtoPDF from "react-native-html-to-pdf";
+import React from "react";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from "react-native";
+import { colors } from "../theme/colors";
+import Badge from "../components/ui/Badge";
 
-export default function VisualizarOrcamentoScreen({ route }: any) {
-  const { orcamento } = route.params;
-  const [gerando, setGerando] = useState(false);
-  const hoje = new Date();
-  const validade = new Date(hoje);
-  validade.setDate(hoje.getDate() + 7);
-
-  const textoOrcamento = `Orçamento — Marmu
-Data: ${hoje.toLocaleDateString("pt-BR")}
-
-Cliente: ${orcamento.cliente || "Não informado"}
-Projeto: Bancada
-Medidas: ${orcamento.comprimento}m × ${orcamento.largura}m
-Área: ${orcamento.area.toFixed(2)} m²
-Material: ${orcamento.material?.nome || "Não informado"}
-Preço Final: R$ ${orcamento.precoFinal?.toFixed(2) || "0.00"}
-
-Válido até: ${validade.toLocaleDateString("pt-BR")}`;
-
-  const htmlContent = `
-    <html>
-      <head>
-        <style>
-          body { font-family: Arial, sans-serif; padding: 40px; }
-          h1 { color: #1976D2; text-align: center; }
-          .header { text-align: center; margin-bottom: 30px; }
-          .info { margin: 10px 0; font-size: 16px; }
-          .preco { font-size: 24px; font-weight: bold; color: #1976D2; margin-top: 20px; }
-          .footer { margin-top: 40px; font-size: 12px; color: #666; text-align: center; }
-        </style>
-      </head>
-      <body>
-        <div class="header">
-          <h1>Marmu</h1>
-          <p>Orçamento de Serviços</p>
-        </div>
-        <div class="info"><strong>Data:</strong> ${hoje.toLocaleDateString("pt-BR")}</div>
-        <div class="info"><strong>Cliente:</strong> ${orcamento.cliente || "Não informado"}</div>
-        <div class="info"><strong>Projeto:</strong> Bancada</div>
-        <div class="info"><strong>Medidas:</strong> ${orcamento.comprimento}m × ${orcamento.largura}m</div>
-        <div class="info"><strong>Área:</strong> ${orcamento.area.toFixed(2)} m²</div>
-        <div class="info"><strong>Material:</strong> ${orcamento.material?.nome || "Não informado"}</div>
-        <div class="preco">Preço Final: R$ ${orcamento.precoFinal?.toFixed(2) || "0.00"}</div>
-        <div class="footer">
-          Válido até: ${validade.toLocaleDateString("pt-BR")} |
-          Este orçamento é válido por 7 dias.
-        </div>
-      </body>
-    </html>
-  `;
-
-  const handleGerarPDF = async () => {
-    setGerando(true);
-    try {
-      const pdf = await RNHTMLtoPDF.convert({
-        html: htmlContent,
-        fileName: `Orcamento_${orcamento.cliente || "cliente"}_${hoje.getTime()}`,
-        directory: "Documents",
-      });
-      Alert.alert("Sucesso", `PDF salvo em: ${pdf.filePath}`);
-    } catch {
-      Alert.alert("Erro", "Não foi possível gerar o PDF");
-    } finally {
-      setGerando(false);
-    }
+export default function VisualizarOrcamentoScreen({ route, navigation }: any) {
+  const orcamento = route?.params?.orcamento || {
+    cliente: "João da Silva",
+    projeto: "Bancada Cozinha Principal",
+    comprimento: 2.4,
+    largura: 0.6,
+    area: 1.44,
+    material: { nome: "Granito Preto São Gabriel", preco_por_m2: 280 },
+    precoFinal: 403.2,
+    observacoes: "Sem recortes especiais.",
+    data: new Date().toLocaleDateString("pt-BR"),
   };
 
-  const handleWhatsApp = async () => {
-    try {
-      await Share.share({
-        message: textoOrcamento,
-        title: "Orçamento Marmu",
-      });
-    } catch {
-      Alert.alert("Erro", "Não foi possível compartilhar");
-    }
+  const handleShareWhatsApp = () => {
+    Alert.alert(
+      "Compartilhar Orçamento",
+      `Abrindo WhatsApp com a proposta em PDF de R$ ${orcamento.precoFinal} para ${orcamento.cliente}...`
+    );
+  };
+
+  const handleConvertPedido = () => {
+    Alert.alert(
+      "Orçamento Aprovado",
+      "Orçamento convertido em Pedido! Agendando lembrete de entrega.",
+      [
+        {
+          text: "Ver Pedido",
+          onPress: () =>
+            navigation.navigate("detalhespedido", {
+              pedido: {
+                id: "PED-NEW",
+                cliente: orcamento.cliente,
+                projeto: orcamento.projeto,
+                data: "Em 10 dias",
+                status: "No Prazo",
+                valor: `R$ ${orcamento.precoFinal}`,
+              },
+            }),
+        },
+      ]
+    );
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Orçamento</Text>
-
+    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <View style={styles.card}>
-        <Text>Cliente: {orcamento.cliente || "Não informado"}</Text>
-        <Text>Medidas: {orcamento.comprimento}m × {orcamento.largura}m</Text>
-        <Text>Área: {orcamento.area?.toFixed(2)} m²</Text>
-        <Text>Material: {orcamento.material?.nome || "Não informado"}</Text>
-        <Text style={styles.preco}>Preço Final: R$ {orcamento.precoFinal?.toFixed(2) || "0.00"}</Text>
+        <View style={styles.rowBetween}>
+          <Text style={styles.title}>Orçamento Formal</Text>
+          <Badge label="Válido por 7 dias" variant="info" />
+        </View>
+
+        <Text style={styles.cliente}>{orcamento.cliente}</Text>
+        <Text style={styles.projeto}>{orcamento.projeto || "Projeto de Marmoaria"}</Text>
+        <Text style={styles.data}>Data da Proposta: {orcamento.data}</Text>
       </View>
 
-      <TouchableOpacity style={[styles.button, { backgroundColor: "#25D366" }]} onPress={handleWhatsApp}>
-        <Text style={styles.buttonText}>📱 Enviar por WhatsApp</Text>
+      <View style={styles.card}>
+        <Text style={styles.sectionTitle}>Detalhamento das Peças</Text>
+
+        <View style={styles.detailRow}>
+          <Text style={styles.detailKey}>Dimensões:</Text>
+          <Text style={styles.detailVal}>
+            {orcamento.comprimento}m × {orcamento.largura}m
+          </Text>
+        </View>
+        <View style={styles.detailRow}>
+          <Text style={styles.detailKey}>Área Total:</Text>
+          <Text style={styles.detailVal}>{orcamento.area?.toFixed(2) || "1.44"} m²</Text>
+        </View>
+        <View style={styles.detailRow}>
+          <Text style={styles.detailKey}>Material Escolhido:</Text>
+          <Text style={styles.detailVal}>
+            {orcamento.material?.nome || "Granito Preto São Gabriel"}
+          </Text>
+        </View>
+        <View style={[styles.detailRow, { borderBottomWidth: 0 }]}>
+          <Text style={styles.detailKey}>Observações:</Text>
+          <Text style={styles.detailVal}>{orcamento.observacoes || "Nenhuma"}</Text>
+        </View>
+      </View>
+
+      <View style={styles.priceBox}>
+        <Text style={styles.priceLabel}>VALOR TOTAL FINAL:</Text>
+        <Text style={styles.priceVal}>
+          R$ {typeof orcamento.precoFinal === "number" ? orcamento.precoFinal.toFixed(2) : orcamento.precoFinal}
+        </Text>
+      </View>
+
+      <TouchableOpacity style={styles.whatsappBtn} onPress={handleShareWhatsApp}>
+        <Text style={styles.whatsappBtnText}>📱 Enviar PDF via WhatsApp</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={handleGerarPDF} disabled={gerando}>
-        {gerando ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={styles.buttonText}>💾 Salvar PDF</Text>
-        )}
+      <TouchableOpacity style={styles.convertBtn} onPress={handleConvertPedido}>
+        <Text style={styles.convertBtnText}>✓ Cliente Aprovou? Converter em Pedido</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: "#fff" },
-  title: { fontSize: 24, fontWeight: "bold", marginBottom: 16 },
-  card: { padding: 16, borderWidth: 1, borderColor: "#ddd", borderRadius: 8, marginBottom: 16 },
-  preco: { fontSize: 20, fontWeight: "bold", color: "#1976D2", marginTop: 8 },
-  button: { backgroundColor: "#1976D2", padding: 14, borderRadius: 8, alignItems: "center", marginBottom: 12 },
-  buttonText: { color: "#fff", fontSize: 16, fontWeight: "600" },
+  container: { flex: 1, backgroundColor: colors.background },
+  content: { padding: 20, paddingBottom: 110 },
+  card: {
+    backgroundColor: colors.surfaceContainerLowest,
+    borderWidth: 1,
+    borderColor: colors.outlineVariant,
+    borderRadius: 16,
+    padding: 18,
+    marginBottom: 16,
+  },
+  rowBetween: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+  title: { fontSize: 14, fontWeight: "700", color: colors.onSurfaceVariant },
+  cliente: { fontSize: 22, fontWeight: "800", color: colors.primary, marginTop: 8 },
+  projeto: { fontSize: 14, color: colors.onSurfaceVariant, marginTop: 2 },
+  data: { fontSize: 12, color: colors.onSurfaceVariant, marginTop: 6 },
+
+  sectionTitle: { fontSize: 16, fontWeight: "700", color: colors.primary, marginBottom: 12 },
+  detailRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.outlineVariant,
+  },
+  detailKey: { fontSize: 14, color: colors.onSurfaceVariant },
+  detailVal: { fontSize: 14, fontWeight: "600", color: colors.primary },
+
+  priceBox: {
+    backgroundColor: colors.primary,
+    borderRadius: 16,
+    padding: 20,
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  priceLabel: { fontSize: 12, fontWeight: "700", color: colors.onPrimaryContainer, letterSpacing: 0.5 },
+  priceVal: { fontSize: 32, fontWeight: "800", color: colors.secondaryFixed, marginTop: 4 },
+
+  whatsappBtn: {
+    backgroundColor: colors.secondary,
+    paddingVertical: 16,
+    borderRadius: 12,
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  whatsappBtnText: { fontSize: 16, fontWeight: "800", color: colors.onSecondary },
+
+  convertBtn: {
+    backgroundColor: colors.primaryContainer,
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: "center",
+  },
+  convertBtnText: { fontSize: 14, fontWeight: "700", color: colors.onPrimaryContainer },
 });

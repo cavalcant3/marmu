@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Marmu - Medidas &amp; Peças</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed": "#d8e3fb",
+                    "surface-container-highest": "#d3e4fe",
+                    "tertiary-container": "#3c2300",
+                    "outline-variant": "#c5c6cd",
+                    "on-secondary-container": "#007432",
+                    "on-tertiary": "#ffffff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "primary": "#091426",
+                    "on-tertiary-container": "#c88000",
+                    "background": "#f8f9ff",
+                    "on-tertiary-fixed": "#2a1700",
+                    "tertiary-fixed-dim": "#ffb95f",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed-variant": "#005321",
+                    "on-secondary": "#ffffff",
+                    "surface": "#f8f9ff",
+                    "on-secondary-fixed": "#002109",
+                    "on-primary-fixed": "#111c2d",
+                    "tertiary-fixed": "#ffddb8",
+                    "secondary-fixed-dim": "#4ae176",
+                    "on-primary-fixed-variant": "#3c475a",
+                    "error": "#ba1a1a",
+                    "secondary": "#006e2f",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-surface": "#213145",
+                    "surface-dim": "#cbdbf5",
+                    "tertiary": "#201100",
+                    "secondary-fixed": "#6bff8f",
+                    "surface-tint": "#545f73",
+                    "on-tertiary-fixed-variant": "#653e00",
+                    "on-surface-variant": "#45474c",
+                    "surface-container": "#e5eeff",
+                    "surface-variant": "#d3e4fe",
+                    "on-error": "#ffffff",
+                    "on-background": "#0b1c30",
+                    "on-primary": "#ffffff",
+                    "outline": "#75777d",
+                    "surface-bright": "#f8f9ff",
+                    "on-primary-container": "#8590a6",
+                    "on-error-container": "#93000a",
+                    "surface-container-high": "#dce9ff",
+                    "primary-container": "#1e293b",
+                    "primary-fixed-dim": "#bcc7de",
+                    "inverse-primary": "#bcc7de",
+                    "on-surface": "#0b1c30",
+                    "surface-container-low": "#eff4ff",
+                    "secondary-container": "#6bff8f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "20px",
+                    "stack-lg": "24px",
+                    "stack-md": "16px",
+                    "touch-min": "48px",
+                    "touch-lg": "56px",
+                    "gutter": "16px",
+                    "stack-sm": "8px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-bold": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "display-num": ["Inter"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "30px", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-bold": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "headline-lg": ["28px", {"lineHeight": "34px", "fontWeight": "700"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "display-num": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        /* Custom focused state for industrial utility */
+        input:focus {
+            border-color: #091426 !important;
+            box-shadow: 0 0 0 2px #d8e3fb !important;
+        }
+        .step-active { width: 32px; height: 32px; border: 4px solid #091426; }
+        .step-complete { width: 32px; height: 32px; background-color: #006e2f; color: white; }
+        .step-line { height: 4px; border-radius: 2px; }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="bg-surface border-b border-outline-variant flex justify-between items-center px-margin-mobile h-touch-lg w-full sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<button class="w-touch-min h-touch-min flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary">Marmu</h1>
+</div>
+<div class="w-touch-min h-touch-min rounded-full overflow-hidden border-2 border-primary-fixed">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a stonemason contractor wearing clean work gear, looking confidently at the camera. The background is a brightly lit, high-end stone fabrication workshop with large marble slabs visible. The lighting is crisp and natural, reflecting a modern industrial aesthetic with high clarity and professional mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDticveVhQIzzfpZH2YZeZL7BpiTMbbDfzAw53mk6WgHGrCwUkYWvpAfqwsMwL3EKmQq4ZYyZ_HRNNl8qh4akqc6N6wKCIgqGbFHUqtICQ38rIHlAGYg8-UvdUnSqhYs7aM2zaN3Duqko4ego5ykwwq8ZG807PbD8oBCoMFysBfHFIhP0aiaDO_t-wUW_EYPDZOZ7DX3zUYw1iMdlE9g2PkfNMpm1pSkaa3jCgiJwZ4Se41xU1xGhchw"/>
+</div>
+</header>
+<!-- Main Scrollable Content -->
+<main class="flex-grow px-margin-mobile pt-stack-lg pb-40">
+<!-- Stepper Indicator -->
+<div class="mb-stack-lg">
+<div class="flex items-center justify-between w-full max-w-md mx-auto relative">
+<!-- Step 1: Complete -->
+<div class="z-10 flex flex-col items-center">
+<div class="step-complete rounded-full flex items-center justify-center text-label-bold">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<span class="mt-2 font-label-md text-label-md text-on-surface">Material</span>
+</div>
+<div class="absolute top-[14px] left-0 right-0 h-[4px] bg-outline-variant -z-0">
+<div class="h-full bg-secondary" style="width: 25%"></div>
+</div>
+<!-- Step 2: Active -->
+<div class="z-10 flex flex-col items-center">
+<div class="step-active rounded-full flex items-center justify-center bg-surface font-label-bold text-primary">2</div>
+<span class="mt-2 font-label-bold text-label-bold text-primary">Medidas</span>
+</div>
+<!-- Step 3: Pending -->
+<div class="z-10 flex flex-col items-center">
+<div class="w-8 h-8 rounded-full border-4 border-outline-variant bg-surface-container flex items-center justify-center font-label-bold text-outline">3</div>
+<span class="mt-2 font-label-md text-label-md text-on-surface-variant">Acabamento</span>
+</div>
+<!-- Step 4 & 5 represented as dots for mobile brevity -->
+<div class="z-10 flex flex-col items-center">
+<div class="w-8 h-8 rounded-full border-4 border-outline-variant bg-surface-container flex items-center justify-center font-label-bold text-outline">4</div>
+<span class="mt-2 font-label-md text-label-md text-on-surface-variant">Extras</span>
+</div>
+</div>
+</div>
+<!-- Section Header -->
+<div class="mb-stack-lg">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-1">Medidas da Peça</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Insira as dimensões exatas para o cálculo da área.</p>
+</div>
+<!-- Measurement Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-md mb-stack-lg shadow-sm">
+<div class="flex justify-between items-center mb-stack-md">
+<span class="font-label-bold text-label-bold text-primary px-3 py-1 bg-primary-fixed rounded-full">PEÇA #01</span>
+<button class="text-error flex items-center gap-1 font-label-bold hover:bg-error-container rounded-lg p-2 transition-colors">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Comprimento -->
+<div class="flex flex-col gap-2">
+<label class="font-label-bold text-label-bold text-on-surface">Comprimento (m)</label>
+<input class="h-touch-lg px-4 bg-surface border-2 border-outline-variant rounded-xl font-display-num text-headline-lg text-primary outline-none transition-all" placeholder="0,00" step="0.01" type="number" value="1.75"/>
+</div>
+<!-- Largura -->
+<div class="flex flex-col gap-2">
+<label class="font-label-bold text-label-bold text-on-surface">Largura (m)</label>
+<input class="h-touch-lg px-4 bg-surface border-2 border-outline-variant rounded-xl font-display-num text-headline-lg text-primary outline-none transition-all" placeholder="0,00" step="0.01" type="number" value="1.40"/>
+</div>
+</div>
+<div class="mt-stack-lg pt-stack-md border-t border-outline-variant flex justify-between items-end">
+<div>
+<span class="font-label-md text-label-md text-on-surface-variant block">Área desta peça</span>
+<p class="font-headline-lg text-headline-lg text-primary">2,45 m²</p>
+</div>
+<div class="w-16 h-16 bg-surface-container-high rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl">square_foot</span>
+</div>
+</div>
+</div>
+<!-- Add Button -->
+<button class="w-full h-touch-lg border-2 border-dashed border-primary text-primary font-headline-md rounded-xl flex items-center justify-center gap-2 hover:bg-primary-fixed transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined">add_circle</span>
+            Adicionar Peça
+        </button>
+<!-- Summary Area -->
+<div class="mt-stack-lg p-6 bg-primary text-on-primary rounded-xl flex flex-col items-center text-center">
+<span class="font-label-bold text-label-bold uppercase tracking-widest opacity-80 mb-2">Área Total do Projeto</span>
+<div class="flex items-baseline gap-2">
+<span class="font-display-num text-display-num text-white">2,45</span>
+<span class="font-headline-md text-headline-md text-primary-fixed">m²</span>
+</div>
+</div>
+</main>
+<!-- Sticky Footer -->
+<footer class="fixed bottom-0 left-0 w-full bg-surface border-t border-outline-variant p-margin-mobile pb-8 z-50">
+<div class="flex gap-gutter max-w-3xl mx-auto">
+<button class="flex-1 h-touch-lg bg-surface-container-high text-primary font-headline-md rounded-xl active:scale-95 transition-transform">
+                Anterior
+            </button>
+<button class="flex-[2] h-touch-lg bg-secondary text-on-secondary font-headline-md rounded-xl shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-2">
+                Continuar
+                <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</footer>
+<!-- Interactive calculation script -->
+<script>
+        // Simple mock calculation logic
+        const inputs = document.querySelectorAll('input[type="number"]');
+        const areaDisplay = document.querySelector('.font-display-num.text-white');
+        const itemAreaDisplay = document.querySelector('.font-headline-lg.text-primary');
+
+        inputs.forEach(input => {
+            input.addEventListener('input', () => {
+                const l = parseFloat(inputs[0].value) || 0;
+                const w = parseFloat(inputs[1].value) || 0;
+                const area = (l * w).toFixed(2).replace('.', ',');
+                
+                itemAreaDisplay.textContent = `${area} m²`;
+                areaDisplay.textContent = area;
+            });
+        });
+    </script>
+</body></html>

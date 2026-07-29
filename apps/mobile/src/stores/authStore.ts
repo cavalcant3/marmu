@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { MMKV } from "react-native-mmkv";
+import { MMKV } from "../utils/storage";
 
 const storage = new MMKV({
   id: "marmu-auth",

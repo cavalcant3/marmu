@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, FlatList, TouchableOpacity, StyleSheet } from "react-native";
-import { useMaterialStore } from "../stores/materialStore.js";
+import { useMaterialStore } from "../stores/materialStore";
 
 export default function SelecionarMaterialScreen({ navigation, route }: any) {
   const materials = useMaterialStore((state) => state.materials);

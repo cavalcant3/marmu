@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Status de Pagamento - Marmu</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "on-secondary-fixed": "#002109",
+                "secondary-fixed": "#6bff8f",
+                "on-tertiary-container": "#c88000",
+                "error": "#ba1a1a",
+                "surface-container-highest": "#d3e4fe",
+                "inverse-primary": "#bcc7de",
+                "on-tertiary-fixed": "#2a1700",
+                "on-secondary": "#ffffff",
+                "inverse-surface": "#213145",
+                "surface-container-lowest": "#ffffff",
+                "on-primary-fixed-variant": "#3c475a",
+                "on-secondary-container": "#007432",
+                "tertiary-container": "#3c2300",
+                "secondary-fixed-dim": "#4ae176",
+                "inverse-on-surface": "#eaf1ff",
+                "surface-variant": "#d3e4fe",
+                "on-tertiary-fixed-variant": "#653e00",
+                "surface-container-high": "#dce9ff",
+                "background": "#f8f9ff",
+                "surface": "#f8f9ff",
+                "secondary-container": "#6bff8f",
+                "on-primary-fixed": "#111c2d",
+                "on-error": "#ffffff",
+                "outline": "#75777d",
+                "primary-fixed": "#d8e3fb",
+                "surface-container": "#e5eeff",
+                "on-tertiary": "#ffffff",
+                "tertiary": "#201100",
+                "surface-container-low": "#eff4ff",
+                "outline-variant": "#c5c6cd",
+                "surface-tint": "#545f73",
+                "primary-container": "#1e293b",
+                "tertiary-fixed-dim": "#ffb95f",
+                "surface-dim": "#cbdbf5",
+                "on-surface-variant": "#45474c",
+                "on-error-container": "#93000a",
+                "on-primary-container": "#8590a6",
+                "on-primary": "#ffffff",
+                "error-container": "#ffdad6",
+                "on-surface": "#0b1c30",
+                "tertiary-fixed": "#ffddb8",
+                "surface-bright": "#f8f9ff",
+                "primary-fixed-dim": "#bcc7de",
+                "primary": "#091426",
+                "secondary": "#006e2f",
+                "on-secondary-fixed-variant": "#005321",
+                "on-background": "#0b1c30"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "stack-lg": "24px",
+                "margin-mobile": "20px",
+                "gutter": "16px",
+                "touch-min": "48px",
+                "touch-lg": "56px",
+                "stack-sm": "8px",
+                "stack-md": "16px"
+            },
+            "fontFamily": {
+                "label-md": ["Inter"],
+                "label-bold": ["Inter"],
+                "body-md": ["Inter"],
+                "headline-md": ["Inter"],
+                "headline-lg-mobile": ["Inter"],
+                "body-lg": ["Inter"],
+                "headline-lg": ["Inter"],
+                "display-num": ["Inter"]
+            },
+            "fontSize": {
+                "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                "label-bold": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                "headline-lg-mobile": ["24px", {"lineHeight": "30px", "fontWeight": "700"}],
+                "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}],
+                "headline-lg": ["28px", {"lineHeight": "34px", "fontWeight": "700"}],
+                "display-num": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9ff;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        .custom-shadow {
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- Top App Bar -->
+<header class="flex justify-between items-center px-margin-mobile h-touch-lg w-full fixed top-0 bg-surface z-50 border-b border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a stone masonry expert in a modern workshop environment. The lighting is crisp and natural, highlighting a clean, high-utility aesthetic. The artisan is wearing a subtle, dark-colored apron, conveying a sense of reliability and precision in an industrial stone-cutting studio with marble slabs in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZEsrJcnWGb7N-7j_pIooV3eJN3J1JRkiBZgz_KbEb3MZOHaWBfWUY1hpcSLC7qjlTlzN1rXzEJlSG5k1P7QBNluYtGgccz3dZHLxGn5nL7nfAGy7NXDJYA67k4bJ58uXGs8pKkApPrtZkSspa7gXzjeoiFMM7N_t6nR169dT3gLNpu-3zu-4SxdAGq5t4bfrI9uCGd8nGWuuHezZkayNfQnO22TCq3U6Rr9ggeOhbvyzxIGL84ccRww"/>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary">Marmu</h1>
+</div>
+<button class="w-touch-min h-touch-min flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 rounded-full">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</header>
+<main class="pt-24 px-margin-mobile max-w-2xl mx-auto">
+<!-- Title Section -->
+<div class="mb-stack-lg">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary">Status de Pagamento</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Pedido #8829 - Granito Preto Via Láctea</p>
+</div>
+<!-- Hero Card: Total Value -->
+<section class="bg-surface-container-lowest rounded-xl p-stack-lg border border-outline-variant custom-shadow mb-gutter">
+<span class="font-label-bold text-label-bold text-on-surface-variant block mb-2 uppercase">Valor Total do Pedido</span>
+<div class="font-display-num text-display-num text-primary mb-stack-md">
+                R$ 5.400,00
+            </div>
+<!-- Progress Bar -->
+<div class="space-y-3">
+<div class="w-full h-4 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary transition-all duration-700" style="width: 55.5%"></div>
+</div>
+<div class="flex justify-between font-label-md text-label-md">
+<span class="text-secondary font-bold">55% Pago</span>
+<span class="text-on-surface-variant">45% Pendente</span>
+</div>
+</div>
+</section>
+<!-- Bento Split: Paid vs Pending -->
+<div class="bento-grid mb-gutter">
+<div class="bg-secondary-container rounded-xl p-stack-md border border-on-secondary-container/20">
+<span class="font-label-bold text-label-bold text-on-secondary-container block mb-1">Entrada (Pago)</span>
+<span class="font-headline-md text-headline-md text-on-secondary-fixed">R$ 3.000,00</span>
+</div>
+<div class="bg-tertiary-fixed rounded-xl p-stack-md border border-outline-variant">
+<span class="font-label-bold text-label-bold text-on-tertiary-fixed-variant block mb-1">Saldo (Pendente)</span>
+<span class="font-headline-md text-headline-md text-on-tertiary-fixed">R$ 2.400,00</span>
+</div>
+</div>
+<!-- Action: Register Payment -->
+<button class="w-full h-touch-lg bg-secondary text-on-secondary rounded-xl font-headline-md text-headline-md flex items-center justify-center gap-2 mb-stack-lg active:scale-95 transition-transform shadow-md">
+<span class="material-symbols-outlined">add_circle</span>
+            Registrar Pagamento
+        </button>
+<!-- Payment History -->
+<section>
+<h3 class="font-label-bold text-label-bold text-on-surface-variant uppercase mb-stack-md">Histórico de Pagamentos</h3>
+<div class="space-y-stack-sm">
+<!-- Item 1 -->
+<div class="flex items-center justify-between bg-surface p-stack-md border border-outline-variant rounded-xl">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 flex items-center justify-center rounded-lg bg-surface-container-high text-primary">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<div>
+<p class="font-label-bold text-label-bold text-primary">Transferência PIX</p>
+<p class="font-label-md text-label-md text-on-surface-variant">12 de Out, 2023</p>
+</div>
+</div>
+<span class="font-headline-md text-headline-md text-primary">R$ 1.500,00</span>
+</div>
+<!-- Item 2 -->
+<div class="flex items-center justify-between bg-surface p-stack-md border border-outline-variant rounded-xl">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 flex items-center justify-center rounded-lg bg-surface-container-high text-primary">
+<span class="material-symbols-outlined">credit_card</span>
+</div>
+<div>
+<p class="font-label-bold text-label-bold text-primary">Entrada no Cartão</p>
+<p class="font-label-md text-label-md text-on-surface-variant">10 de Out, 2023</p>
+</div>
+</div>
+<span class="font-headline-md text-headline-md text-primary">R$ 1.500,00</span>
+</div>
+</div>
+</section>
+<!-- Footer Notice -->
+<div class="mt-stack-lg p-stack-md bg-error-container rounded-xl flex items-start gap-3 border border-error/10">
+<span class="material-symbols-outlined text-error mt-0.5" style="font-variation-settings: 'FILL' 1;">error</span>
+<div>
+<p class="font-label-bold text-label-bold text-on-error-container">Aguardando quitação para entrega</p>
+<p class="font-label-md text-label-md text-on-error-container/80">O agendamento da instalação só será liberado após a confirmação do saldo total.</p>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full h-20 flex justify-around items-center px-2 bg-surface border-t border-outline-variant z-50">
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 transition-transform active:scale-90">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 transition-transform active:scale-90">
+<span class="material-symbols-outlined">description</span>
+<span class="font-label-md text-label-md">Quotes</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1 transition-transform active:scale-90">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">payments</span>
+<span class="font-label-md text-label-md">Orders</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 transition-transform active:scale-90">
+<span class="material-symbols-outlined">conveyor_belt</span>
+<span class="font-label-md text-label-md">Prices</span>
+</button>
+</nav>
+<script>
+        // Simple micro-interaction for payment registration
+        document.querySelector('button.bg-secondary').addEventListener('click', function() {
+            this.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Processando...';
+            setTimeout(() => {
+                this.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Registrado!';
+                setTimeout(() => {
+                    this.innerHTML = '<span class="material-symbols-outlined">add_circle</span> Registrar Pagamento';
+                }, 2000);
+            }, 1000);
+        });
+    </script>
+</body></html>

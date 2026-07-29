@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "express-rate-limit": "^8.6.1",
     "wize-dev-kit": "^0.9.0"
   }
 }

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+<html lang="pt-br"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tabela de Preços - Cubas</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        /* Custom scrollbar for industrial feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#3c475a",
+                        "on-surface-variant": "#45474c",
+                        "on-primary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#d3e4fe",
+                        "secondary-fixed-dim": "#4ae176",
+                        "primary-fixed": "#d8e3fb",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "surface": "#f8f9ff",
+                        "on-primary-fixed": "#111c2d",
+                        "inverse-primary": "#bcc7de",
+                        "on-surface": "#0b1c30",
+                        "background": "#f8f9ff",
+                        "on-secondary-fixed": "#002109",
+                        "outline": "#75777d",
+                        "surface-tint": "#545f73",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "primary-fixed-dim": "#bcc7de",
+                        "primary-container": "#1e293b",
+                        "surface-bright": "#f8f9ff",
+                        "surface-dim": "#cbdbf5",
+                        "secondary-container": "#6bff8f",
+                        "surface-container": "#e5eeff",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#dce9ff",
+                        "tertiary-fixed": "#ffddb8",
+                        "on-secondary-fixed-variant": "#005321",
+                        "on-secondary-container": "#007432",
+                        "on-tertiary-fixed": "#2a1700",
+                        "on-primary-container": "#8590a6",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-background": "#0b1c30",
+                        "secondary": "#006e2f",
+                        "on-tertiary-container": "#c88000",
+                        "inverse-surface": "#213145",
+                        "tertiary-container": "#3c2300",
+                        "surface-container-low": "#eff4ff",
+                        "primary": "#091426",
+                        "secondary-fixed": "#6bff8f",
+                        "tertiary": "#201100",
+                        "outline-variant": "#c5c6cd",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "stack-lg": "24px",
+                        "margin-mobile": "20px",
+                        "touch-min": "48px",
+                        "touch-lg": "56px"
+                    },
+                    "fontFamily": {
+                        "label-bold": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "display-num": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-bold": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "30px", "fontWeight": "700"}],
+                        "display-num": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg": ["28px", {"lineHeight": "34px", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-on-background text-primary dark:text-primary-fixed flex items-center justify-between px-margin-mobile h-touch-lg w-full sticky top-0 z-50 border-b border-outline-variant dark:border-outline">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined hover:bg-surface-container transition-colors p-2 rounded-full">menu</button>
+<h1 class="font-headline-md text-headline-md">Tabela de Preços - Cubas</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="material-symbols-outlined hover:bg-surface-container transition-colors p-2 rounded-full">account_circle</button>
+</div>
+</header>
+<main class="flex-1 p-margin-mobile md:px-12 md:py-stack-lg max-w-7xl mx-auto w-full mb-24">
+<!-- Dashboard Summary / Stats (High-end Pattern) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-stack-md mb-stack-lg">
+<div class="bg-surface-container-low border border-outline-variant p-stack-md rounded-xl shadow-sm">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Total de Modelos</p>
+<p class="font-display-num text-display-num mt-2">24</p>
+</div>
+<div class="bg-surface-container-low border border-outline-variant p-stack-md rounded-xl shadow-sm">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Preço Médio</p>
+<div class="flex items-baseline gap-1 mt-2">
+<span class="font-label-bold text-label-bold">R$</span>
+<span class="font-display-num text-display-num">485,00</span>
+</div>
+</div>
+<div class="bg-surface-container-low border border-outline-variant p-stack-md rounded-xl shadow-sm">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Atualizado em</p>
+<p class="font-headline-md text-headline-md mt-4">12 de Outubro</p>
+</div>
+</div>
+<!-- Section Tabs / Filter (Asymmetric UI Component) -->
+<div class="flex items-center gap-2 mb-stack-md overflow-x-auto pb-2 scrollbar-hide">
+<button class="bg-primary text-on-primary font-label-bold text-label-bold px-6 h-10 rounded-full flex-shrink-0 transition-all active:scale-95">Todos</button>
+<button class="bg-surface-container-high text-on-surface-variant font-label-bold text-label-bold px-6 h-10 rounded-full flex-shrink-0 hover:bg-surface-container-highest transition-all active:scale-95 border border-outline-variant">Inox</button>
+<button class="bg-surface-container-high text-on-surface-variant font-label-bold text-label-bold px-6 h-10 rounded-full flex-shrink-0 hover:bg-surface-container-highest transition-all active:scale-95 border border-outline-variant">Sintéticas</button>
+<button class="bg-surface-container-high text-on-surface-variant font-label-bold text-label-bold px-6 h-10 rounded-full flex-shrink-0 hover:bg-surface-container-highest transition-all active:scale-95 border border-outline-variant">Cerâmica</button>
+</div>
+<!-- Catalog Grid (Bento Style) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-stack-md">
+<!-- Item Card 1 -->
+<div class="bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm group hover:shadow-md transition-all">
+<div class="h-48 w-full bg-surface-container-low relative overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A premium high-resolution studio photograph of a modern double-bowl stainless steel kitchen sink. The lighting is crisp and cool, highlighting the brushed metallic texture of the sink surface. The background is a clean, minimalist workshop environment with slate gray tones. The overall aesthetic is professional, industrial, and high-quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUTy3GkWdOBwnmL1MbZBOIwNNjQbE7eAdb0BINR3IcBv9npvcS81NVIDjs8SBrgJOLMnbwoXL6ZPK7f61GEyMeyRi6QlG8bJiy7i-l3eCPhtyspqOxYyqgimg8-wKzyttGCPyEev0Oplj3xsoqtv5CUOFjPHS5bAq1HmQ6nntKdbCFy7hG1fcRK1xZGhy8QG5b9vkbWytMkTmRlBSraZjGGBCTgbXti9jMDFTU0TyAVxMiks1b16lPbg"/>
+<div class="absolute top-3 left-3 bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full font-label-bold text-label-bold uppercase">Inox</div>
+</div>
+<div class="p-stack-md flex flex-col h-full">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Cuba Dupla Inox 304</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">60x40x20 cm • Escovado</p>
+</div>
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors h-12 w-12 flex items-center justify-center">edit</button>
+</div>
+<div class="mt-auto pt-stack-md flex justify-between items-center border-t border-outline-variant">
+<span class="font-label-bold text-label-bold text-outline uppercase tracking-widest">Preço Sugerido</span>
+<span class="font-headline-md text-headline-md text-secondary">R$ 890,00</span>
+</div>
+</div>
+</div>
+<!-- Item Card 2 -->
+<div class="bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm group hover:shadow-md transition-all">
+<div class="h-48 w-full bg-surface-container-low relative overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A detailed commercial product photograph of a black synthetic granite kitchen sink with a deep single bowl. The surface features a subtle matte texture that absorbs the soft directional light. It is set against a contemporary dark stone countertop background. The aesthetic is sophisticated and sturdy, reflecting industrial durability and modern design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9DZ_z3gAHfovCEOH7Z9MshW-0tiqSrMqEvHneyRVSwz2ClM6-SAQtafu38qVI5BDXhcHbNig26qaJMqqYiQu5iSjCRoJBfNn7HNMpMP-aptvkHOkG0zaubkns53tysuaQoLJHerfl5TPhv1LMT9rMIawps8Rqi2ETvrSLtMur8aWJEq85otixbFaWPgFMzaT5BCP4rOi8qFVJBOSfjoPXh8bGntwjQRb2edGYKXFts2Q5mWK0NRndrg"/>
+<div class="absolute top-3 left-3 bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full font-label-bold text-label-bold uppercase">Sintética</div>
+</div>
+<div class="p-stack-md flex flex-col h-full">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Cuba Granito Deep Black</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">50x40x22 cm • Quartzo</p>
+</div>
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors h-12 w-12 flex items-center justify-center">edit</button>
+</div>
+<div class="mt-auto pt-stack-md flex justify-between items-center border-t border-outline-variant">
+<span class="font-label-bold text-label-bold text-outline uppercase tracking-widest">Preço Sugerido</span>
+<span class="font-headline-md text-headline-md text-secondary">R$ 1.250,00</span>
+</div>
+</div>
+</div>
+<!-- Item Card 3 -->
+<div class="bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm group hover:shadow-md transition-all">
+<div class="h-48 w-full bg-surface-container-low relative overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A clean, industrial photograph of a standard single-bowl stainless steel utility sink. The metal reflects a bright, neutral light source typical of an active stonemason workshop. The background is slightly blurred showing granite slabs in the distance. The focus is on the sturdy construction and polished rim of the sink. Modern light-mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOfATNJ-Q0z9lTNVBP8Hfq6qk2zl3j58Q-3qkZJZ7eIUiCKarjiwQ2I1Pc8a5jOihi_MKIsym2T8nFGtTKcYEsR6iP9BqXVae38rpCv3ziUbKFRoyQS5LHmN-QjdQeYNGul6JqpbBiZZEgKUp3gktSpug_GO-KY99c-RGm0OHFUYxqmasWOttJ-bbhmi9h-_J1TXDypkQ7CWk5gRcuTUZG4GQpmWX9Ox9dqZFGuYr-jkb5Jo5-kIzLaA"/>
+<div class="absolute top-3 left-3 bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full font-label-bold text-label-bold uppercase">Inox</div>
+</div>
+<div class="p-stack-md flex flex-col h-full">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Cuba Gourmet Standard</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">40x34x17 cm • Polido</p>
+</div>
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors h-12 w-12 flex items-center justify-center">edit</button>
+</div>
+<div class="mt-auto pt-stack-md flex justify-between items-center border-t border-outline-variant">
+<span class="font-label-bold text-label-bold text-outline uppercase tracking-widest">Preço Sugerido</span>
+<span class="font-headline-md text-headline-md text-secondary">R$ 420,00</span>
+</div>
+</div>
+</div>
+<!-- Item Card 4 (Small Format / Pricing Focus) -->
+<div class="bg-surface-container-high border border-outline-variant rounded-xl p-stack-md flex items-center gap-4 group hover:bg-surface-container-highest transition-all cursor-pointer">
+<div class="w-20 h-20 bg-white rounded-lg flex-shrink-0 flex items-center justify-center border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A focused close-up shot of a white ceramic bathroom undermount sink. The ceramic glazes have a brilliant reflective shine under bright studio lights. The lines are smooth and elegant, presenting a clean and hygienic look. High-key lighting supports the light-mode industrial design system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuClEn2Ros6C-BqTVPKidT_o2XdHeQ4vNr4FuyEzVS6WGndZB9joVW-M0A_9yChg0F_TFu3pnFafbLWJYO4k-f7PrV42SSW8hCxhR4LoI5aHoTPYD8wrV4cjJa_FiU_KRuCYcnDOFGgmCWz2oXofvpIq4uitRvKsSdbGOHUbXC9_8s3_1l0kn1Puwx9oS5wzl65f1Q4ADKT3vrRSVDEz5PzfOz4W9x8-2qfTve0lscgOD7Zp7KdqimVHDw"/>
+</div>
+<div class="flex-1">
+<h3 class="font-label-bold text-label-bold text-on-surface">Cuba Cerâmica Oval</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Embutir • Branca</p>
+</div>
+<div class="text-right">
+<p class="font-headline-md text-headline-md text-secondary">R$ 315,00</p>
+<span class="material-symbols-outlined text-outline group-hover:text-primary">chevron_right</span>
+</div>
+</div>
+<!-- Item Card 5 -->
+<div class="bg-surface-container-high border border-outline-variant rounded-xl p-stack-md flex items-center gap-4 group hover:bg-surface-container-highest transition-all cursor-pointer">
+<div class="w-20 h-20 bg-white rounded-lg flex-shrink-0 flex items-center justify-center border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Macro photography of the textured surface of a gray concrete synthetic sink. The details of the composite material are visible, illuminated by a warm, lateral light source that creates soft shadows and reveals depth. The product feels heavy and durable, designed for industrial use." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgaur50a-01JmmqDi5FzvIdU_v_Nt6oTbeDxWEk2-PeaE4ry91sd5zy0HtuAK584jcyw2lKj_yJLyOXlMs-ZnLCHYchH9IOqlCzxYENRupE_4QGNduUAVIkDaALOebTuqgImcVsErxl-a2SLwF31PR_fnbqkqMCoEgEGToqSPJllB-EW17ntoPy45vCbTtK2d3V6SbWC82GLYE0kkQIOh__Ro_d0HP-OBd29gXICXR9W65VqWUnRWDpQ"/>
+</div>
+<div class="flex-1">
+<h3 class="font-label-bold text-label-bold text-on-surface">Cuba Morgana Compact</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Sintética • Cinza</p>
+</div>
+<div class="text-right">
+<p class="font-headline-md text-headline-md text-secondary">R$ 980,00</p>
+<span class="material-symbols-outlined text-outline group-hover:text-primary">chevron_right</span>
+</div>
+</div>
+<!-- Item Card 6 -->
+<div class="bg-surface-container-high border border-outline-variant rounded-xl p-stack-md flex items-center gap-4 group hover:bg-surface-container-highest transition-all cursor-pointer">
+<div class="w-20 h-20 bg-white rounded-lg flex-shrink-0 flex items-center justify-center border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional product shot of a small stainless steel round bar sink. The circular metal form reflects its surroundings in a series of bright highlights. The lighting is direct and high-contrast, emphasizing the precision manufacturing. Set against a clean light background to fit the modern workshop UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC71K_XBVGbkZDJNeY_NvYK42vqlWWKQI5H_gd_bDbh9W1diW0v04dIX4UFfaQOwAVQ8xfES3Pu_S-E5aZRNlfGDujdhITBvqlwxdAIgnyKTSBDXQj58L3rbfQ5fQWT-evtdfUJ37UVDCt836TviRrFaYnURAe-KxXQIg_uhzHyuDhgp1OeULeplJepeJUydtylOmNz571dzecUNZj3mDzd5p_Ytsd38oHtdwv9e96beZ0rGYAsVlHR0g"/>
+</div>
+<div class="flex-1">
+<h3 class="font-label-bold text-label-bold text-on-surface">Cuba Redonda Inox</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Bar • Ø30cm</p>
+</div>
+<div class="text-right">
+<p class="font-headline-md text-headline-md text-secondary">R$ 275,00</p>
+<span class="material-symbols-outlined text-outline group-hover:text-primary">chevron_right</span>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB -->
+<button class="fixed bottom-24 right-6 md:right-12 bg-primary text-on-primary w-touch-lg h-touch-lg rounded-xl shadow-lg flex items-center justify-center z-40 transition-all hover:scale-105 active:scale-95 group">
+<span class="material-symbols-outlined text-[32px]">add</span>
+<span class="max-w-0 overflow-hidden group-hover:max-w-xs group-hover:ml-2 transition-all duration-300 font-label-bold text-label-bold whitespace-nowrap">Nova Cuba</span>
+</button>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center h-touch-lg px-2 pb-safe bg-surface dark:bg-on-background border-t border-outline-variant dark:border-outline">
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 hover:bg-surface-container-high transition-all active:scale-90">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-md text-label-md">Inventory</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-secondary-fixed dark:bg-on-secondary-fixed-variant text-on-secondary-fixed dark:text-secondary-fixed rounded-xl px-4 py-1 active:scale-90 duration-150">
+<span class="material-symbols-outlined active-icon">payments</span>
+<span class="font-label-md text-label-md">Pricing</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 hover:bg-surface-container-high transition-all active:scale-90">
+<span class="material-symbols-outlined">fact_check</span>
+<span class="font-label-md text-label-md">Orders</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 hover:bg-surface-container-high transition-all active:scale-90">
+<span class="material-symbols-outlined">engineering</span>
+<span class="font-label-md text-label-md">Labor</span>
+</button>
+</nav>
+<!-- Interaction Script -->
+<script>
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Micro-interaction visual feedback
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 100);
+            });
+        });
+    </script>
+</body></html>

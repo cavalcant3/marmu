@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { Material } from "../services/materialService.js";
+import type { Material } from "../services/materialService";
 
 interface MaterialState {
   materials: Material[];

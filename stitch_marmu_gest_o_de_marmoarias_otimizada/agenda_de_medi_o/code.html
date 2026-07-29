@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html lang="pt-br"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Agenda de Medição - Marmu</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary-fixed": "#002109",
+                      "secondary-fixed": "#6bff8f",
+                      "on-tertiary-container": "#c88000",
+                      "error": "#ba1a1a",
+                      "surface-container-highest": "#d3e4fe",
+                      "inverse-primary": "#bcc7de",
+                      "on-tertiary-fixed": "#2a1700",
+                      "on-secondary": "#ffffff",
+                      "inverse-surface": "#213145",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-fixed-variant": "#3c475a",
+                      "on-secondary-container": "#007432",
+                      "tertiary-container": "#3c2300",
+                      "secondary-fixed-dim": "#4ae176",
+                      "inverse-on-surface": "#eaf1ff",
+                      "surface-variant": "#d3e4fe",
+                      "on-tertiary-fixed-variant": "#653e00",
+                      "surface-container-high": "#dce9ff",
+                      "background": "#f8f9ff",
+                      "surface": "#f8f9ff",
+                      "secondary-container": "#6bff8f",
+                      "on-primary-fixed": "#111c2d",
+                      "on-error": "#ffffff",
+                      "outline": "#75777d",
+                      "primary-fixed": "#d8e3fb",
+                      "surface-container": "#e5eeff",
+                      "on-tertiary": "#ffffff",
+                      "tertiary": "#201100",
+                      "surface-container-low": "#eff4ff",
+                      "outline-variant": "#c5c6cd",
+                      "surface-tint": "#545f73",
+                      "primary-container": "#1e293b",
+                      "tertiary-fixed-dim": "#ffb95f",
+                      "surface-dim": "#cbdbf5",
+                      "on-surface-variant": "#45474c",
+                      "on-error-container": "#93000a",
+                      "on-primary-container": "#8590a6",
+                      "on-primary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "on-surface": "#0b1c30",
+                      "tertiary-fixed": "#ffddb8",
+                      "surface-bright": "#f8f9ff",
+                      "primary-fixed-dim": "#bcc7de",
+                      "primary": "#091426",
+                      "secondary": "#006e2f",
+                      "on-secondary-fixed-variant": "#005321",
+                      "on-background": "#0b1c30"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-lg": "24px",
+                      "margin-mobile": "20px",
+                      "gutter": "16px",
+                      "touch-min": "48px",
+                      "touch-lg": "56px",
+                      "stack-sm": "8px",
+                      "stack-md": "16px"
+              },
+              "fontFamily": {
+                      "label-md": ["Inter"],
+                      "label-bold": ["Inter"],
+                      "body-md": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "display-num": ["Inter"]
+              },
+              "fontSize": {
+                      "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                      "label-bold": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "30px", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}],
+                      "headline-lg": ["28px", {"lineHeight": "34px", "fontWeight": "700"}],
+                      "display-num": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-surface border-b border-outline-variant flex justify-between items-center px-margin-mobile h-touch-lg w-full sticky top-0 z-50">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-primary-fixed flex items-center justify-center">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a stonemason technician in a clean workshop environment, soft natural lighting, high resolution, industrial but clean aesthetic, wearing a subtle branded uniform, minimalist background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVwpmCDXE8iEBM8jm-qtNHAuOhniDTXPuz4xvapCSALGLE0W4knw5DOWWlcmz83RXxPA8phMYQrp4qx_suHTr7a9X_e4ibJBvNU-Q_1yRJpC2Yjndrcz5XkpqiKUtqWckawmRGitRcFnhzNsVJfUZCSr61xFUHGDNYAKdSrW9hnS5CFcojTK3PHc1XwNUIHNocOzHPEuOKXTWhBRazwN2KRzFXRx-KfLwe-SY1fXvhNmBmmD9XuKmOeA"/>
+</div>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-primary tracking-tight">Marmu</span>
+</div>
+<button class="w-12 h-12 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors duration-200">
+<span class="material-symbols-outlined text-primary" data-icon="settings">settings</span>
+</button>
+</header>
+<main class="max-w-3xl mx-auto px-margin-mobile pt-stack-lg">
+<h1 class="font-headline-lg text-headline-lg text-primary mb-stack-lg">Agenda de Medição</h1>
+<!-- Horizontal Date Picker -->
+<section class="mb-stack-lg">
+<div class="flex overflow-x-auto hide-scrollbar gap-stack-sm pb-2">
+<!-- Days of the week -->
+<button class="flex flex-col items-center justify-center min-w-[64px] h-[80px] rounded-xl border border-outline-variant bg-surface text-on-surface-variant transition-all hover:border-primary">
+<span class="font-label-md text-label-md">SEG</span>
+<span class="font-headline-md text-headline-md">14</span>
+</button>
+<button class="flex flex-col items-center justify-center min-w-[64px] h-[80px] rounded-xl border border-outline-variant bg-surface text-on-surface-variant transition-all hover:border-primary">
+<span class="font-label-md text-label-md">TER</span>
+<span class="font-headline-md text-headline-md">15</span>
+</button>
+<button class="flex flex-col items-center justify-center min-w-[64px] h-[80px] rounded-xl bg-primary text-on-primary ring-2 ring-primary-fixed shadow-sm">
+<span class="font-label-md text-label-md">QUA</span>
+<span class="font-headline-md text-headline-md">16</span>
+</button>
+<button class="flex flex-col items-center justify-center min-w-[64px] h-[80px] rounded-xl border border-outline-variant bg-surface text-on-surface-variant transition-all hover:border-primary">
+<span class="font-label-md text-label-md">QUI</span>
+<span class="font-headline-md text-headline-md">17</span>
+</button>
+<button class="flex flex-col items-center justify-center min-w-[64px] h-[80px] rounded-xl border border-outline-variant bg-surface text-on-surface-variant transition-all hover:border-primary">
+<span class="font-label-md text-label-md">SEX</span>
+<span class="font-headline-md text-headline-md">18</span>
+</button>
+<button class="flex flex-col items-center justify-center min-w-[64px] h-[80px] rounded-xl border border-outline-variant bg-surface text-on-surface-variant transition-all hover:border-primary">
+<span class="font-label-md text-label-md">SAB</span>
+<span class="font-headline-md text-headline-md">19</span>
+</button>
+</div>
+</section>
+<!-- Appointment List -->
+<div class="space-y-stack-md">
+<!-- Item: Concluída -->
+<article class="bg-surface border border-outline-variant rounded-xl overflow-hidden">
+<div class="p-gutter flex items-start gap-4">
+<div class="flex flex-col items-center justify-start py-1">
+<span class="font-headline-md text-headline-md text-primary">09:00</span>
+<div class="w-0.5 h-full bg-outline-variant my-2 rounded-full min-h-[40px]"></div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-label-bold text-label-bold text-primary">RICARDO ALMEIDA</h3>
+<p class="font-body-md text-on-surface-variant">Bancada Cozinha Gourmet</p>
+</div>
+<span class="bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full font-label-bold text-[12px] uppercase">Concluída</span>
+</div>
+<a class="flex items-center gap-2 text-primary hover:underline font-body-md mb-stack-md" href="https://maps.google.com" target="_blank">
+<span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span>
+                            Av. das Américas, 4200 - Barra da Tijuca
+                        </a>
+</div>
+</div>
+</article>
+<!-- Item: Confirmada -->
+<article class="bg-surface-container-high border-2 border-primary rounded-xl overflow-hidden relative shadow-lg">
+<div class="p-gutter flex items-start gap-4">
+<div class="flex flex-col items-center justify-start py-1">
+<span class="font-headline-md text-headline-md text-primary">11:30</span>
+<div class="w-1 h-full bg-primary my-2 rounded-full min-h-[60px]"></div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-label-bold text-label-bold text-primary">MARIANA COSTA</h3>
+<p class="font-body-md text-on-surface-variant">Revestimento Banheiro Suíte</p>
+</div>
+<span class="bg-surface-container-highest text-primary px-3 py-1 rounded-full font-label-bold text-[12px] uppercase">Confirmada</span>
+</div>
+<a class="flex items-center gap-2 text-primary font-body-md mb-stack-md" href="https://maps.google.com" target="_blank">
+<span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span>
+                            Rua Henrique Dumont, 120 - Ipanema
+                        </a>
+<button class="w-full h-touch-lg bg-primary text-on-primary rounded-xl font-label-bold flex items-center justify-center gap-2 transition-transform active:scale-95 shadow-md" onclick="window.location.href='#'">
+<span class="material-symbols-outlined" data-icon="straighten">straighten</span>
+                            Iniciar Medição
+                        </button>
+</div>
+</div>
+</article>
+<!-- Item: Pendente -->
+<article class="bg-surface border border-outline-variant rounded-xl overflow-hidden">
+<div class="p-gutter flex items-start gap-4">
+<div class="flex flex-col items-center justify-start py-1">
+<span class="font-headline-md text-headline-md text-on-surface-variant">14:45</span>
+<div class="w-0.5 h-full bg-outline-variant my-2 rounded-full min-h-[40px]"></div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-label-bold text-label-bold text-primary">JORGE SILVA</h3>
+<p class="font-body-md text-on-surface-variant">Área de Serviço - Tanque</p>
+</div>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full font-label-bold text-[12px] uppercase">Pendente</span>
+</div>
+<a class="flex items-center gap-2 text-primary hover:underline font-body-md" href="https://maps.google.com" target="_blank">
+<span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span>
+                            Estrada do Joá, 1500 - São Conrado
+                        </a>
+</div>
+</div>
+</article>
+<!-- Item: Pendente -->
+<article class="bg-surface border border-outline-variant rounded-xl overflow-hidden">
+<div class="p-gutter flex items-start gap-4">
+<div class="flex flex-col items-center justify-start py-1">
+<span class="font-headline-md text-headline-md text-on-surface-variant">16:30</span>
+<div class="w-0.5 h-full bg-outline-variant my-2 rounded-full min-h-[40px]"></div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-label-bold text-label-bold text-primary">CONSTRUTORA ALPHA</h3>
+<p class="font-body-md text-on-surface-variant">Soleiras Bloco B (12 un)</p>
+</div>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full font-label-bold text-[12px] uppercase">Pendente</span>
+</div>
+<a class="flex items-center gap-2 text-primary hover:underline font-body-md" href="https://maps.google.com" target="_blank">
+<span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span>
+                            Rua Voluntários da Pátria, 80 - Botafogo
+                        </a>
+</div>
+</div>
+</article>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full h-20 flex justify-around items-center px-2 bg-surface border-t border-outline-variant z-50">
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1 transition-transform scale-95 active:scale-90">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 transition-transform scale-95 active:scale-90 hover:bg-surface-container-high rounded-xl">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-label-md text-label-md">Quotes</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 transition-transform scale-95 active:scale-90 hover:bg-surface-container-high rounded-xl">
+<span class="material-symbols-outlined" data-icon="conveyor_belt">conveyor_belt</span>
+<span class="font-label-md text-label-md">Orders</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 transition-transform scale-95 active:scale-90 hover:bg-surface-container-high rounded-xl">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-label-md text-label-md">Prices</span>
+</button>
+</nav>
+<!-- Floating Action Button (FAB) - For Global Add Action -->
+<button class="fixed bottom-24 right-margin-mobile w-14 h-14 bg-secondary text-on-secondary rounded-2xl flex items-center justify-center shadow-xl transition-transform active:scale-90 z-40">
+<span class="material-symbols-outlined text-[32px]" data-icon="add">add</span>
+</button>
+<script>
+        // Micro-interaction for date selection
+        const dateButtons = document.querySelectorAll('section button');
+        dateButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                dateButtons.forEach(b => {
+                    b.className = "flex flex-col items-center justify-center min-w-[64px] h-[80px] rounded-xl border border-outline-variant bg-surface text-on-surface-variant transition-all hover:border-primary";
+                });
+                btn.className = "flex flex-col items-center justify-center min-w-[64px] h-[80px] rounded-xl bg-primary text-on-primary ring-2 ring-primary-fixed shadow-sm";
+            });
+        });
+    </script>
+</body></html>

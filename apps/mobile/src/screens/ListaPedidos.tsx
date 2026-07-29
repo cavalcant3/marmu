@@ -1,34 +1,160 @@
-import React from "react";
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from "react-native";
-
-const mockPedidos = [
-  { id: "1", cliente: "João Silva", entrega: "15/08", status: "PENDENTE", cor: "🔴" },
-  { id: "2", cliente: "Maria Souza", entrega: "23/08", status: "PENDENTE", cor: "🟡" },
-];
+import React, { useState } from "react";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput } from "react-native";
+import { colors } from "../theme/colors";
+import Badge from "../components/ui/Badge";
 
 export default function ListaPedidosScreen({ navigation }: any) {
+  const [filter, setFilter] = useState("todos");
+  const [search, setSearch] = useState("");
+
+  const pedidos = [
+    {
+      id: "PED-102",
+      cliente: "Ed. Miramar - Apto 402",
+      projeto: "Bancada Cozinha com Cuba",
+      data: "12/10/2026",
+      status: "No Prazo",
+      etapa: "Acabamento de Bordas",
+      material: "Granito Preto São Gabriel",
+      valor: "R$ 1.850,00",
+    },
+    {
+      id: "PED-101",
+      cliente: "Casa Cond. Lagos",
+      projeto: "Soleiras e Peitoris",
+      data: "15/10/2026",
+      status: "Atenção",
+      etapa: "Processando na Serra",
+      material: "Mármore Travertino",
+      valor: "R$ 3.200,00",
+    },
+    {
+      id: "PED-100",
+      cliente: "Sede Administrativa X",
+      projeto: "Piso Hall de Entrada",
+      data: "16/10/2026",
+      status: "Confirmada",
+      etapa: "Pronto para Transporte",
+      material: "Porcelanato Técnico",
+      valor: "R$ 8.900,00",
+    },
+  ];
+
+  const filteredPedidos = pedidos.filter((p) =>
+    p.cliente.toLowerCase().includes(search.toLowerCase()) ||
+    p.projeto.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Pedidos</Text>
-      <FlatList
-        data={mockPedidos}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.item}
-            onPress={() => navigation.navigate("DetalhesPedido", { pedido: item })}
-          >
-            <Text>{item.cor} {item.cliente}</Text>
-            <Text>Entrega: {item.entrega}</Text>
-          </TouchableOpacity>
-        )}
+    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      <Text style={styles.title}>Pedidos em Aberto</Text>
+
+      <TextInput
+        style={styles.searchBar}
+        placeholder="🔍 Buscar por cliente ou projeto..."
+        placeholderTextColor={colors.onSurfaceVariant}
+        value={search}
+        onChangeText={setSearch}
       />
-    </View>
+
+      <View style={styles.filterRow}>
+        {["todos", "producao", "entregues"].map((f) => (
+          <TouchableOpacity
+            key={f}
+            style={[styles.filterChip, filter === f && styles.filterChipActive]}
+            onPress={() => setFilter(f)}
+          >
+            <Text style={[styles.chipText, filter === f && styles.chipTextActive]}>
+              {f === "todos" ? "Todos os Pedidos" : f === "producao" ? "Em Produção" : "Entregues"}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      <View style={styles.list}>
+        {filteredPedidos.map((pedido) => (
+          <TouchableOpacity
+            key={pedido.id}
+            style={styles.pedidoCard}
+            onPress={() => navigation.navigate("detalhespedido", { pedido })}
+          >
+            <View style={styles.cardTop}>
+              <Text style={styles.pedidoId}>{pedido.id}</Text>
+              <Badge
+                label={pedido.status}
+                variant={pedido.status === "Atenção" ? "warning" : "success"}
+              />
+            </View>
+
+            <Text style={styles.cliente}>{pedido.cliente}</Text>
+            <Text style={styles.projeto}>{pedido.projeto}</Text>
+
+            <View style={styles.progressBox}>
+              <Text style={styles.etapaLabel}>Etapa Atual:</Text>
+              <Text style={styles.etapaVal}>{pedido.etapa}</Text>
+            </View>
+
+            <View style={styles.cardFooter}>
+              <Text style={styles.dateText}>Entrega: {pedido.data}</Text>
+              <Text style={styles.valorText}>{pedido.valor}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: "#fff" },
-  title: { fontSize: 24, fontWeight: "bold", marginBottom: 16 },
-  item: { padding: 14, borderBottomWidth: 1, borderBottomColor: "#eee" },
+  container: { flex: 1, backgroundColor: colors.background },
+  content: { padding: 20, paddingBottom: 110 },
+  title: { fontSize: 24, fontWeight: "800", color: colors.primary, marginBottom: 16 },
+
+  searchBar: {
+    height: 48,
+    backgroundColor: colors.surfaceContainerLowest,
+    borderWidth: 1,
+    borderColor: colors.outlineVariant,
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    fontSize: 14,
+    color: colors.onSurface,
+    marginBottom: 16,
+  },
+  filterRow: { flexDirection: "row", gap: 8, marginBottom: 16 },
+  filterChip: {
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 20,
+    backgroundColor: colors.surfaceContainerHigh,
+  },
+  filterChipActive: { backgroundColor: colors.primary },
+  chipText: { fontSize: 13, fontWeight: "600", color: colors.onSurfaceVariant },
+  chipTextActive: { color: colors.onPrimary },
+
+  list: { gap: 12 },
+  pedidoCard: {
+    backgroundColor: colors.surfaceContainerLowest,
+    borderWidth: 1,
+    borderColor: colors.outlineVariant,
+    borderRadius: 14,
+    padding: 16,
+  },
+  cardTop: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+  pedidoId: { fontSize: 12, fontWeight: "700", color: colors.onSurfaceVariant },
+  cliente: { fontSize: 18, fontWeight: "800", color: colors.primary, marginTop: 4 },
+  projeto: { fontSize: 14, color: colors.onSurfaceVariant, marginTop: 2 },
+
+  progressBox: {
+    backgroundColor: colors.surfaceContainerLow,
+    padding: 10,
+    borderRadius: 8,
+    marginVertical: 10,
+  },
+  etapaLabel: { fontSize: 11, color: colors.onSurfaceVariant },
+  etapaVal: { fontSize: 13, fontWeight: "700", color: colors.primary, marginTop: 2 },
+
+  cardFooter: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+  dateText: { fontSize: 12, color: colors.onSurfaceVariant },
+  valorText: { fontSize: 15, fontWeight: "800", color: colors.secondary },
 });

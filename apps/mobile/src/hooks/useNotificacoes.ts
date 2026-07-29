@@ -1,5 +1,18 @@
 import { useEffect, useCallback } from "react";
-import notifee, { AndroidImportance, TriggerType } from "@notifee/react-native";
+import { Platform } from "react-native";
+
+const notifee = Platform.OS === "web" ? {
+  requestPermission: async () => ({ status: 1 }),
+  createChannel: async () => {},
+  createTriggerNotification: async () => {},
+  cancelNotification: async () => {},
+} : require("@notifee/react-native").default || require("@notifee/react-native");
+
+const AndroidImportanceMock = { HIGH: 4 };
+const TriggerTypeMock = { TIMESTAMP: 1 };
+
+const AndroidImportance = Platform.OS === "web" ? AndroidImportanceMock : require("@notifee/react-native").AndroidImportance;
+const TriggerType = Platform.OS === "web" ? TriggerTypeMock : require("@notifee/react-native").TriggerType;
 
 export function useNotificacoes() {
   useEffect(() => {

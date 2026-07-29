@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-br"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tabela de Preços - Materiais</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed-variant": "#3c475a",
+                    "on-surface-variant": "#45474c",
+                    "on-primary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "surface-variant": "#d3e4fe",
+                    "secondary-fixed-dim": "#4ae176",
+                    "primary-fixed": "#d8e3fb",
+                    "on-tertiary-fixed-variant": "#653e00",
+                    "surface": "#f8f9ff",
+                    "on-primary-fixed": "#111c2d",
+                    "inverse-primary": "#bcc7de",
+                    "on-surface": "#0b1c30",
+                    "background": "#f8f9ff",
+                    "on-secondary-fixed": "#002109",
+                    "outline": "#75777d",
+                    "surface-tint": "#545f73",
+                    "on-secondary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "tertiary-fixed-dim": "#ffb95f",
+                    "on-error": "#ffffff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "primary-fixed-dim": "#bcc7de",
+                    "primary-container": "#1e293b",
+                    "surface-bright": "#f8f9ff",
+                    "surface-dim": "#cbdbf5",
+                    "secondary-container": "#6bff8f",
+                    "surface-container": "#e5eeff",
+                    "error": "#ba1a1a",
+                    "surface-container-high": "#dce9ff",
+                    "tertiary-fixed": "#ffddb8",
+                    "on-secondary-fixed-variant": "#005321",
+                    "on-secondary-container": "#007432",
+                    "on-tertiary-fixed": "#2a1700",
+                    "on-primary-container": "#8590a6",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-background": "#0b1c30",
+                    "secondary": "#006e2f",
+                    "on-tertiary-container": "#c88000",
+                    "inverse-surface": "#213145",
+                    "tertiary-container": "#3c2300",
+                    "surface-container-low": "#eff4ff",
+                    "primary": "#091426",
+                    "secondary-fixed": "#6bff8f",
+                    "tertiary": "#201100",
+                    "outline-variant": "#c5c6cd",
+                    "error-container": "#ffdad6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "16px",
+                    "stack-sm": "8px",
+                    "stack-md": "16px",
+                    "stack-lg": "24px",
+                    "margin-mobile": "20px",
+                    "touch-min": "48px",
+                    "touch-lg": "56px"
+            },
+            "fontFamily": {
+                    "label-bold": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "display-num": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "label-bold": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "30px", "fontWeight": "700"}],
+                    "display-num": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg": ["28px", {"lineHeight": "34px", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid #E2E8F0;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="flex items-center justify-between px-margin-mobile h-touch-lg w-full sticky top-0 z-50 bg-surface dark:bg-on-background border-b border-outline-variant dark:border-outline">
+<div class="flex items-center gap-4">
+<button class="h-touch-min w-touch-min flex items-center justify-center rounded-full hover:bg-surface-container transition-colors active:opacity-80 active:scale-95">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed">menu</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-primary dark:text-primary-fixed">Tabela de Preços - Materiais</h1>
+</div>
+<div class="flex items-center">
+<button class="h-touch-min w-touch-min flex items-center justify-center rounded-full hover:bg-surface-container transition-colors active:opacity-80 active:scale-95">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed">account_circle</span>
+</button>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-margin-mobile py-stack-lg">
+<!-- Header Actions / Filters -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-stack-md mb-stack-lg">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary mb-1">Gerenciamento de Custos</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Atualize os valores por m² para orçamentos automáticos.</p>
+</div>
+<div class="relative w-full md:w-80">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full h-touch-lg pl-12 pr-4 bg-surface border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-primary font-body-md" placeholder="Buscar material..." type="text"/>
+</div>
+</div>
+<!-- Price Management Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-stack-md">
+<!-- Material Card: Granite -->
+<div class="glass-card rounded-xl p-stack-md flex flex-col gap-4 group hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<span class="font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider">Granite</span>
+<h3 class="font-headline-md text-headline-md text-primary">Preto Absoluto</h3>
+</div>
+<div class="px-3 py-1 bg-secondary-fixed text-on-secondary-fixed rounded-full font-label-bold text-xs uppercase">Premium</div>
+</div>
+<div class="aspect-video w-full rounded-lg overflow-hidden bg-surface-container">
+<div class="w-full h-full bg-cover bg-center" data-alt="A high-resolution close-up texture of Absolute Black Granite, showing its deep, uniform obsidian tone with tiny crystalline reflections. The lighting is controlled to highlight the polished, reflective surface typical of high-end stone workshop materials. The aesthetic is professional, industrial, and clean, using a dark and sophisticated color palette." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBrEIf3P8W9BlC4fNPU5PmokoBGGORfv2TMBAUOWvJi0yRSejZR3kqT6qILUd0TWIzllkC9cwP5vB7XOgPuNMCI3HsP-BkKz_-7-VZAzuCf2EaVHiQTScFzU4CTUZfcabMdhJYne33EtQm72qLjf7OAepts5ntNBLX8R4LvBcn1OYaa7wQmGTQC6vK9tHrOnRzQxQWPFUsZYrHXTxbhXvJqyddoPmfEjznOw8YiIy1nY3yWWPHb-cfOaw')"></div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-bold text-label-bold text-on-surface-variant">Preço atual por m²</label>
+<div class="flex items-center gap-2">
+<div class="relative flex-1">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 font-label-bold text-primary">R$</span>
+<input class="w-full h-touch-lg pl-12 pr-4 bg-surface-container-low border border-outline-variant rounded-xl font-display-num text-primary focus:ring-2 focus:ring-primary focus:border-primary" type="number" value="850.00"/>
+</div>
+<button class="h-touch-lg w-touch-lg bg-primary text-on-primary rounded-xl flex items-center justify-center hover:opacity-90 transition-opacity active:scale-95">
+<span class="material-symbols-outlined">save</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Material Card: Marble -->
+<div class="glass-card rounded-xl p-stack-md flex flex-col gap-4 group hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<span class="font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider">Marble</span>
+<h3 class="font-headline-md text-headline-md text-primary">Carrara Gióia</h3>
+</div>
+<div class="px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed rounded-full font-label-bold text-xs uppercase">Importado</div>
+</div>
+<div class="aspect-video w-full rounded-lg overflow-hidden bg-surface-container">
+<div class="w-full h-full bg-cover bg-center" data-alt="A macro photograph of white Carrara Gioia marble with distinctive grey veining flowing across a pristine white background. The image captures the smooth, matte finish of the stone, presented in bright, natural high-key lighting to suit a modern light-mode interface. The composition is artistic yet detailed, emphasizing the natural elegance of the material." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDzq3NG4LAajwmydg_YMjUzLl65rGpddH1u_kvKAtGSgxZghONnYRGH3lKAkyW6UD6mAlrV75yTIjjYYop0H1k_ySDaLoqPhHGFAZWdNdYPEuh6-yNONsdnPgrUJLnj1BmOdGwKowG2z7bFetcYL6JWaeEpKzMFXsTQchutYSEx7X5b9nKVmOkV5RAg9-ydzb1AeAQrTFfxUeWgcbfh31QM53Y5r8V2y7mRpdoy4VV-fr9GIHW49uaXwA')"></div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-bold text-label-bold text-on-surface-variant">Preço atual por m²</label>
+<div class="flex items-center gap-2">
+<div class="relative flex-1">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 font-label-bold text-primary">R$</span>
+<input class="w-full h-touch-lg pl-12 pr-4 bg-surface-container-low border border-outline-variant rounded-xl font-display-num text-primary focus:ring-2 focus:ring-primary focus:border-primary" type="number" value="1200.00"/>
+</div>
+<button class="h-touch-lg w-touch-lg bg-primary text-on-primary rounded-xl flex items-center justify-center hover:opacity-90 transition-opacity active:scale-95">
+<span class="material-symbols-outlined">save</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Material Card: Quartzite -->
+<div class="glass-card rounded-xl p-stack-md flex flex-col gap-4 group hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<span class="font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider">Quartzite</span>
+<h3 class="font-headline-md text-headline-md text-primary">Taj Mahal</h3>
+</div>
+<div class="px-3 py-1 bg-secondary-fixed text-on-secondary-fixed rounded-full font-label-bold text-xs uppercase">Exótico</div>
+</div>
+<div class="aspect-video w-full rounded-lg overflow-hidden bg-surface-container">
+<div class="w-full h-full bg-cover bg-center" data-alt="Detailed texture of Taj Mahal Quartzite, showcasing its creamy beige background with subtle amber and grey linear movements. The lighting is soft and diffused, highlighting the translucency and depth of the natural stone surface. The image is framed to display the strength and durability of the material, fitting for a stone workshop management tool." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAFhPYsE9SLWjCNweAvzMRDpS7evrQH4EAsMlAjGTSpX5yQk2FnpkBCmRIrVNc6aakvGnBjkzktJtXAiAU_TgHTbARPINNlyJOOz5nLFa8wt9yRyTGLjhkn68KfiYdDvrtX6EmAO7qdl40gp2ys7EAVXp6G_jQrbJr1ob-6afgDwSUzO_gTQw8cDWQY6pt_SvPaBgVArZUjvTUZ9gzqfmaiPCYWfWpdz6nefiA7JBMQ01F6bbL9pjNPgA')"></div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-bold text-label-bold text-on-surface-variant">Preço atual por m²</label>
+<div class="flex items-center gap-2">
+<div class="relative flex-1">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 font-label-bold text-primary">R$</span>
+<input class="w-full h-touch-lg pl-12 pr-4 bg-surface-container-low border border-outline-variant rounded-xl font-display-num text-primary focus:ring-2 focus:ring-primary focus:border-primary" type="number" value="1850.00"/>
+</div>
+<button class="h-touch-lg w-touch-lg bg-primary text-on-primary rounded-xl flex items-center justify-center hover:opacity-90 transition-opacity active:scale-95">
+<span class="material-symbols-outlined">save</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Material Card: Granite -->
+<div class="glass-card rounded-xl p-stack-md flex flex-col gap-4 group hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<span class="font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider">Granite</span>
+<h3 class="font-headline-md text-headline-md text-primary">Branco Itaúnas</h3>
+</div>
+<div class="px-3 py-1 bg-outline-variant text-on-surface-variant rounded-full font-label-bold text-xs uppercase">Standard</div>
+</div>
+<div class="aspect-video w-full rounded-lg overflow-hidden bg-surface-container">
+<div class="w-full h-full bg-cover bg-center" data-alt="A clean, flat texture of Branco Itaúnas granite, characterized by a light greyish-white base with small, evenly distributed darker points. The image represents a high-utility, commonly used material in construction. The lighting is neutral and even, perfect for a clear and efficient catalog interface designed for stone fabricators." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC_HG2BrP_QAOhRmJ7Ap-2IP_QHjQ8pjZOPubyFufbMB-4PR3c6Ca_uP3HXahHrwRMrLQbYTTfND40tIW3c_MfLoZ_JSY4JUHDhVecpcIiBNY2oUIYsKvGIHeik41zSDHSbPT8r0orBclJb26EHIHb8tb0OtTbYac90MObdyaizMDu8P10oQKVskj0e2PRcCvgWyMpDvQ98XCxN8nvz5OIIejWmZC_azdtHMQ4buk7iZ-yTYKGKQ3pYkA')"></div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-bold text-label-bold text-on-surface-variant">Preço atual por m²</label>
+<div class="flex items-center gap-2">
+<div class="relative flex-1">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 font-label-bold text-primary">R$</span>
+<input class="w-full h-touch-lg pl-12 pr-4 bg-surface-container-low border border-outline-variant rounded-xl font-display-num text-primary focus:ring-2 focus:ring-primary focus:border-primary" type="number" value="450.00"/>
+</div>
+<button class="h-touch-lg w-touch-lg bg-primary text-on-primary rounded-xl flex items-center justify-center hover:opacity-90 transition-opacity active:scale-95">
+<span class="material-symbols-outlined">save</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Quick Add Material Card -->
+<button class="border-2 border-dashed border-outline-variant rounded-xl p-stack-md flex flex-col items-center justify-center gap-4 hover:bg-surface-container-low transition-all active:scale-95 text-on-surface-variant">
+<div class="h-16 w-16 bg-surface-container-high rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl">add</span>
+</div>
+<span class="font-headline-md text-headline-md">Adicionar Material</span>
+<p class="font-label-md text-label-md text-center">Cadastre uma nova pedra ou variante de preço na tabela.</p>
+</button>
+</div>
+</main>
+<!-- Navigation Drawer (Desktop Placeholder Logic) -->
+<aside class="hidden md:flex flex-col fixed left-0 top-0 h-full w-72 bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant dark:border-outline z-[60] transition-transform -translate-x-full" id="nav-drawer">
+<div class="p-stack-lg flex flex-col h-full">
+<div class="flex items-center gap-4 mb-stack-lg">
+<div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined">engineering</span>
+</div>
+<div>
+<h4 class="font-label-bold text-label-bold text-primary">Workshop Manager</h4>
+<p class="font-label-md text-label-md text-on-surface-variant">Admin Access</p>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-2">
+<a class="flex items-center gap-4 h-touch-lg px-4 rounded-xl text-on-surface-variant hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-4 h-touch-lg px-4 rounded-xl bg-primary-fixed dark:bg-primary-container text-on-primary-fixed dark:text-on-primary-container font-label-bold" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-body-md">Pricing</span>
+</a>
+<a class="flex items-center gap-4 h-touch-lg px-4 rounded-xl text-on-surface-variant hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined">texture</span>
+<span class="font-body-md">Material Catalog</span>
+</a>
+<a class="flex items-center gap-4 h-touch-lg px-4 rounded-xl text-on-surface-variant hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined">construction</span>
+<span class="font-body-md">Labor Rates</span>
+</a>
+</nav>
+<div class="pt-stack-lg border-t border-outline-variant mt-auto">
+<a class="flex items-center gap-4 h-touch-lg px-4 rounded-xl text-on-surface-variant hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md">App Settings</span>
+</a>
+<p class="mt-4 px-4 font-label-md text-label-md text-outline">v2.1.0</p>
+</div>
+</div>
+</aside>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 flex justify-around items-center h-touch-lg px-2 pb-safe bg-surface dark:bg-on-background border-t border-outline-variant dark:border-outline">
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 hover:bg-surface-container-high transition-all active:scale-90 duration-150">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-md text-label-md">Inventory</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-secondary-fixed dark:bg-on-secondary-fixed-variant text-on-secondary-fixed dark:text-secondary-fixed rounded-xl px-4 py-1 active:scale-90 duration-150">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-md text-label-md">Pricing</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 hover:bg-surface-container-high transition-all active:scale-90 duration-150">
+<span class="material-symbols-outlined">fact_check</span>
+<span class="font-label-md text-label-md">Orders</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 hover:bg-surface-container-high transition-all active:scale-90 duration-150">
+<span class="material-symbols-outlined">engineering</span>
+<span class="font-label-md text-label-md">Labor</span>
+</button>
+</nav>
+<!-- FAB -->
+<button class="fixed bottom-24 right-6 md:bottom-8 md:right-8 h-14 w-14 bg-secondary text-on-secondary rounded-full shadow-lg flex items-center justify-center hover:opacity-90 active:scale-95 transition-all z-40">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+<script>
+        // Simple Interaction Logic
+        const menuBtn = document.querySelector('header button');
+        const drawer = document.getElementById('nav-drawer');
+        
+        menuBtn.addEventListener('click', () => {
+            if (window.innerWidth >= 768) {
+                drawer.classList.toggle('-translate-x-full');
+                drawer.classList.toggle('translate-x-0');
+            } else {
+                // Mobile menu could be implemented similarly or as a full screen overlay
+                alert('Funcionalidade de Menu Mobile');
+            }
+        });
+
+        // Close drawer if clicking outside on desktop
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth >= 768 && !drawer.contains(e.target) && !menuBtn.contains(e.target)) {
+                drawer.classList.add('-translate-x-full');
+                drawer.classList.remove('translate-x-0');
+            }
+        });
+    </script>
+</body></html>
