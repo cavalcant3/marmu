@@ -2,72 +2,41 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../theme/colors";
-import Badge from "../components/ui/Badge";
 
 export default function AgendaMedicaoScreen({ navigation }: any) {
-  const [selectedDay, setSelectedDay] = useState("Hoje");
+  const [selectedDay, setSelectedDay] = useState("QUA 16");
 
-  const [visitas, setVisitas] = useState([
-    {
-      id: "1",
-      horario: "09:00",
-      cliente: "João da Silva",
-      projeto: "Bancada Cozinha Principal",
-      endereco: "Rua das Flores, 123 - Jardins",
-      telefone: "(11) 99887-6655",
-      status: "Em Andamento",
-    },
-    {
-      id: "2",
-      horario: "11:30",
-      cliente: "Maria Oliveira",
-      projeto: "Lavatório Banheiro Suite",
-      endereco: "Av. Brasil, 450 - Apt 82",
-      telefone: "(11) 97766-5544",
-      status: "Agendado",
-    },
-    {
-      id: "3",
-      horario: "14:30",
-      cliente: "Carlos Eduardo",
-      projeto: "Bancada Área Gourmet",
-      endereco: "Alameda Santos, 890 - Casa",
-      telefone: "(11) 96655-4433",
-      status: "Agendado",
-    },
-  ]);
+  const days = [
+    { day: "SEG", num: "14" },
+    { day: "TER", num: "15" },
+    { day: "QUA", num: "16" },
+    { day: "QUI", num: "17" },
+    { day: "SEX", num: "18" },
+    { day: "SAB", num: "19" },
+  ];
 
-  const handleCall = (tel: string, nome: string) => {
-    Alert.alert("Ligar para Cliente", `Ligando para ${nome} no número ${tel}...`);
+  const handleStartMeasurement = (item: any) => {
+    navigation.navigate("novoorcamento", {
+      cliente: item.cliente,
+      projeto: item.projeto,
+    });
   };
 
   const handleOpenMap = (endereco: string) => {
-    Alert.alert("GPS / Mapa", `Abrindo navegação de rota para: ${endereco}`);
+    Alert.alert("Navegação GPS", `Abrindo mapa para: ${endereco}`);
   };
 
-  const handleNovaVisita = () => {
+  const handleAddAppointment = () => {
     Alert.prompt(
       "Agendar Nova Medição",
-      "Digite o Nome do Cliente e Horário:",
+      "Nome do cliente e endereço:",
       [
         { text: "Cancelar", style: "cancel" },
         {
           text: "Agendar",
           onPress: (val) => {
             if (val) {
-              setVisitas((prev) => [
-                ...prev,
-                {
-                  id: Date.now().toString(),
-                  horario: "16:00",
-                  cliente: val,
-                  projeto: "Medição de Obra",
-                  endereco: "Endereço a confirmar",
-                  telefone: "(11) 90000-0000",
-                  status: "Agendado",
-                },
-              ]);
-              Alert.alert("Sucesso", "Visita de medição agendada com sucesso!");
+              Alert.alert("Sucesso", "Nova medição agendada!");
             }
           },
         },
@@ -77,202 +46,317 @@ export default function AgendaMedicaoScreen({ navigation }: any) {
   };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      {/* Header */}
-      <View style={styles.headerRow}>
-        <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={20} color={colors.primary} />
-        </TouchableOpacity>
+    <View style={styles.mainContainer}>
+      <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+        {/* Title */}
         <Text style={styles.title}>Agenda de Medição</Text>
-        <TouchableOpacity style={styles.addBtn} onPress={handleNovaVisita}>
-          <Ionicons name="add" size={16} color={colors.onPrimary} style={{ marginRight: 2 }} />
-          <Text style={styles.addBtnText}>Agendar</Text>
-        </TouchableOpacity>
-      </View>
 
-      {/* Date Picker Bar */}
-      <View style={styles.datePickerRow}>
-        {["Hoje", "Amanhã", "Quinta (31)", "Sexta (01)"].map((day) => (
-          <TouchableOpacity
-            key={day}
-            style={[styles.dayChip, selectedDay === day && styles.dayChipActive]}
-            onPress={() => setSelectedDay(day)}
-          >
-            <Text style={[styles.dayChipText, selectedDay === day && styles.dayChipTextActive]}>
-              {day}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+        {/* Horizontal Date Picker */}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.dateScrollView}
+          contentContainerStyle={styles.datePickerContainer}
+        >
+          {days.map((item) => {
+            const key = `${item.day} ${item.num}`;
+            const isActive = selectedDay === key;
+            return (
+              <TouchableOpacity
+                key={key}
+                style={[styles.dateCard, isActive && styles.dateCardActive]}
+                onPress={() => setSelectedDay(key)}
+                activeOpacity={0.8}
+              >
+                <Text style={[styles.dayLabel, isActive && styles.dayLabelActive]}>
+                  {item.day}
+                </Text>
+                <Text style={[styles.numLabel, isActive && styles.numLabelActive]}>
+                  {item.num}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
 
-      {/* Summary Card */}
-      <View style={styles.summaryCard}>
-        <View style={styles.summaryLeft}>
-          <Text style={styles.summaryLabel}>VISITAS HOJE</Text>
-          <Text style={styles.summaryNum}>{visitas.length} Medições Agendadas</Text>
-          <Text style={styles.summarySub}>Lembrete de trena e papel de anotação ativos</Text>
-        </View>
-        <Ionicons name="calendar-outline" size={32} color={colors.secondaryFixed} />
-      </View>
-
-      {/* Visits List */}
-      <View style={styles.list}>
-        {visitas.map((visita) => (
-          <View key={visita.id} style={styles.visitaCard}>
-            <View style={styles.cardTop}>
-              <View style={styles.timeBadge}>
-                <Ionicons name="time-outline" size={14} color={colors.primary} style={{ marginRight: 4 }} />
-                <Text style={styles.timeText}>{visita.horario}</Text>
+        {/* Appointments Timeline List */}
+        <View style={styles.list}>
+          {/* ITEM 1: CONCLUÍDA */}
+          <View style={styles.card}>
+            <View style={styles.cardContent}>
+              <View style={styles.timelineCol}>
+                <Text style={styles.timeText}>09:00</Text>
+                <View style={styles.timelineLine} />
               </View>
 
-              <Badge
-                label={visita.status}
-                variant={visita.status === "Em Andamento" ? "warning" : "info"}
-              />
-            </View>
+              <View style={styles.infoCol}>
+                <View style={styles.cardHeader}>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.clientName}>RICARDO ALMEIDA</Text>
+                    <Text style={styles.projectSub}>Bancada Cozinha Gourmet</Text>
+                  </View>
+                  <View style={styles.pillConcluida}>
+                    <Text style={styles.pillConcluidaText}>CONCLUÍDA</Text>
+                  </View>
+                </View>
 
-            <Text style={styles.clienteName}>{visita.cliente}</Text>
-            <Text style={styles.projetoText}>{visita.projeto}</Text>
-
-            <View style={styles.addressBox}>
-              <Ionicons name="location-outline" size={16} color={colors.onSurfaceVariant} style={{ marginRight: 4 }} />
-              <Text style={styles.addressText}>{visita.endereco}</Text>
-            </View>
-
-            <View style={styles.actionRow}>
-              <TouchableOpacity
-                style={styles.actionBtn}
-                onPress={() => handleCall(visita.telefone, visita.cliente)}
-              >
-                <Ionicons name="call-outline" size={16} color={colors.primary} style={{ marginRight: 4 }} />
-                <Text style={styles.actionBtnText}>Ligar</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.actionBtn}
-                onPress={() => handleOpenMap(visita.endereco)}
-              >
-                <Ionicons name="navigate-outline" size={16} color={colors.primary} style={{ marginRight: 4 }} />
-                <Text style={styles.actionBtnText}>Rota GPS</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.actionBtnPrimary}
-                onPress={() => navigation.navigate("novoorcamento")}
-              >
-                <Ionicons name="add" size={16} color={colors.onSecondaryFixed} style={{ marginRight: 2 }} />
-                <Text style={styles.actionBtnPrimaryText}>Medir</Text>
-              </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.locationRow}
+                  onPress={() => handleOpenMap("Av. das Américas, 4200 - Barra da Tijuca")}
+                >
+                  <Ionicons name="location-sharp" size={16} color={colors.primary} />
+                  <Text style={styles.locationText}>
+                    Av. das Américas, 4200 - Barra da Tijuca
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-        ))}
-      </View>
-    </ScrollView>
+
+          {/* ITEM 2: CONFIRMADA (ACTIVE HIGHLIGHTED CARD) */}
+          <View style={[styles.card, styles.cardHighlighted]}>
+            <View style={styles.cardContent}>
+              <View style={styles.timelineCol}>
+                <Text style={styles.timeTextActive}>11:30</Text>
+                <View style={styles.timelineLineActive} />
+              </View>
+
+              <View style={styles.infoCol}>
+                <View style={styles.cardHeader}>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.clientName}>MARIANA COSTA</Text>
+                    <Text style={styles.projectSub}>Revestimento Banheiro Suíte</Text>
+                  </View>
+                  <View style={styles.pillConfirmada}>
+                    <Text style={styles.pillConfirmadaText}>CONFIRMADA</Text>
+                  </View>
+                </View>
+
+                <TouchableOpacity
+                  style={styles.locationRow}
+                  onPress={() => handleOpenMap("Rua Henrique Dumont, 120 - Ipanema")}
+                >
+                  <Ionicons name="location-sharp" size={16} color={colors.primary} />
+                  <Text style={styles.locationText}>
+                    Rua Henrique Dumont, 120 - Ipanema
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.iniciarMedicaoBtn}
+                  onPress={() =>
+                    handleStartMeasurement({
+                      cliente: "MARIANA COSTA",
+                      projeto: "Revestimento Banheiro Suíte",
+                    })
+                  }
+                >
+                  <Ionicons name="stats-chart-outline" size={18} color={colors.onPrimary} style={{ marginRight: 8 }} />
+                  <Text style={styles.iniciarMedicaoText}>Iniciar Medição</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+
+          {/* ITEM 3: PENDENTE */}
+          <View style={styles.card}>
+            <View style={styles.cardContent}>
+              <View style={styles.timelineCol}>
+                <Text style={styles.timeTextMuted}>14:45</Text>
+                <View style={styles.timelineLine} />
+              </View>
+
+              <View style={styles.infoCol}>
+                <View style={styles.cardHeader}>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.clientName}>JORGE SILVA</Text>
+                    <Text style={styles.projectSub}>Área de Serviço - Tanque</Text>
+                  </View>
+                  <View style={styles.pillPendente}>
+                    <Text style={styles.pillPendenteText}>PENDENTE</Text>
+                  </View>
+                </View>
+
+                <TouchableOpacity
+                  style={styles.locationRow}
+                  onPress={() => handleOpenMap("Estrada do Joá, 1500 - São Conrado")}
+                >
+                  <Ionicons name="location-sharp" size={16} color={colors.primary} />
+                  <Text style={styles.locationText}>
+                    Estrada do Joá, 1500 - São Conrado
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+
+          {/* ITEM 4: PENDENTE */}
+          <View style={styles.card}>
+            <View style={styles.cardContent}>
+              <View style={styles.timelineCol}>
+                <Text style={styles.timeTextMuted}>16:30</Text>
+                <View style={styles.timelineLine} />
+              </View>
+
+              <View style={styles.infoCol}>
+                <View style={styles.cardHeader}>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.clientName}>CONSTRUTORA ALPHA</Text>
+                    <Text style={styles.projectSub}>Soleiras Bloco B (12 un)</Text>
+                  </View>
+                  <View style={styles.pillPendente}>
+                    <Text style={styles.pillPendenteText}>PENDENTE</Text>
+                  </View>
+                </View>
+
+                <TouchableOpacity
+                  style={styles.locationRow}
+                  onPress={() => handleOpenMap("Rua Voluntários da Pátria, 80 - Botafogo")}
+                >
+                  <Ionicons name="location-sharp" size={16} color={colors.primary} />
+                  <Text style={styles.locationText}>
+                    Rua Voluntários da Pátria, 80 - Botafogo
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </View>
+      </ScrollView>
+
+      {/* Floating Action Button (FAB) Green */}
+      <TouchableOpacity style={styles.greenFab} onPress={handleAddAppointment} activeOpacity={0.85}>
+        <Ionicons name="add" size={28} color={colors.onSecondary} />
+      </TouchableOpacity>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
+  mainContainer: { flex: 1, backgroundColor: colors.background },
+  container: { flex: 1 },
   content: { padding: 20, paddingBottom: 110 },
 
-  headerRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 16 },
-  backBtn: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
-    backgroundColor: colors.surfaceContainerHigh,
+  title: { fontSize: 24, fontWeight: "800", color: colors.primary, marginBottom: 16 },
+
+  dateScrollView: { marginBottom: 20 },
+  datePickerContainer: { flexDirection: "row", gap: 10 },
+  dateCard: {
+    width: 64,
+    height: 80,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: colors.outlineVariant,
+    backgroundColor: colors.surface,
     alignItems: "center",
     justifyContent: "center",
   },
-  title: { fontSize: 20, fontWeight: "800", color: colors.primary },
-  addBtn: {
+  dateCardActive: {
     backgroundColor: colors.primary,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 20,
-    flexDirection: "row",
-    alignItems: "center",
+    borderColor: colors.primary,
   },
-  addBtnText: { color: colors.onPrimary, fontSize: 13, fontWeight: "700" },
+  dayLabel: { fontSize: 13, fontWeight: "500", color: colors.onSurfaceVariant },
+  dayLabelActive: { color: colors.onPrimary },
+  numLabel: { fontSize: 20, fontWeight: "700", color: colors.onSurface, marginTop: 2 },
+  numLabelActive: { color: colors.onPrimary },
 
-  datePickerRow: { flexDirection: "row", gap: 8, marginBottom: 16 },
-  dayChip: {
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 20,
-    backgroundColor: colors.surfaceContainerHigh,
-  },
-  dayChipActive: { backgroundColor: colors.primary },
-  dayChipText: { fontSize: 12, fontWeight: "600", color: colors.onSurfaceVariant },
-  dayChipTextActive: { color: colors.onPrimary },
-
-  summaryCard: {
-    backgroundColor: colors.primary,
-    borderRadius: 16,
-    padding: 18,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  summaryLeft: { flex: 1 },
-  summaryLabel: { fontSize: 11, fontWeight: "700", color: colors.onPrimaryContainer, letterSpacing: 0.5 },
-  summaryNum: { fontSize: 22, fontWeight: "800", color: colors.onPrimary, marginTop: 2 },
-  summarySub: { fontSize: 12, color: colors.onPrimaryContainer, marginTop: 2 },
-
-  list: { gap: 14 },
-  visitaCard: {
-    backgroundColor: colors.surfaceContainerLowest,
+  list: { gap: 12 },
+  card: {
+    backgroundColor: colors.surface,
     borderWidth: 1,
     borderColor: colors.outlineVariant,
     borderRadius: 16,
     padding: 16,
   },
-  cardTop: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 8 },
-  timeBadge: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: colors.surfaceContainerLow,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 8,
+  cardHighlighted: {
+    backgroundColor: colors.surfaceContainerHigh,
+    borderWidth: 2,
+    borderColor: colors.primary,
+    shadowColor: colors.primary,
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 4,
   },
-  timeText: { fontSize: 13, fontWeight: "700", color: colors.primary },
+  cardContent: { flexDirection: "row", gap: 12 },
 
-  clienteName: { fontSize: 18, fontWeight: "800", color: colors.primary },
-  projetoText: { fontSize: 14, color: colors.onSurfaceVariant, marginTop: 2 },
-
-  addressBox: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: colors.surfaceContainerLow,
-    padding: 10,
-    borderRadius: 8,
-    marginVertical: 10,
-  },
-  addressText: { fontSize: 12, color: colors.onSurfaceVariant, flex: 1 },
-
-  actionRow: { flexDirection: "row", gap: 8, marginTop: 4 },
-  actionBtn: {
+  timelineCol: { alignItems: "center", width: 50 },
+  timeText: { fontSize: 16, fontWeight: "700", color: colors.primary },
+  timeTextActive: { fontSize: 16, fontWeight: "800", color: colors.primary },
+  timeTextMuted: { fontSize: 16, fontWeight: "700", color: colors.onSurfaceVariant },
+  timelineLine: {
+    width: 2,
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 8,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: colors.outlineVariant,
+    minHeight: 40,
+    backgroundColor: colors.outlineVariant,
+    marginVertical: 6,
+    borderRadius: 1,
   },
-  actionBtnText: { fontSize: 12, fontWeight: "700", color: colors.primary },
+  timelineLineActive: {
+    width: 3,
+    flex: 1,
+    minHeight: 60,
+    backgroundColor: colors.primary,
+    marginVertical: 6,
+    borderRadius: 1.5,
+  },
 
-  actionBtnPrimary: {
+  infoCol: { flex: 1 },
+  cardHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 },
+  clientName: { fontSize: 14, fontWeight: "700", color: colors.primary, letterSpacing: 0.5 },
+  projectSub: { fontSize: 14, color: colors.onSurfaceVariant, marginTop: 2 },
+
+  pillConcluida: {
+    backgroundColor: colors.secondaryFixed,
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    borderRadius: 12,
+  },
+  pillConcluidaText: { fontSize: 11, fontWeight: "700", color: colors.onSecondaryFixed },
+
+  pillConfirmada: {
+    backgroundColor: colors.surfaceContainerHighest,
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    borderRadius: 12,
+  },
+  pillConfirmadaText: { fontSize: 11, fontWeight: "700", color: colors.primary },
+
+  pillPendente: {
+    backgroundColor: colors.tertiaryFixed,
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    borderRadius: 12,
+  },
+  pillPendenteText: { fontSize: 11, fontWeight: "700", color: colors.onTertiaryFixedVariant },
+
+  locationRow: { flexDirection: "row", alignItems: "center", marginTop: 8, marginBottom: 12 },
+  locationText: { fontSize: 13, color: colors.primary, marginLeft: 4, flex: 1 },
+
+  iniciarMedicaoBtn: {
+    backgroundColor: colors.primary,
+    height: 48,
+    borderRadius: 12,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.secondaryFixed,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
+    marginTop: 4,
   },
-  actionBtnPrimaryText: { fontSize: 12, fontWeight: "800", color: colors.onSecondaryFixed },
+  iniciarMedicaoText: { fontSize: 14, fontWeight: "700", color: colors.onPrimary },
+
+  greenFab: {
+    position: "absolute",
+    bottom: 90,
+    right: 20,
+    width: 56,
+    height: 56,
+    borderRadius: 16,
+    backgroundColor: colors.secondary,
+    alignItems: "center",
+    justify.content: "center",
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 6,
+  },
 });
