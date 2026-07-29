@@ -15,6 +15,8 @@ import DetalhesPedidoScreen from "./src/screens/DetalhesPedido";
 import FotoAnotacaoScreen from "./src/screens/FotoAnotacao";
 import TabelaPrecosScreen from "./src/screens/TabelaPrecos";
 import EstoqueChapasScreen from "./src/screens/EstoqueChapas";
+import AgendaMedicaoScreen from "./src/screens/AgendaMedicao";
+import GestaoPagamentosScreen from "./src/screens/GestaoPagamentos";
 import { useAuthStore } from "./src/stores/authStore";
 
 export default function App() {
@@ -79,6 +81,12 @@ export default function App() {
     }
     if (subScreen === "estoquechapas") {
       return <EstoqueChapasScreen navigation={navigation} />;
+    }
+    if (subScreen === "agendamedicao") {
+      return <AgendaMedicaoScreen navigation={navigation} />;
+    }
+    if (subScreen === "gestaopagamentos") {
+      return <GestaoPagamentosScreen navigation={navigation} />;
     }
 
     switch (currentTab) {

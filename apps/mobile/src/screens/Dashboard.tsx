@@ -17,7 +17,10 @@ export default function DashboardScreen({ navigation }: any) {
       {/* Bento Grid */}
       <View style={styles.grid}>
         {/* Card Orçamentos */}
-        <View style={styles.bentoCard}>
+        <TouchableOpacity
+          style={styles.bentoCard}
+          onPress={() => navigation.navigate("listaorcamentos")}
+        >
           <View style={styles.cardHeader}>
             <Text style={styles.cardLabel}>ORÇAMENTOS NO MÊS</Text>
             <Ionicons name="document-text-outline" size={20} color={colors.primary} />
@@ -26,10 +29,13 @@ export default function DashboardScreen({ navigation }: any) {
             <Text style={styles.displayNum}>12</Text>
             <Text style={styles.highlightVal}>R$ 15.400</Text>
           </View>
-        </View>
+        </TouchableOpacity>
 
         {/* Card Pedidos */}
-        <View style={styles.bentoCard}>
+        <TouchableOpacity
+          style={styles.bentoCard}
+          onPress={() => navigation.navigate("listapedidos")}
+        >
           <View style={styles.cardHeader}>
             <Text style={styles.cardLabel}>PEDIDOS EM ABERTO</Text>
             <Ionicons name="construct-outline" size={20} color={colors.primary} />
@@ -38,7 +44,38 @@ export default function DashboardScreen({ navigation }: any) {
             <Text style={styles.displayNum}>05</Text>
             <Text style={styles.subtext}>Processando na serra</Text>
           </View>
-        </View>
+        </TouchableOpacity>
+      </View>
+
+      {/* Quick Access Tools (Agenda & Financial) */}
+      <View style={styles.toolsRow}>
+        <TouchableOpacity
+          style={styles.toolCard}
+          onPress={() => navigation.navigate("agendamedicao")}
+        >
+          <View style={styles.toolIconBox}>
+            <Ionicons name="calendar-outline" size={22} color={colors.primary} />
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.toolTitle}>Agenda de Medição</Text>
+            <Text style={styles.toolSub}>3 visitas agendadas hoje</Text>
+          </View>
+          <Ionicons name="chevron-forward" size={18} color={colors.onSurfaceVariant} />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.toolCard}
+          onPress={() => navigation.navigate("gestaopagamentos")}
+        >
+          <View style={styles.toolIconBox}>
+            <Ionicons name="wallet-outline" size={22} color={colors.secondary} />
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.toolTitle}>Gestão de Pagamentos</Text>
+            <Text style={styles.toolSub}>R$ 4.250 a receber</Text>
+          </View>
+          <Ionicons name="chevron-forward" size={18} color={colors.onSurfaceVariant} />
+        </TouchableOpacity>
       </View>
 
       {/* Entregas desta Semana */}
@@ -103,33 +140,6 @@ export default function DashboardScreen({ navigation }: any) {
           </View>
           <Badge label="Atenção" variant="warning" />
         </TouchableOpacity>
-
-        {/* Delivery Item 3 */}
-        <TouchableOpacity
-          style={styles.deliveryCard}
-          onPress={() =>
-            navigation.navigate("detalhespedido", {
-              pedido: {
-                id: "3",
-                cliente: "Sede Administrativa X",
-                projeto: "Piso Hall",
-                data: "16/10",
-                status: "Confirmada",
-              },
-            })
-          }
-        >
-          <View style={styles.deliveryLeft}>
-            <View style={styles.iconBox}>
-              <Ionicons name="business-outline" size={20} color={colors.primary} />
-            </View>
-            <View>
-              <Text style={styles.deliveryTitle}>Sede Administrativa X</Text>
-              <Text style={styles.deliverySub}>Piso Hall • 16/10</Text>
-            </View>
-          </View>
-          <Badge label="Confirmada" variant="info" />
-        </TouchableOpacity>
       </View>
 
       {/* Card de Estoque de Chapas */}
@@ -174,7 +184,7 @@ const styles = StyleSheet.create({
   grid: {
     flexDirection: "row",
     gap: 12,
-    marginBottom: 24,
+    marginBottom: 16,
   },
   bentoCard: {
     flex: 1,
@@ -214,6 +224,29 @@ const styles = StyleSheet.create({
     color: colors.onSurfaceVariant,
     marginTop: 2,
   },
+
+  toolsRow: { gap: 10, marginBottom: 24 },
+  toolCard: {
+    backgroundColor: colors.surfaceContainerLowest,
+    borderWidth: 1,
+    borderColor: colors.outlineVariant,
+    borderRadius: 14,
+    padding: 14,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+  toolIconBox: {
+    width: 42,
+    height: 42,
+    borderRadius: 10,
+    backgroundColor: colors.surfaceContainerLow,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  toolTitle: { fontSize: 15, fontWeight: "700", color: colors.primary },
+  toolSub: { fontSize: 12, color: colors.onSurfaceVariant, marginTop: 2 },
+
   sectionHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
