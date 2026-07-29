@@ -1,54 +1,133 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  TextInput,
+  Modal,
+  Alert,
+} from "react-native";
 import { colors } from "../theme/colors";
 import { useMaterialStore } from "../stores/materialStore";
 
 export default function TabelaPrecosScreen() {
   const [activeTab, setActiveTab] = useState<"materiais" | "mao_obra" | "cubas">("materiais");
   const [search, setSearch] = useState("");
+
   const materials = useMaterialStore((state) => state.materials);
   const updatePrice = useMaterialStore((state) => state.updatePrice);
+  const addMaterial = useMaterialStore((state) => state.addMaterial);
 
-  const [laborList] = useState([
-    { id: "1", nome: "Corte em 45º / Meia Esquadria", preco: "R$ 45,00/m" },
-    { id: "2", nome: "Acabamento Bisote Simples", preco: "R$ 25,00/m" },
-    { id: "3", nome: "Polimento de Borda Boleada", preco: "R$ 35,00/m" },
+  // Initial State for Labor and Cubas
+  const [laborList, setLaborList] = useState([
+    { id: "1", nome: "Corte em 45º / Meia Esquadria", tipo: "Acabamento / Serviço", preco: 45, unidade: "m" },
+    { id: "2", nome: "Acabamento Bisote Simples", tipo: "Polimento de Borda", preco: 25, unidade: "m" },
+    { id: "3", nome: "Polimento de Borda Boleada", tipo: "Borda Arredondada", preco: 35, unidade: "m" },
   ]);
 
-  const [cubasList] = useState([
-    { id: "1", nome: "Cuba Inox N.01 (40x34)", preco: "R$ 180,00" },
-    { id: "2", nome: "Cuba Esculpida na Pedra", preco: "R$ 450,00" },
-    { id: "3", nome: "Cuba de Louça Apoio Oval", preco: "R$ 220,00" },
+  const [cubasList, setCubasList] = useState([
+    { id: "1", nome: "Cuba Inox N.01 (40x34)", tipo: "Inox Embutir", preco: 180, unidade: "unid" },
+    { id: "2", nome: "Cuba Esculpida na Pedra", tipo: "Esculpida", preco: 450, unidade: "unid" },
+    { id: "3", nome: "Cuba de Louça Apoio Oval", tipo: "Louça Sanitária", preco: 220, unidade: "unid" },
   ]);
 
-  const handleEditPrice = (material: any) => {
-    Alert.prompt(
-      "Editar Preço",
-      `Novo preço por m² para ${material.nome}:`,
-      [
-        { text: "Cancelar", style: "cancel" },
-        {
-          text: "Salvar",
-          onPress: (val) => {
-            const num = parseFloat(val || "0");
-            if (num > 0) {
-              updatePrice(material.id, num);
-            }
-          },
-        },
-      ],
-      "plain-text",
-      material.preco_por_m2.toString()
-    );
+  // Modal State for Editing / Adding
+  const [modalVisible, setModalVisible] = useState(false);
+  const [editingItem, setEditingItem] = useState<any>(null);
+  const [editName, setEditName] = useState("");
+  const [editType, setEditType] = useState("");
+  const [editPrice, setEditPrice] = useState("");
+
+  // Open Edit Modal for existing item
+  const openEditModal = (item: any) => {
+    setEditingItem(item);
+    setEditName(item.nome);
+    setEditType(item.tipo || (activeTab === "materiais" ? "Granito / Mármore" : "Serviço"));
+    setEditPrice((item.preco_por_m2 || item.preco || 0).toString());
+    setModalVisible(true);
+  };
+
+  // Open Edit Modal for NEW item
+  const openNewItemModal = () => {
+    setEditingItem(null);
+    setEditName("");
+    setEditType(activeTab === "materiais" ? "Granito" : activeTab === "mao_obra" ? "Acabamento" : "Inox");
+    setEditPrice("");
+    setModalVisible(true);
+  };
+
+  // Save changes from Modal
+  const handleSaveModal = () => {
+    const priceNum = parseFloat(editPrice) || 0;
+    if (!editName) {
+      Alert.alert("Erro", "Insira o nome do item");
+      return;
+    }
+    if (priceNum <= 0) {
+      Alert.alert("Erro", "Insira um valor numérico válido maior que zero");
+      return;
+    }
+
+    if (activeTab === "materiais") {
+      if (editingItem) {
+        // Update Material Store
+        updatePrice(editingItem.id, priceNum);
+      } else {
+        // Add new Material Store
+        addMaterial({
+          nome: editName,
+          tipo: editType,
+          preco_por_m2: priceNum,
+        });
+      }
+    } else if (activeTab === "mao_obra") {
+      if (editingItem) {
+        setLaborList((prev) =>
+          prev.map((i) => (i.id === editingItem.id ? { ...i, nome: editName, tipo: editType, preco: priceNum } : i))
+        );
+      } else {
+        setLaborList((prev) => [
+          ...prev,
+          { id: Date.now().toString(), nome: editName, tipo: editType, preco: priceNum, unidade: "m" },
+        ]);
+      }
+    } else if (activeTab === "cubas") {
+      if (editingItem) {
+        setCubasList((prev) =>
+          prev.map((i) => (i.id === editingItem.id ? { ...i, nome: editName, tipo: editType, preco: priceNum } : i))
+        );
+      } else {
+        setCubasList((prev) => [
+          ...prev,
+          { id: Date.now().toString(), nome: editName, tipo: editType, preco: priceNum, unidade: "unid" },
+        ]);
+      }
+    }
+
+    setModalVisible(false);
+    Alert.alert("Sucesso", "Preço salvo e atualizado com sucesso!");
   };
 
   const filteredMaterials = materials.filter((m) =>
     m.nome.toLowerCase().includes(search.toLowerCase())
   );
+  const filteredLabor = laborList.filter((l) =>
+    l.nome.toLowerCase().includes(search.toLowerCase())
+  );
+  const filteredCubas = cubasList.filter((c) =>
+    c.nome.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.title}>Tabela de Preços</Text>
+      <View style={styles.headerRow}>
+        <Text style={styles.title}>Tabela de Preços</Text>
+        <TouchableOpacity style={styles.addBtn} onPress={openNewItemModal}>
+          <Text style={styles.addBtnText}>+ Novo Item</Text>
+        </TouchableOpacity>
+      </View>
 
       {/* Tabs Bar */}
       <View style={styles.tabRow}>
@@ -66,7 +145,7 @@ export default function TabelaPrecosScreen() {
           onPress={() => setActiveTab("mao_obra")}
         >
           <Text style={[styles.tabChipText, activeTab === "mao_obra" && styles.tabChipTextActive]}>
-            Mão de Obra
+            Mão de Obra (m)
           </Text>
         </TouchableOpacity>
 
@@ -75,97 +154,171 @@ export default function TabelaPrecosScreen() {
           onPress={() => setActiveTab("cubas")}
         >
           <Text style={[styles.tabChipText, activeTab === "cubas" && styles.tabChipTextActive]}>
-            Cubas
+            Cubas & Acessórios
           </Text>
         </TouchableOpacity>
       </View>
 
       <TextInput
         style={styles.searchBar}
-        placeholder="🔍 Buscar item..."
+        placeholder="🔍 Buscar material ou serviço..."
         placeholderTextColor={colors.onSurfaceVariant}
         value={search}
         onChangeText={setSearch}
       />
 
-      {/* Tab: MATERIAIS */}
+      {/* TAB 1: MATERIAIS (m²) */}
       {activeTab === "materiais" && (
         <View style={styles.list}>
           {filteredMaterials.map((m) => (
-            <View key={m.id} style={styles.itemCard}>
+            <TouchableOpacity key={m.id} style={styles.itemCard} onPress={() => openEditModal(m)}>
               <View style={styles.itemIcon}>
                 <Text style={{ fontSize: 22 }}>🪨</Text>
               </View>
 
               <View style={styles.flex1}>
                 <Text style={styles.itemName}>{m.nome}</Text>
-                <Text style={styles.itemSub}>{m.tipo || "Pedra Natural"}</Text>
+                <Text style={styles.itemSub}>{m.tipo || "Granito/Mármore"}</Text>
               </View>
 
               <View style={styles.priceContainer}>
                 <Text style={styles.itemPrice}>R$ {m.preco_por_m2}/m²</Text>
-                <TouchableOpacity onPress={() => handleEditPrice(m)}>
-                  <Text style={styles.editLink}>Editar</Text>
-                </TouchableOpacity>
+                <View style={styles.editPill}>
+                  <Text style={styles.editPillText}>✏️ Editar</Text>
+                </View>
               </View>
-            </View>
+            </TouchableOpacity>
           ))}
         </View>
       )}
 
-      {/* Tab: MÃO DE OBRA */}
+      {/* TAB 2: MÃO DE OBRA (m) */}
       {activeTab === "mao_obra" && (
         <View style={styles.list}>
-          {laborList.map((item) => (
-            <View key={item.id} style={styles.itemCard}>
+          {filteredLabor.map((item) => (
+            <TouchableOpacity key={item.id} style={styles.itemCard} onPress={() => openEditModal(item)}>
               <View style={styles.itemIcon}>
                 <Text style={{ fontSize: 22 }}>📐</Text>
               </View>
               <View style={styles.flex1}>
                 <Text style={styles.itemName}>{item.nome}</Text>
-                <Text style={styles.itemSub}>Acabamento / Serviço</Text>
+                <Text style={styles.itemSub}>{item.tipo}</Text>
               </View>
-              <Text style={styles.itemPrice}>{item.preco}</Text>
-            </View>
+              <View style={styles.priceContainer}>
+                <Text style={styles.itemPrice}>R$ {item.preco}/m</Text>
+                <View style={styles.editPill}>
+                  <Text style={styles.editPillText}>✏️ Editar</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
           ))}
         </View>
       )}
 
-      {/* Tab: CUBAS */}
+      {/* TAB 3: CUBAS & ACESSÓRIOS */}
       {activeTab === "cubas" && (
         <View style={styles.list}>
-          {cubasList.map((item) => (
-            <View key={item.id} style={styles.itemCard}>
+          {filteredCubas.map((item) => (
+            <TouchableOpacity key={item.id} style={styles.itemCard} onPress={() => openEditModal(item)}>
               <View style={styles.itemIcon}>
                 <Text style={{ fontSize: 22 }}>🥣</Text>
               </View>
               <View style={styles.flex1}>
                 <Text style={styles.itemName}>{item.nome}</Text>
-                <Text style={styles.itemSub}>Acessório</Text>
+                <Text style={styles.itemSub}>{item.tipo}</Text>
               </View>
-              <Text style={styles.itemPrice}>{item.preco}</Text>
-            </View>
+              <View style={styles.priceContainer}>
+                <Text style={styles.itemPrice}>R$ {item.preco}</Text>
+                <View style={styles.editPill}>
+                  <Text style={styles.editPillText}>✏️ Editar</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
           ))}
         </View>
       )}
+
+      {/* EDIT & ADD MODAL (CROSS-PLATFORM REACT NATIVE MODAL) */}
+      <Modal
+        visible={modalVisible}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>
+                {editingItem ? "Editar Preço e Detalhes" : "Adicionar Novo Item"}
+              </Text>
+              <TouchableOpacity onPress={() => setModalVisible(false)}>
+                <Text style={{ fontSize: 20 }}>❌</Text>
+              </TouchableOpacity>
+            </View>
+
+            <Text style={styles.modalLabel}>Nome do Material / Serviço</Text>
+            <TextInput
+              style={styles.modalInput}
+              placeholder="Ex: Granito Preto São Gabriel"
+              placeholderTextColor={colors.onSurfaceVariant}
+              value={editName}
+              onChangeText={setEditName}
+            />
+
+            <Text style={styles.modalLabel}>Categoria / Tipo</Text>
+            <TextInput
+              style={styles.modalInput}
+              placeholder="Ex: Granito, Mármore, Acabamento"
+              placeholderTextColor={colors.onSurfaceVariant}
+              value={editType}
+              onChangeText={setEditType}
+            />
+
+            <Text style={styles.modalLabel}>
+              Preço (R$) {activeTab === "materiais" ? "por m²" : activeTab === "mao_obra" ? "por metro" : "por unidade"}
+            </Text>
+            <TextInput
+              style={styles.modalPriceInput}
+              placeholder="0.00"
+              placeholderTextColor={colors.onSurfaceVariant}
+              keyboardType="decimal-pad"
+              value={editPrice}
+              onChangeText={setEditPrice}
+            />
+
+            <View style={styles.modalActions}>
+              <TouchableOpacity style={styles.cancelBtn} onPress={() => setModalVisible(false)}>
+                <Text style={styles.cancelBtnText}>Cancelar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.saveBtn} onPress={handleSaveModal}>
+                <Text style={styles.saveBtnText}>💾 Salvar Preço</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
-  content: { padding: 20, paddingBottom: 110 },
-  title: { fontSize: 24, fontWeight: "800", color: colors.primary, marginBottom: 16 },
+  content: { padding: 20, paddingBottom: 120 },
+
+  headerRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 16 },
+  title: { fontSize: 24, fontWeight: "800", color: colors.primary },
+  addBtn: { backgroundColor: colors.primary, paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20 },
+  addBtnText: { color: colors.onPrimary, fontSize: 13, fontWeight: "700" },
 
   tabRow: { flexDirection: "row", gap: 8, marginBottom: 16 },
   tabChip: {
-    paddingHorizontal: 14,
-    paddingVertical: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
     borderRadius: 20,
     backgroundColor: colors.surfaceContainerHigh,
   },
   tabChipActive: { backgroundColor: colors.primary },
-  tabChipText: { fontSize: 13, fontWeight: "600", color: colors.onSurfaceVariant },
+  tabChipText: { fontSize: 12, fontWeight: "600", color: colors.onSurfaceVariant },
   tabChipTextActive: { color: colors.onPrimary },
 
   searchBar: {
@@ -204,5 +357,79 @@ const styles = StyleSheet.create({
   itemSub: { fontSize: 12, color: colors.onSurfaceVariant, marginTop: 2 },
   priceContainer: { alignItems: "flex-end" },
   itemPrice: { fontSize: 15, fontWeight: "800", color: colors.secondary },
-  editLink: { fontSize: 12, color: colors.primary, textDecorationLine: "underline", marginTop: 2 },
+  editPill: {
+    backgroundColor: colors.secondaryContainer,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
+    marginTop: 4,
+  },
+  editPillText: { fontSize: 11, fontWeight: "700", color: colors.onSecondaryContainer },
+
+  /* MODAL STYLES */
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(9, 20, 38, 0.6)",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  modalContainer: {
+    width: "100%",
+    maxWidth: 420,
+    backgroundColor: colors.surfaceContainerLowest,
+    borderRadius: 20,
+    padding: 20,
+    shadowColor: "#000",
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    elevation: 8,
+  },
+  modalHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  modalTitle: { fontSize: 18, fontWeight: "800", color: colors.primary },
+  modalLabel: { fontSize: 13, fontWeight: "700", color: colors.primary, marginTop: 12, marginBottom: 4 },
+  modalInput: {
+    height: 46,
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.outlineVariant,
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    fontSize: 14,
+    color: colors.onSurface,
+  },
+  modalPriceInput: {
+    height: 52,
+    backgroundColor: colors.surface,
+    borderWidth: 2,
+    borderColor: colors.secondary,
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    fontSize: 22,
+    fontWeight: "800",
+    color: colors.secondary,
+  },
+  modalActions: { flexDirection: "row", gap: 10, marginTop: 24 },
+  cancelBtn: {
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    borderWidth: 1,
+    borderColor: colors.outlineVariant,
+    borderRadius: 12,
+    alignItems: "center",
+  },
+  cancelBtnText: { fontSize: 14, fontWeight: "600", color: colors.onSurfaceVariant },
+  saveBtn: {
+    flex: 1,
+    backgroundColor: colors.secondaryFixed,
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: "center",
+  },
+  saveBtnText: { fontSize: 15, fontWeight: "800", color: colors.onSecondaryFixed },
 });
