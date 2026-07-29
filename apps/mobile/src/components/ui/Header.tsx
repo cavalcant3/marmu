@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../../theme/colors";
 
 interface HeaderProps {
@@ -17,7 +18,7 @@ export default function Header({ userName = "Roberto", onSettingsPress }: Header
         <Text style={styles.title}>Marmu</Text>
       </View>
       <TouchableOpacity style={styles.iconButton} onPress={onSettingsPress}>
-        <Text style={styles.iconText}>⚙️</Text>
+        <Ionicons name="settings-outline" size={22} color={colors.onSurfaceVariant} />
       </TouchableOpacity>
     </View>
   );
@@ -65,8 +66,5 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
-  },
-  iconText: {
-    fontSize: 20,
   },
 });

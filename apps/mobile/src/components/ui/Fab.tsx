@@ -1,5 +1,6 @@
 import React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../../theme/colors";
 
 interface FabProps {
@@ -7,9 +8,10 @@ interface FabProps {
   onPress: () => void;
 }
 
-export default function Fab({ label = "+ Novo Orçamento", onPress }: FabProps) {
+export default function Fab({ label = "Novo Orçamento", onPress }: FabProps) {
   return (
     <TouchableOpacity style={styles.fab} onPress={onPress} activeOpacity={0.85}>
+      <Ionicons name="add" size={22} color={colors.onSecondaryFixed} style={styles.icon} />
       <Text style={styles.fabText}>{label}</Text>
     </TouchableOpacity>
   );
@@ -21,7 +23,7 @@ const styles = StyleSheet.create({
     bottom: 90,
     right: 20,
     backgroundColor: colors.secondaryFixed,
-    paddingHorizontal: 24,
+    paddingHorizontal: 22,
     paddingVertical: 14,
     borderRadius: 24,
     shadowColor: colors.primary,
@@ -33,9 +35,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  icon: {
+    marginRight: 6,
+  },
   fabText: {
     color: colors.onSecondaryFixed,
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "700",
   },
 });

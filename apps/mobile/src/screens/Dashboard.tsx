@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../theme/colors";
 import { typography } from "../theme/typography";
 import Badge from "../components/ui/Badge";
@@ -19,7 +20,7 @@ export default function DashboardScreen({ navigation }: any) {
         <View style={styles.bentoCard}>
           <View style={styles.cardHeader}>
             <Text style={styles.cardLabel}>ORÇAMENTOS NO MÊS</Text>
-            <Text style={styles.cardHeaderIcon}>📄</Text>
+            <Ionicons name="document-text-outline" size={20} color={colors.primary} />
           </View>
           <View>
             <Text style={styles.displayNum}>12</Text>
@@ -31,7 +32,7 @@ export default function DashboardScreen({ navigation }: any) {
         <View style={styles.bentoCard}>
           <View style={styles.cardHeader}>
             <Text style={styles.cardLabel}>PEDIDOS EM ABERTO</Text>
-            <Text style={styles.cardHeaderIcon}>⚙️</Text>
+            <Ionicons name="construct-outline" size={20} color={colors.primary} />
           </View>
           <View>
             <Text style={styles.displayNum}>05</Text>
@@ -52,11 +53,21 @@ export default function DashboardScreen({ navigation }: any) {
         {/* Delivery Item 1 */}
         <TouchableOpacity
           style={styles.deliveryCard}
-          onPress={() => navigation.navigate("detalhespedido", { pedido: { id: "1", cliente: "Ed. Miramar - Apto 402", projeto: "Bancada Cozinha", data: "12/10", status: "No Prazo" } })}
+          onPress={() =>
+            navigation.navigate("detalhespedido", {
+              pedido: {
+                id: "1",
+                cliente: "Ed. Miramar - Apto 402",
+                projeto: "Bancada Cozinha",
+                data: "12/10",
+                status: "No Prazo",
+              },
+            })
+          }
         >
           <View style={styles.deliveryLeft}>
             <View style={styles.iconBox}>
-              <Text style={styles.boxIcon}>🏠</Text>
+              <Ionicons name="home-outline" size={20} color={colors.primary} />
             </View>
             <View>
               <Text style={styles.deliveryTitle}>Ed. Miramar - Apto 402</Text>
@@ -69,28 +80,48 @@ export default function DashboardScreen({ navigation }: any) {
         {/* Delivery Item 2 */}
         <TouchableOpacity
           style={styles.deliveryCard}
-          onPress={() => navigation.navigate("detalhespedido", { pedido: { id: "2", cliente: "Casa Cond. Lagos", projeto: "Soleiras/Peitoris", data: "15/10", status: "Atenção" } })}
+          onPress={() =>
+            navigation.navigate("detalhespedido", {
+              pedido: {
+                id: "2",
+                cliente: "Casa Cond. Lagos",
+                projeto: "Soleiras/Peitoris",
+                data: "15/10",
+                status: "Atenção",
+              },
+            })
+          }
         >
           <View style={styles.deliveryLeft}>
             <View style={styles.iconBox}>
-              <Text style={styles.boxIcon}>🔨</Text>
+              <Ionicons name="hammer-outline" size={20} color={colors.primary} />
             </View>
             <View>
               <Text style={styles.deliveryTitle}>Casa Cond. Lagos</Text>
               <Text style={styles.deliverySub}>Soleiras/Peitoris • 15/10</Text>
             </View>
           </View>
-          <Badge label="⚠️ Atenção" variant="warning" />
+          <Badge label="Atenção" variant="warning" />
         </TouchableOpacity>
 
         {/* Delivery Item 3 */}
         <TouchableOpacity
           style={styles.deliveryCard}
-          onPress={() => navigation.navigate("detalhespedido", { pedido: { id: "3", cliente: "Sede Administrativa X", projeto: "Piso Hall", data: "16/10", status: "Confirmada" } })}
+          onPress={() =>
+            navigation.navigate("detalhespedido", {
+              pedido: {
+                id: "3",
+                cliente: "Sede Administrativa X",
+                projeto: "Piso Hall",
+                data: "16/10",
+                status: "Confirmada",
+              },
+            })
+          }
         >
           <View style={styles.deliveryLeft}>
             <View style={styles.iconBox}>
-              <Text style={styles.boxIcon}>🏢</Text>
+              <Ionicons name="business-outline" size={20} color={colors.primary} />
             </View>
             <View>
               <Text style={styles.deliveryTitle}>Sede Administrativa X</Text>
@@ -109,7 +140,8 @@ export default function DashboardScreen({ navigation }: any) {
           style={styles.bannerButton}
           onPress={() => navigation.navigate("tabelaprecos")}
         >
-          <Text style={styles.bannerBtnText}>Ver Inventário ➔</Text>
+          <Text style={styles.bannerBtnText}>Ver Inventário</Text>
+          <Ionicons name="arrow-forward" size={16} color={colors.onSecondaryFixed} style={{ marginLeft: 6 }} />
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -157,7 +189,7 @@ const styles = StyleSheet.create({
   cardHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "start",
+    alignItems: "flex-start",
   },
   cardLabel: {
     fontSize: 11,
@@ -165,9 +197,6 @@ const styles = StyleSheet.create({
     color: colors.onSurfaceVariant,
     letterSpacing: 0.5,
     maxWidth: "80%",
-  },
-  cardHeaderIcon: {
-    fontSize: 16,
   },
   displayNum: {
     fontSize: 34,
@@ -224,9 +253,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  boxIcon: {
-    fontSize: 20,
-  },
   deliveryTitle: {
     fontSize: 14,
     fontWeight: "700",
@@ -260,6 +286,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 8,
     alignSelf: "flex-start",
+    flexDirection: "row",
+    alignItems: "center",
   },
   bannerBtnText: {
     color: colors.onSecondaryFixed,

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../theme/colors";
 
 export default function FotoAnotacaoScreen() {
@@ -36,7 +37,7 @@ export default function FotoAnotacaoScreen() {
 
       {/* Canvas Box simulating kitchen photo with overlays */}
       <View style={styles.canvasBox}>
-        <Text style={styles.canvasBgIcon}>🏠</Text>
+        <Ionicons name="image-outline" size={64} color={colors.onPrimaryContainer} style={{ opacity: 0.3 }} />
         <Text style={styles.canvasBgText}>Foto da Cozinha / Parede da Bancada</Text>
 
         {annotations.map((ann) => (
@@ -51,14 +52,15 @@ export default function FotoAnotacaoScreen() {
 
       <View style={styles.toolbar}>
         <TouchableOpacity style={styles.toolBtn} onPress={handleAddAnnotation}>
-          <Text style={styles.toolBtnText}>✏️ Adicionar Medida / Cota</Text>
+          <Ionicons name="pencil" size={18} color={colors.onSecondaryFixed} style={{ marginRight: 6 }} />
+          <Text style={styles.toolBtnText}>Adicionar Medida / Cota</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.toolBtnSec}
           onPress={() => setAnnotations([])}
         >
-          <Text style={styles.toolBtnSecText}>🗑️ Limpar Marcações</Text>
+          <Ionicons name="trash-outline" size={18} color={colors.error} />
         </TouchableOpacity>
       </View>
     </View>
@@ -79,7 +81,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     minHeight: 350,
   },
-  canvasBgIcon: { fontSize: 64, opacity: 0.2 },
   canvasBgText: { fontSize: 14, color: colors.onPrimaryContainer, marginTop: 8, opacity: 0.6 },
 
   annotationTag: {
@@ -102,14 +103,16 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 12,
     alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
   },
   toolBtnText: { fontSize: 14, fontWeight: "800", color: colors.onSecondaryFixed },
   toolBtnSec: {
-    paddingHorizontal: 16,
+    width: 52,
     paddingVertical: 14,
     backgroundColor: colors.surfaceContainerHigh,
     borderRadius: 12,
     alignItems: "center",
+    justifyContent: "center",
   },
-  toolBtnSecText: { fontSize: 13, fontWeight: "700", color: colors.error },
 });

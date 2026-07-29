@@ -8,6 +8,7 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../theme/colors";
 import { useMaterialStore } from "../stores/materialStore";
 
@@ -91,9 +92,13 @@ export default function NovoOrcamentoScreen({ navigation }: any) {
                   isDone && styles.stepBadgeDone,
                 ]}
               >
-                <Text style={[styles.stepNum, (isActive || isDone) && styles.stepNumActive]}>
-                  {isDone ? "✓" : s.num}
-                </Text>
+                {isDone ? (
+                  <Ionicons name="checkmark" size={14} color={colors.onPrimary} />
+                ) : (
+                  <Text style={[styles.stepNum, isActive && styles.stepNumActive]}>
+                    {s.num}
+                  </Text>
+                )}
               </View>
               <Text style={[styles.stepLabel, isActive && styles.stepLabelActive]}>
                 {s.label}
@@ -137,7 +142,8 @@ export default function NovoOrcamentoScreen({ navigation }: any) {
           />
 
           <TouchableOpacity style={styles.nextBtn} onPress={() => setStep(2)}>
-            <Text style={styles.nextBtnText}>Próximo: Inserir Medidas ➔</Text>
+            <Text style={styles.nextBtnText}>Próximo: Inserir Medidas</Text>
+            <Ionicons name="arrow-forward" size={16} color={colors.onPrimary} style={{ marginLeft: 6 }} />
           </TouchableOpacity>
         </View>
       )}
@@ -174,7 +180,7 @@ export default function NovoOrcamentoScreen({ navigation }: any) {
               <Text style={styles.areaLabel}>Área Total Calculada</Text>
               <Text style={styles.areaValue}>{area.toFixed(2)} m²</Text>
             </View>
-            <Text style={styles.areaIcon}>📏</Text>
+            <Ionicons name="resize-outline" size={28} color={colors.primary} />
           </View>
 
           <View style={styles.navRow}>
@@ -182,7 +188,8 @@ export default function NovoOrcamentoScreen({ navigation }: any) {
               <Text style={styles.backBtnText}>Voltar</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.nextBtn, styles.flex1]} onPress={() => setStep(3)}>
-              <Text style={styles.nextBtnText}>Selecionar Material ➔</Text>
+              <Text style={styles.nextBtnText}>Selecionar Material</Text>
+              <Ionicons name="arrow-forward" size={16} color={colors.onPrimary} style={{ marginLeft: 6 }} />
             </TouchableOpacity>
           </View>
         </View>
@@ -203,7 +210,7 @@ export default function NovoOrcamentoScreen({ navigation }: any) {
                   onPress={() => setSelectedMaterial(m)}
                 >
                   <View style={styles.matIcon}>
-                    <Text style={{ fontSize: 20 }}>🪨</Text>
+                    <Ionicons name="layers-outline" size={20} color={colors.primary} />
                   </View>
                   <View style={styles.flex1}>
                     <Text style={styles.matName}>{m.nome}</Text>
@@ -235,7 +242,8 @@ export default function NovoOrcamentoScreen({ navigation }: any) {
               <Text style={styles.backBtnText}>Voltar</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.nextBtn, styles.flex1]} onPress={() => setStep(4)}>
-              <Text style={styles.nextBtnText}>Revisar e Gerar ➔</Text>
+              <Text style={styles.nextBtnText}>Revisar e Gerar</Text>
+              <Ionicons name="arrow-forward" size={16} color={colors.onPrimary} style={{ marginLeft: 6 }} />
             </TouchableOpacity>
           </View>
         </View>
@@ -278,7 +286,8 @@ export default function NovoOrcamentoScreen({ navigation }: any) {
           />
 
           <TouchableOpacity style={styles.photoBtn} onPress={() => navigation.navigate("fotoanotacao")}>
-            <Text style={styles.photoBtnText}>📷 Adicionar / Ver Foto com Anotação</Text>
+            <Ionicons name="camera-outline" size={18} color={colors.primary} style={{ marginRight: 6 }} />
+            <Text style={styles.photoBtnText}>Adicionar / Ver Foto com Anotação</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.generateBtn} onPress={handleGerar}>
@@ -364,7 +373,6 @@ const styles = StyleSheet.create({
   },
   areaLabel: { fontSize: 12, color: colors.onSurfaceVariant, fontWeight: "500" },
   areaValue: { fontSize: 24, fontWeight: "800", color: colors.primary, marginTop: 2 },
-  areaIcon: { fontSize: 28 },
 
   materialCard: {
     flexDirection: "row",
@@ -422,6 +430,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     marginTop: 16,
+    flexDirection: "row",
+    justifyContent: "center",
   },
   nextBtnText: { color: colors.onPrimary, fontSize: 15, fontWeight: "700" },
 
@@ -442,6 +452,8 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 10,
     alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
     marginTop: 16,
     marginBottom: 8,
   },

@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../../theme/colors";
 
 export type TabType = "dashboard" | "orcamentos" | "pedidos" | "precos";
@@ -10,11 +11,11 @@ interface BottomTabBarProps {
 }
 
 export default function BottomTabBar({ currentTab, onTabChange }: BottomTabBarProps) {
-  const tabs: { key: TabType; label: string; icon: string } = [
-    { key: "dashboard", label: "Dashboard", icon: "📊" },
-    { key: "orcamentos", label: "Orçamentos", icon: "📝" },
-    { key: "pedidos", label: "Pedidos", icon: "📦" },
-    { key: "precos", label: "Preços", icon: "🏷️" },
+  const tabs: { key: TabType; label: string; iconName: keyof typeof Ionicons.glyphMap } = [
+    { key: "dashboard", label: "Dashboard", iconName: "grid-outline" },
+    { key: "orcamentos", label: "Orçamentos", iconName: "document-text-outline" },
+    { key: "pedidos", label: "Pedidos", iconName: "cube-outline" },
+    { key: "precos", label: "Preços", iconName: "pricetags-outline" },
   ];
 
   return (
@@ -28,7 +29,11 @@ export default function BottomTabBar({ currentTab, onTabChange }: BottomTabBarPr
             onPress={() => onTabChange(tab.key)}
             activeOpacity={0.8}
           >
-            <Text style={[styles.icon, isActive && styles.activeIcon]}>{tab.icon}</Text>
+            <Ionicons
+              name={tab.iconName}
+              size={20}
+              color={isActive ? colors.onPrimaryContainer : colors.onSurfaceVariant}
+            />
             <Text style={[styles.label, isActive && styles.activeLabel]}>{tab.label}</Text>
           </TouchableOpacity>
         );
@@ -39,7 +44,7 @@ export default function BottomTabBar({ currentTab, onTabChange }: BottomTabBarPr
 
 const styles = StyleSheet.create({
   container: {
-    height: 70,
+    height: 72,
     backgroundColor: colors.surface,
     borderTopWidth: 1,
     borderTopColor: colors.outlineVariant,
@@ -63,17 +68,11 @@ const styles = StyleSheet.create({
   activeTabButton: {
     backgroundColor: colors.primaryContainer,
   },
-  icon: {
-    fontSize: 18,
-  },
-  activeIcon: {
-    fontSize: 18,
-  },
   label: {
     fontSize: 12,
     fontWeight: "500",
     color: colors.onSurfaceVariant,
-    marginTop: 2,
+    marginTop: 3,
   },
   activeLabel: {
     color: colors.onPrimaryContainer,

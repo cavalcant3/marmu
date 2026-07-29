@@ -9,6 +9,7 @@ import {
   Modal,
   Alert,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../theme/colors";
 import { useMaterialStore } from "../stores/materialStore";
 
@@ -20,7 +21,6 @@ export default function TabelaPrecosScreen() {
   const updatePrice = useMaterialStore((state) => state.updatePrice);
   const addMaterial = useMaterialStore((state) => state.addMaterial);
 
-  // Initial State for Labor and Cubas
   const [laborList, setLaborList] = useState([
     { id: "1", nome: "Corte em 45º / Meia Esquadria", tipo: "Acabamento / Serviço", preco: 45, unidade: "m" },
     { id: "2", nome: "Acabamento Bisote Simples", tipo: "Polimento de Borda", preco: 25, unidade: "m" },
@@ -33,14 +33,12 @@ export default function TabelaPrecosScreen() {
     { id: "3", nome: "Cuba de Louça Apoio Oval", tipo: "Louça Sanitária", preco: 220, unidade: "unid" },
   ]);
 
-  // Modal State for Editing / Adding
   const [modalVisible, setModalVisible] = useState(false);
   const [editingItem, setEditingItem] = useState<any>(null);
   const [editName, setEditName] = useState("");
   const [editType, setEditType] = useState("");
   const [editPrice, setEditPrice] = useState("");
 
-  // Open Edit Modal for existing item
   const openEditModal = (item: any) => {
     setEditingItem(item);
     setEditName(item.nome);
@@ -49,7 +47,6 @@ export default function TabelaPrecosScreen() {
     setModalVisible(true);
   };
 
-  // Open Edit Modal for NEW item
   const openNewItemModal = () => {
     setEditingItem(null);
     setEditName("");
@@ -58,7 +55,6 @@ export default function TabelaPrecosScreen() {
     setModalVisible(true);
   };
 
-  // Save changes from Modal
   const handleSaveModal = () => {
     const priceNum = parseFloat(editPrice) || 0;
     if (!editName) {
@@ -72,10 +68,8 @@ export default function TabelaPrecosScreen() {
 
     if (activeTab === "materiais") {
       if (editingItem) {
-        // Update Material Store
         updatePrice(editingItem.id, priceNum);
       } else {
-        // Add new Material Store
         addMaterial({
           nome: editName,
           tipo: editType,
@@ -125,7 +119,8 @@ export default function TabelaPrecosScreen() {
       <View style={styles.headerRow}>
         <Text style={styles.title}>Tabela de Preços</Text>
         <TouchableOpacity style={styles.addBtn} onPress={openNewItemModal}>
-          <Text style={styles.addBtnText}>+ Novo Item</Text>
+          <Ionicons name="add" size={16} color={colors.onPrimary} style={{ marginRight: 4 }} />
+          <Text style={styles.addBtnText}>Novo Item</Text>
         </TouchableOpacity>
       </View>
 
@@ -159,21 +154,24 @@ export default function TabelaPrecosScreen() {
         </TouchableOpacity>
       </View>
 
-      <TextInput
-        style={styles.searchBar}
-        placeholder="🔍 Buscar material ou serviço..."
-        placeholderTextColor={colors.onSurfaceVariant}
-        value={search}
-        onChangeText={setSearch}
-      />
+      <View style={styles.searchContainer}>
+        <Ionicons name="search-outline" size={18} color={colors.outline} style={styles.searchIcon} />
+        <TextInput
+          style={styles.searchBar}
+          placeholder="Buscar material ou serviço..."
+          placeholderTextColor={colors.onSurfaceVariant}
+          value={search}
+          onChangeText={setSearch}
+        />
+      </View>
 
-      {/* TAB 1: MATERIAIS (m²) */}
+      {/* TAB 1: MATERIAIS */}
       {activeTab === "materiais" && (
         <View style={styles.list}>
           {filteredMaterials.map((m) => (
             <TouchableOpacity key={m.id} style={styles.itemCard} onPress={() => openEditModal(m)}>
               <View style={styles.itemIcon}>
-                <Text style={{ fontSize: 22 }}>🪨</Text>
+                <Ionicons name="layers-outline" size={22} color={colors.primary} />
               </View>
 
               <View style={styles.flex1}>
@@ -184,7 +182,8 @@ export default function TabelaPrecosScreen() {
               <View style={styles.priceContainer}>
                 <Text style={styles.itemPrice}>R$ {m.preco_por_m2}/m²</Text>
                 <View style={styles.editPill}>
-                  <Text style={styles.editPillText}>✏️ Editar</Text>
+                  <Ionicons name="pencil" size={10} color={colors.onSecondaryContainer} style={{ marginRight: 3 }} />
+                  <Text style={styles.editPillText}>Editar</Text>
                 </View>
               </View>
             </TouchableOpacity>
@@ -192,13 +191,13 @@ export default function TabelaPrecosScreen() {
         </View>
       )}
 
-      {/* TAB 2: MÃO DE OBRA (m) */}
+      {/* TAB 2: MÃO DE OBRA */}
       {activeTab === "mao_obra" && (
         <View style={styles.list}>
           {filteredLabor.map((item) => (
             <TouchableOpacity key={item.id} style={styles.itemCard} onPress={() => openEditModal(item)}>
               <View style={styles.itemIcon}>
-                <Text style={{ fontSize: 22 }}>📐</Text>
+                <Ionicons name="cut-outline" size={22} color={colors.primary} />
               </View>
               <View style={styles.flex1}>
                 <Text style={styles.itemName}>{item.nome}</Text>
@@ -207,7 +206,8 @@ export default function TabelaPrecosScreen() {
               <View style={styles.priceContainer}>
                 <Text style={styles.itemPrice}>R$ {item.preco}/m</Text>
                 <View style={styles.editPill}>
-                  <Text style={styles.editPillText}>✏️ Editar</Text>
+                  <Ionicons name="pencil" size={10} color={colors.onSecondaryContainer} style={{ marginRight: 3 }} />
+                  <Text style={styles.editPillText}>Editar</Text>
                 </View>
               </View>
             </TouchableOpacity>
@@ -215,13 +215,13 @@ export default function TabelaPrecosScreen() {
         </View>
       )}
 
-      {/* TAB 3: CUBAS & ACESSÓRIOS */}
+      {/* TAB 3: CUBAS */}
       {activeTab === "cubas" && (
         <View style={styles.list}>
           {filteredCubas.map((item) => (
             <TouchableOpacity key={item.id} style={styles.itemCard} onPress={() => openEditModal(item)}>
               <View style={styles.itemIcon}>
-                <Text style={{ fontSize: 22 }}>🥣</Text>
+                <Ionicons name="water-outline" size={22} color={colors.primary} />
               </View>
               <View style={styles.flex1}>
                 <Text style={styles.itemName}>{item.nome}</Text>
@@ -230,7 +230,8 @@ export default function TabelaPrecosScreen() {
               <View style={styles.priceContainer}>
                 <Text style={styles.itemPrice}>R$ {item.preco}</Text>
                 <View style={styles.editPill}>
-                  <Text style={styles.editPillText}>✏️ Editar</Text>
+                  <Ionicons name="pencil" size={10} color={colors.onSecondaryContainer} style={{ marginRight: 3 }} />
+                  <Text style={styles.editPillText}>Editar</Text>
                 </View>
               </View>
             </TouchableOpacity>
@@ -238,7 +239,7 @@ export default function TabelaPrecosScreen() {
         </View>
       )}
 
-      {/* EDIT & ADD MODAL (CROSS-PLATFORM REACT NATIVE MODAL) */}
+      {/* EDIT & ADD MODAL */}
       <Modal
         visible={modalVisible}
         transparent={true}
@@ -252,7 +253,7 @@ export default function TabelaPrecosScreen() {
                 {editingItem ? "Editar Preço e Detalhes" : "Adicionar Novo Item"}
               </Text>
               <TouchableOpacity onPress={() => setModalVisible(false)}>
-                <Text style={{ fontSize: 20 }}>❌</Text>
+                <Ionicons name="close" size={22} color={colors.primary} />
               </TouchableOpacity>
             </View>
 
@@ -291,7 +292,8 @@ export default function TabelaPrecosScreen() {
                 <Text style={styles.cancelBtnText}>Cancelar</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.saveBtn} onPress={handleSaveModal}>
-                <Text style={styles.saveBtnText}>💾 Salvar Preço</Text>
+                <Ionicons name="checkmark" size={18} color={colors.onSecondaryFixed} style={{ marginRight: 4 }} />
+                <Text style={styles.saveBtnText}>Salvar Preço</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -307,7 +309,14 @@ const styles = StyleSheet.create({
 
   headerRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 16 },
   title: { fontSize: 24, fontWeight: "800", color: colors.primary },
-  addBtn: { backgroundColor: colors.primary, paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20 },
+  addBtn: {
+    backgroundColor: colors.primary,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 20,
+    flexDirection: "row",
+    alignItems: "center",
+  },
   addBtnText: { color: colors.onPrimary, fontSize: 13, fontWeight: "700" },
 
   tabRow: { flexDirection: "row", gap: 8, marginBottom: 16 },
@@ -321,16 +330,18 @@ const styles = StyleSheet.create({
   tabChipText: { fontSize: 12, fontWeight: "600", color: colors.onSurfaceVariant },
   tabChipTextActive: { color: colors.onPrimary },
 
+  searchContainer: { position: "relative", marginBottom: 16 },
+  searchIcon: { position: "absolute", left: 14, top: 15, zIndex: 1 },
   searchBar: {
     height: 48,
     backgroundColor: colors.surfaceContainerLowest,
     borderWidth: 1,
     borderColor: colors.outlineVariant,
     borderRadius: 12,
-    paddingHorizontal: 16,
+    paddingLeft: 42,
+    paddingRight: 16,
     fontSize: 14,
     color: colors.onSurface,
-    marginBottom: 16,
   },
 
   list: { gap: 10 },
@@ -363,6 +374,8 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
     borderRadius: 10,
     marginTop: 4,
+    flexDirection: "row",
+    alignItems: "center",
   },
   editPillText: { fontSize: 11, fontWeight: "700", color: colors.onSecondaryContainer },
 
@@ -430,6 +443,8 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 12,
     alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
   },
   saveBtnText: { fontSize: 15, fontWeight: "800", color: colors.onSecondaryFixed },
 });

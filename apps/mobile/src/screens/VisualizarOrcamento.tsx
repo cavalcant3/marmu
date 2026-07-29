@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../theme/colors";
 import Badge from "../components/ui/Badge";
 
@@ -92,11 +93,13 @@ export default function VisualizarOrcamentoScreen({ route, navigation }: any) {
       </View>
 
       <TouchableOpacity style={styles.whatsappBtn} onPress={handleShareWhatsApp}>
-        <Text style={styles.whatsappBtnText}>📱 Enviar PDF via WhatsApp</Text>
+        <Ionicons name="logo-whatsapp" size={20} color={colors.onSecondary} style={{ marginRight: 8 }} />
+        <Text style={styles.whatsappBtnText}>Enviar PDF via WhatsApp</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.convertBtn} onPress={handleConvertPedido}>
-        <Text style={styles.convertBtnText}>✓ Cliente Aprovou? Converter em Pedido</Text>
+        <Ionicons name="checkmark-circle-outline" size={18} color={colors.onPrimaryContainer} style={{ marginRight: 6 }} />
+        <Text style={styles.convertBtnText}>Cliente Aprovou? Converter em Pedido</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -145,6 +148,8 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
     marginBottom: 10,
   },
   whatsappBtnText: { fontSize: 16, fontWeight: "800", color: colors.onSecondary },
@@ -154,6 +159,8 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 12,
     alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
   },
   convertBtnText: { fontSize: 14, fontWeight: "700", color: colors.onPrimaryContainer },
 });

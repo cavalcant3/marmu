@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../theme/colors";
 import Badge from "../components/ui/Badge";
 
@@ -74,7 +75,7 @@ export default function DetalhesPedidoScreen({ route, navigation }: any) {
       <View style={styles.card}>
         <Text style={styles.cardSectionTitle}>Foto-Anotada da Obra</Text>
         <View style={styles.photoBox}>
-          <Text style={{ fontSize: 40, marginBottom: 8 }}>📷</Text>
+          <Ionicons name="camera-outline" size={42} color={colors.primary} style={{ marginBottom: 8 }} />
           <Text style={styles.photoText}>Visualização do Canto da Cozinha</Text>
           <Text style={styles.photoSub}>Medidas: 2,40m × 0,60m (Corte de Cuba à direita)</Text>
         </View>
@@ -82,7 +83,8 @@ export default function DetalhesPedidoScreen({ route, navigation }: any) {
           style={styles.viewPhotoBtn}
           onPress={() => navigation.navigate("fotoanotacao")}
         >
-          <Text style={styles.viewPhotoBtnText}>Abrir Foto em Tela Cheia 🔍</Text>
+          <Ionicons name="search-outline" size={16} color={colors.primary} style={{ marginRight: 6 }} />
+          <Text style={styles.viewPhotoBtnText}>Abrir Foto em Tela Cheia</Text>
         </TouchableOpacity>
       </View>
 
@@ -110,11 +112,13 @@ export default function DetalhesPedidoScreen({ route, navigation }: any) {
       {/* Action Button */}
       {!entregue ? (
         <TouchableOpacity style={styles.deliverBtn} onPress={handleMarcarEntregue}>
-          <Text style={styles.deliverBtnText}>✓ Marcar Pedido como Entregue</Text>
+          <Ionicons name="checkmark-outline" size={18} color={colors.onSecondaryFixed} style={{ marginRight: 6 }} />
+          <Text style={styles.deliverBtnText}>Marcar Pedido como Entregue</Text>
         </TouchableOpacity>
       ) : (
         <View style={styles.doneBanner}>
-          <Text style={styles.doneBannerText}>✓ Pedido Concluído e Entregue</Text>
+          <Ionicons name="checkmark-done-outline" size={20} color={colors.onSecondaryContainer} style={{ marginRight: 6 }} />
+          <Text style={styles.doneBannerText}>Pedido Concluído e Entregue</Text>
         </View>
       )}
     </ScrollView>
@@ -172,6 +176,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 8,
     alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
     marginTop: 12,
   },
   viewPhotoBtnText: { fontSize: 13, fontWeight: "700", color: colors.primary },
@@ -192,6 +198,8 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     borderRadius: 14,
     alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
     marginTop: 8,
   },
   deliverBtnText: { fontSize: 16, fontWeight: "800", color: colors.onSecondaryFixed },
@@ -201,6 +209,8 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     borderRadius: 14,
     alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
     marginTop: 8,
   },
   doneBannerText: { fontSize: 16, fontWeight: "800", color: colors.onSecondaryContainer },
