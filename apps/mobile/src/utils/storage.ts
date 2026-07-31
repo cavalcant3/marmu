@@ -28,5 +28,18 @@ class WebStorage {
   }
 }
 
-// Fallback if NativeMMKV is undefined (which is true on web platform)
-export const MMKV = (Platform.OS === "web" || !NativeMMKV) ? WebStorage : NativeMMKV;
+let MMKVImplementation: any = WebStorage;
+if (Platform.OS !== "web") {
+  try {
+    const MMKVModule = require("react-native-mmkv");
+    if (MMKVModule && MMKVModule.MMKV) {
+      MMKVImplementation = MMKVModule.MMKV;
+    }
+  } catch {
+    MMKVImplementation = WebStorage;
+  }
+}
+
+export const MMKV = MMKVImplementation;
+
+

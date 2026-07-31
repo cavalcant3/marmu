@@ -13,7 +13,11 @@ import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../theme/colors";
 import { useMaterialStore } from "../stores/materialStore";
 
-export default function TabelaPrecosScreen() {
+interface TabelaPrecosProps {
+  navigation?: any;
+}
+
+export default function TabelaPrecosScreen({ navigation }: TabelaPrecosProps = {}) {
   const [activeTab, setActiveTab] = useState<"materiais" | "mao_obra" | "cubas">("materiais");
   const [search, setSearch] = useState("");
 

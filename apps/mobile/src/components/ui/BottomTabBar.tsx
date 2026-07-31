@@ -11,7 +11,7 @@ interface BottomTabBarProps {
 }
 
 export default function BottomTabBar({ currentTab, onTabChange }: BottomTabBarProps) {
-  const tabs: { key: TabType; label: string; iconName: keyof typeof Ionicons.glyphMap } = [
+  const tabs: Array<{ key: TabType; label: string; iconName: keyof typeof Ionicons.glyphMap }> = [
     { key: "dashboard", label: "Dashboard", iconName: "grid-outline" },
     { key: "orcamentos", label: "Orçamentos", iconName: "document-text-outline" },
     { key: "pedidos", label: "Pedidos", iconName: "cube-outline" },

@@ -8,6 +8,7 @@ export const colors = {
 
   // Secondary (Forest Green & Mint Highlight)
   secondary: "#006e2f",
+  onSecondary: "#ffffff",
   secondaryFixed: "#6bff8f",
   secondaryContainer: "#6bff8f",
   onSecondaryContainer: "#007432",
@@ -32,7 +33,10 @@ export const colors = {
 
   // Alerts & Status Badges
   tertiaryFixed: "#ffddb8", // Amber warning
+  onTertiaryFixed: "#653e00",
   onTertiaryFixedVariant: "#653e00",
   error: "#ba1a1a",
   errorContainer: "#ffdad6",
+  onErrorContainer: "#410002",
 };
+

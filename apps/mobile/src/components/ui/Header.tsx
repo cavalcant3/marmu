@@ -6,23 +6,28 @@ import { colors } from "../../theme/colors";
 interface HeaderProps {
   userName?: string;
   onSettingsPress?: () => void;
+  onProfilePress?: () => void;
 }
 
-export default function Header({ userName = "Roberto", onSettingsPress }: HeaderProps) {
+export default function Header({ userName = "Usuário", onSettingsPress, onProfilePress }: HeaderProps) {
+  const initial = (userName || "U")[0].toUpperCase();
+  const handleProfileClick = onProfilePress || onSettingsPress;
+
   return (
     <View style={styles.header}>
-      <View style={styles.left}>
+      <TouchableOpacity style={styles.left} onPress={handleProfileClick} activeOpacity={0.7}>
         <View style={styles.avatar}>
-          <Text style={styles.avatarText}>{userName[0]}</Text>
+          <Text style={styles.avatarText}>{initial}</Text>
         </View>
         <Text style={styles.title}>Marmu</Text>
-      </View>
-      <TouchableOpacity style={styles.iconButton} onPress={onSettingsPress}>
-        <Ionicons name="settings-outline" size={22} color={colors.onSurfaceVariant} />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.iconButton} onPress={handleProfileClick}>
+        <Ionicons name="person-circle-outline" size={24} color={colors.primary} />
       </TouchableOpacity>
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   header: {

@@ -18,7 +18,7 @@ export default function FotoAnotacaoScreen() {
         { text: "Cancelar", style: "cancel" },
         {
           text: "Inserir na Foto",
-          onPress: (val) => {
+          onPress: (val?: any) => {
             if (val) {
               setAnnotations([
                 ...annotations,

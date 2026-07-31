@@ -4,15 +4,20 @@ import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../theme/colors";
 import { typography } from "../theme/typography";
 import Badge from "../components/ui/Badge";
+import { useAuthStore } from "../stores/authStore";
 
 export default function DashboardScreen({ navigation }: any) {
+  const user = useAuthStore((state) => state.user);
+  const userName = user?.nome || (user?.email ? user.email.split("@")[0] : "Usuário");
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       {/* Welcome Section */}
       <View style={styles.welcomeSection}>
-        <Text style={styles.greetingText}>Bom dia, Roberto</Text>
+        <Text style={styles.greetingText}>Bom dia, {userName}</Text>
         <Text style={styles.sectionTitle}>Resumo da Oficina</Text>
       </View>
+
 
       {/* Bento Grid */}
       <View style={styles.grid}>

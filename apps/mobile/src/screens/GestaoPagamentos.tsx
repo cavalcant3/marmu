@@ -27,7 +27,7 @@ export default function GestaoPagamentosScreen({ navigation }: any) {
         { text: "Cancelar", style: "cancel" },
         {
           text: "Confirmar Recebimento",
-          onPress: (val) => {
+          onPress: (val?: any) => {
             const num = parseFloat(val || "0");
             if (num > 0) {
               const novoPago = Math.min(total, pago + num);

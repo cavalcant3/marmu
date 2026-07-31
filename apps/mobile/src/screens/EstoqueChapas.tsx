@@ -53,7 +53,7 @@ export default function EstoqueChapasScreen({ navigation }: any) {
         { text: "Cancelar", style: "cancel" },
         {
           text: "Adicionar ao Estoque",
-          onPress: (val) => {
+          onPress: (val?: any) => {
             const num = parseInt(val || "0", 10);
             if (num > 0) {
               setChapas((prev) =>

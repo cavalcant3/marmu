@@ -34,7 +34,7 @@ export default function AgendaMedicaoScreen({ navigation }: any) {
         { text: "Cancelar", style: "cancel" },
         {
           text: "Agendar",
-          onPress: (val) => {
+          onPress: (val?: any) => {
             if (val) {
               Alert.alert("Sucesso", "Nova medição agendada!");
             }

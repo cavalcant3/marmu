@@ -17,6 +17,7 @@ import TabelaPrecosScreen from "./src/screens/TabelaPrecos";
 import EstoqueChapasScreen from "./src/screens/EstoqueChapas";
 import AgendaMedicaoScreen from "./src/screens/AgendaMedicao";
 import GestaoPagamentosScreen from "./src/screens/GestaoPagamentos";
+import PerfilUsuarioScreen from "./src/screens/PerfilUsuario";
 import { useAuthStore } from "./src/stores/authStore";
 
 export default function App() {
@@ -28,6 +29,7 @@ export default function App() {
 
   const loadTokens = useAuthStore((state) => state.loadTokens);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const user = useAuthStore((state) => state.user);
 
   useEffect(() => {
     loadTokens();
@@ -57,16 +59,12 @@ export default function App() {
     goBack: () => setSubScreen(null),
   };
 
-  if (!isAuthenticated) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <LoginScreen />
-        <StatusBar style="auto" />
-      </SafeAreaView>
-    );
-  }
+
 
   const renderScreen = () => {
+    if (subScreen === "perfilusuario") {
+      return <PerfilUsuarioScreen navigation={navigation} />;
+    }
     if (subScreen === "novoorcamento") {
       return <NovoOrcamentoScreen navigation={navigation} />;
     }
@@ -103,10 +101,16 @@ export default function App() {
     }
   };
 
+  const displayName = user?.nome || (user?.email ? user.email.split("@")[0] : "Usuário");
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Top App Bar Header */}
-      <Header userName="Roberto" />
+      <Header
+        userName={displayName}
+        onProfilePress={() => navigation.navigate("perfilusuario")}
+      />
+
 
       {/* Main Active Screen Content */}
       <View style={styles.body}>{renderScreen()}</View>
