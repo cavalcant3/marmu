@@ -1,74 +1,43 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, useWindowDimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../theme/colors";
 import Badge from "../components/ui/Badge";
+import { usePedidoStore } from "../stores/pedidoStore";
+import { formatCurrency } from "../services/pdfService";
 
 export default function ListaPedidosScreen({ navigation }: any) {
+  const compact = useWindowDimensions().width < 390;
   const [filter, setFilter] = useState<"todos" | "producao" | "entregues">("todos");
   const [search, setSearch] = useState("");
 
-  const [pedidos] = useState([
-    {
-      id: "PED-102",
-      cliente: "Ed. Miramar - Apto 402",
-      projeto: "Bancada Cozinha com Cuba",
-      data: "12/10/2026",
-      status: "No Prazo",
-      etapa: "Acabamento de Bordas",
-      material: "Granito Preto São Gabriel",
-      valor: "R$ 1.850,00",
-    },
-    {
-      id: "PED-101",
-      cliente: "Casa Cond. Lagos",
-      projeto: "Soleiras e Peitoris",
-      data: "15/10/2026",
-      status: "Atenção",
-      etapa: "Processando na Serra",
-      material: "Mármore Travertino",
-      valor: "R$ 3.200,00",
-    },
-    {
-      id: "PED-100",
-      cliente: "Sede Administrativa X",
-      projeto: "Piso Hall de Entrada",
-      data: "16/10/2026",
-      status: "Confirmada",
-      etapa: "Pronto para Transporte",
-      material: "Porcelanato Técnico",
-      valor: "R$ 8.900,00",
-    },
-    {
-      id: "PED-099",
-      cliente: "Residencial Park - Apt 12",
-      projeto: "Bancada Banheiro Suite",
-      data: "05/10/2026",
-      status: "Entregue",
-      etapa: "Instalação Concluída",
-      material: "Mármore Carrara",
-      valor: "R$ 1.400,00",
-    },
-  ]);
+  const pedidos = usePedidoStore((state) => state.pedidos);
+  const fetchPedidos = usePedidoStore((state) => state.fetchPedidos);
+
+  useEffect(() => {
+    fetchPedidos();
+  }, []);
 
   const filteredPedidos = pedidos.filter((p) => {
+    const cliente = p.cliente_nome || "";
+    const projeto = p.projeto || "";
     const matchesSearch =
-      p.cliente.toLowerCase().includes(search.toLowerCase()) ||
-      p.projeto.toLowerCase().includes(search.toLowerCase());
+      cliente.toLowerCase().includes(search.toLowerCase()) ||
+      projeto.toLowerCase().includes(search.toLowerCase());
 
     if (!matchesSearch) return false;
 
     if (filter === "producao") {
-      return p.status !== "Entregue";
+      return p.status !== "ENTREGUE";
     }
     if (filter === "entregues") {
-      return p.status === "Entregue";
+      return p.status === "ENTREGUE";
     }
     return true;
   });
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+    <ScrollView style={styles.container} contentContainerStyle={[styles.content, compact && styles.contentCompact]}>
       <Text style={styles.title}>Pedidos da Oficina</Text>
 
       <View style={styles.searchContainer}>
@@ -112,28 +81,28 @@ export default function ListaPedidosScreen({ navigation }: any) {
               <View style={styles.cardTop}>
                 <Text style={styles.pedidoId}>{pedido.id}</Text>
                 <Badge
-                  label={pedido.status}
+                  label={pedido.status === "ENTREGUE" ? "Entregue" : "Em Produção"}
                   variant={
-                    pedido.status === "Entregue"
+                    pedido.status === "ENTREGUE"
                       ? "info"
-                      : pedido.status === "Atenção"
-                      ? "warning"
                       : "success"
                   }
                 />
               </View>
 
-              <Text style={styles.cliente}>{pedido.cliente}</Text>
+              <Text style={styles.cliente}>{pedido.cliente_nome}</Text>
               <Text style={styles.projeto}>{pedido.projeto}</Text>
 
               <View style={styles.progressBox}>
                 <Text style={styles.etapaLabel}>Etapa Atual:</Text>
-                <Text style={styles.etapaVal}>{pedido.etapa}</Text>
+                <Text style={styles.etapaVal}>{pedido.etapa || "Produção"}</Text>
               </View>
 
               <View style={styles.cardFooter}>
-                <Text style={styles.dateText}>Entrega: {pedido.data}</Text>
-                <Text style={styles.valorText}>{pedido.valor}</Text>
+                <Text style={styles.dateText}>Entrega: {pedido.data_prometida_entrega}</Text>
+                <Text style={styles.valorText}>
+                  {formatCurrency(Number(pedido.valor || 0))}
+                </Text>
               </View>
             </TouchableOpacity>
           ))
@@ -145,7 +114,8 @@ export default function ListaPedidosScreen({ navigation }: any) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
-  content: { padding: 20, paddingBottom: 110 },
+  content: { width: "100%", maxWidth: 720, alignSelf: "center", padding: 20, paddingBottom: 110 },
+  contentCompact: { paddingHorizontal: 12 },
   title: { fontSize: 24, fontWeight: "800", color: colors.primary, marginBottom: 16 },
 
   searchContainer: { position: "relative", marginBottom: 14 },

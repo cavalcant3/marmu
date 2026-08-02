@@ -1,26 +1,70 @@
-import React from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import React, { useEffect } from "react";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, useWindowDimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../theme/colors";
 import { typography } from "../theme/typography";
 import Badge from "../components/ui/Badge";
 import { useAuthStore } from "../stores/authStore";
+import { useOrcamentoStore } from "../stores/orcamentoStore";
+import { usePedidoStore } from "../stores/pedidoStore";
+import { useAgendaStore } from "../stores/agendaStore";
+import { localDateKey } from "../utils/agenda";
+
+const agendaTypeLabel: Record<string, string> = { MEDICAO: "Medição", VISITA: "Visita", INSTALACAO: "Instalação" };
 
 export default function DashboardScreen({ navigation }: any) {
+  const compact = useWindowDimensions().width < 370;
   const user = useAuthStore((state) => state.user);
-  const userName = user?.nome || (user?.email ? user.email.split("@")[0] : "Usuário");
+  const userName = user?.nome || (user?.email ? user.email.split("@")[0] : "");
+  const profileIncomplete = !user?.nome?.trim() || !user?.nome_marmoaria?.trim();
+
+  const orcamentos = useOrcamentoStore((state) => state.orcamentos);
+  const fetchOrcamentos = useOrcamentoStore((state) => state.fetchOrcamentos);
+  const pedidos = usePedidoStore((state) => state.pedidos);
+  const fetchPedidos = usePedidoStore((state) => state.fetchPedidos);
+  const compromissos = useAgendaStore((state) => state.compromissos);
+  const fetchCompromissos = useAgendaStore((state) => state.fetchCompromissos);
+
+  useEffect(() => {
+    fetchOrcamentos();
+    fetchPedidos();
+    fetchCompromissos();
+  }, [fetchOrcamentos, fetchPedidos, fetchCompromissos]);
+
+  const totalOrcamentosCount = orcamentos.length;
+  const totalOrcamentosValue = orcamentos.reduce((acc, curr) => acc + curr.preco_final, 0);
+
+  const openPedidos = pedidos.filter((p) => p.status !== "ENTREGUE");
+  const openPedidosCount = openPedidos.length;
+
+  const deliveryList = openPedidos.slice(0, 3);
+  const todayAgenda = compromissos.filter((item) => item.data === localDateKey() && item.status === "PENDENTE");
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+    <ScrollView style={styles.container} contentContainerStyle={[styles.contentContainer, compact && styles.contentCompact]}>
       {/* Welcome Section */}
       <View style={styles.welcomeSection}>
-        <Text style={styles.greetingText}>Bom dia, {userName}</Text>
+        <Text style={styles.greetingText}>{userName ? `Olá, ${userName}` : "Olá!"}</Text>
         <Text style={styles.sectionTitle}>Resumo da Oficina</Text>
       </View>
 
+      {profileIncomplete && (
+        <TouchableOpacity
+          style={styles.setupCard}
+          onPress={() => navigation.navigate("perfilusuario")}
+        >
+          <Ionicons name="business-outline" size={22} color={colors.primary} />
+          <View style={styles.setupText}>
+            <Text style={styles.setupTitle}>Configure sua marmoaria</Text>
+            <Text style={styles.setupSub}>Esses dados serão usados no PDF do orçamento.</Text>
+          </View>
+          <Ionicons name="chevron-forward" size={18} color={colors.onSurfaceVariant} />
+        </TouchableOpacity>
+      )}
+
 
       {/* Bento Grid */}
-      <View style={styles.grid}>
+      <View style={[styles.grid, compact && styles.gridCompact]}>
         {/* Card Orçamentos */}
         <TouchableOpacity
           style={styles.bentoCard}
@@ -31,8 +75,10 @@ export default function DashboardScreen({ navigation }: any) {
             <Ionicons name="document-text-outline" size={20} color={colors.primary} />
           </View>
           <View>
-            <Text style={styles.displayNum}>12</Text>
-            <Text style={styles.highlightVal}>R$ 15.400</Text>
+            <Text style={styles.displayNum}>{String(totalOrcamentosCount).padStart(2, "0")}</Text>
+            <Text style={styles.highlightVal}>
+              R$ {totalOrcamentosValue.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </Text>
           </View>
         </TouchableOpacity>
 
@@ -46,45 +92,40 @@ export default function DashboardScreen({ navigation }: any) {
             <Ionicons name="construct-outline" size={20} color={colors.primary} />
           </View>
           <View>
-            <Text style={styles.displayNum}>05</Text>
-            <Text style={styles.subtext}>Processando na serra</Text>
+            <Text style={styles.displayNum}>{String(openPedidosCount).padStart(2, "0")}</Text>
+            <Text style={styles.subtext}>Aguardando produção</Text>
           </View>
         </TouchableOpacity>
       </View>
 
-      {/* Quick Access Tools (Agenda & Financial) */}
-      <View style={styles.toolsRow}>
-        <TouchableOpacity
-          style={styles.toolCard}
-          onPress={() => navigation.navigate("agendamedicao")}
-        >
-          <View style={styles.toolIconBox}>
-            <Ionicons name="calendar-outline" size={22} color={colors.primary} />
-          </View>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.toolTitle}>Agenda de Medição</Text>
-            <Text style={styles.toolSub}>3 visitas agendadas hoje</Text>
-          </View>
-          <Ionicons name="chevron-forward" size={18} color={colors.onSurfaceVariant} />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.toolCard}
-          onPress={() => navigation.navigate("gestaopagamentos")}
-        >
-          <View style={styles.toolIconBox}>
-            <Ionicons name="wallet-outline" size={22} color={colors.secondary} />
-          </View>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.toolTitle}>Gestão de Pagamentos</Text>
-            <Text style={styles.toolSub}>R$ 4.250 a receber</Text>
-          </View>
-          <Ionicons name="chevron-forward" size={18} color={colors.onSurfaceVariant} />
+      <View style={[styles.sectionHeader, compact && styles.sectionHeaderCompact]}>
+        <View>
+          <Text style={styles.sectionTitle}>Agenda de Hoje</Text>
+          <Text style={styles.agendaCount}>{todayAgenda.length === 0 ? "Nenhum compromisso pendente" : `${todayAgenda.length} compromisso${todayAgenda.length > 1 ? "s" : ""} pendente${todayAgenda.length > 1 ? "s" : ""}`}</Text>
+        </View>
+        <TouchableOpacity onPress={() => navigation.navigate("agendamedicao")}>
+          <Text style={styles.linkText}>Ver agenda</Text>
         </TouchableOpacity>
       </View>
+
+      <TouchableOpacity style={styles.agendaCard} onPress={() => navigation.navigate("agendamedicao")} activeOpacity={0.8}>
+        {todayAgenda.length === 0 ? (
+          <>
+            <View style={styles.agendaIcon}><Ionicons name="calendar-outline" size={22} color={colors.primary} /></View>
+            <View style={styles.agendaInfo}><Text style={styles.agendaTitle}>Organize seu dia</Text><Text style={styles.agendaSub}>Agende uma medição, visita ou instalação.</Text></View>
+            <Ionicons name="add-circle-outline" size={23} color={colors.secondary} />
+          </>
+        ) : (
+          <>
+            <View style={styles.agendaTimeBox}><Text style={styles.agendaTime}>{todayAgenda[0].hora}</Text></View>
+            <View style={styles.agendaInfo}><Text style={styles.agendaTitle}>{todayAgenda[0].cliente_nome}</Text><Text style={styles.agendaSub}>{agendaTypeLabel[todayAgenda[0].tipo]}{todayAgenda.length > 1 ? ` · mais ${todayAgenda.length - 1}` : ""}</Text></View>
+            <Ionicons name="chevron-forward" size={20} color={colors.onSurfaceVariant} />
+          </>
+        )}
+      </TouchableOpacity>
 
       {/* Entregas desta Semana */}
-      <View style={styles.sectionHeader}>
+      <View style={[styles.sectionHeader, compact && styles.sectionHeaderCompact]}>
         <Text style={styles.sectionTitle}>Entregas desta Semana</Text>
         <TouchableOpacity onPress={() => navigation.navigate("listapedidos")}>
           <Text style={styles.linkText}>Ver todas</Text>
@@ -92,73 +133,43 @@ export default function DashboardScreen({ navigation }: any) {
       </View>
 
       <View style={styles.deliveryList}>
-        {/* Delivery Item 1 */}
-        <TouchableOpacity
-          style={styles.deliveryCard}
-          onPress={() =>
-            navigation.navigate("detalhespedido", {
-              pedido: {
-                id: "1",
-                cliente: "Ed. Miramar - Apto 402",
-                projeto: "Bancada Cozinha",
-                data: "12/10",
-                status: "No Prazo",
-              },
-            })
-          }
-        >
-          <View style={styles.deliveryLeft}>
-            <View style={styles.iconBox}>
-              <Ionicons name="home-outline" size={20} color={colors.primary} />
-            </View>
-            <View>
-              <Text style={styles.deliveryTitle}>Ed. Miramar - Apto 402</Text>
-              <Text style={styles.deliverySub}>Bancada Cozinha • 12/10</Text>
-            </View>
+        {deliveryList.length === 0 ? (
+          <View style={styles.emptyBox}>
+            <Text style={styles.emptyText}>Nenhuma entrega pendente.</Text>
           </View>
-          <Badge label="No Prazo" variant="success" />
-        </TouchableOpacity>
-
-        {/* Delivery Item 2 */}
-        <TouchableOpacity
-          style={styles.deliveryCard}
-          onPress={() =>
-            navigation.navigate("detalhespedido", {
-              pedido: {
-                id: "2",
-                cliente: "Casa Cond. Lagos",
-                projeto: "Soleiras/Peitoris",
-                data: "15/10",
-                status: "Atenção",
-              },
-            })
-          }
-        >
-          <View style={styles.deliveryLeft}>
-            <View style={styles.iconBox}>
-              <Ionicons name="hammer-outline" size={20} color={colors.primary} />
-            </View>
-            <View>
-              <Text style={styles.deliveryTitle}>Casa Cond. Lagos</Text>
-              <Text style={styles.deliverySub}>Soleiras/Peitoris • 15/10</Text>
-            </View>
-          </View>
-          <Badge label="Atenção" variant="warning" />
-        </TouchableOpacity>
+        ) : (
+          deliveryList.map((pedido) => (
+            <TouchableOpacity
+              key={pedido.id}
+              style={[styles.deliveryCard, compact && styles.deliveryCardCompact]}
+              onPress={() =>
+                navigation.navigate("detalhespedido", {
+                  pedido,
+                })
+              }
+            >
+              <View style={styles.deliveryLeft}>
+                <View style={styles.iconBox}>
+                  <Ionicons
+                    name={(pedido.projeto || "").toLowerCase().includes("piso") ? "grid-outline" : "home-outline"}
+                    size={20}
+                    color={colors.primary}
+                  />
+                </View>
+                <View>
+                  <Text style={styles.deliveryTitle}>{pedido.cliente_nome}</Text>
+                  <Text style={styles.deliverySub}>{pedido.projeto} • {pedido.data_prometida_entrega}</Text>
+                </View>
+              </View>
+              <Badge
+                label="Em produção"
+                variant="success"
+              />
+            </TouchableOpacity>
+          ))
+        )}
       </View>
 
-      {/* Card de Estoque de Chapas */}
-      <View style={styles.bannerCard}>
-        <Text style={styles.bannerTitle}>Estoque de Chapas</Text>
-        <Text style={styles.bannerSub}>Você tem 42 chapas de granito e mármore prontas para corte.</Text>
-        <TouchableOpacity
-          style={styles.bannerButton}
-          onPress={() => navigation.navigate("estoquechapas")}
-        >
-          <Text style={styles.bannerBtnText}>Ver Inventário</Text>
-          <Ionicons name="arrow-forward" size={16} color={colors.onSecondaryFixed} style={{ marginLeft: 6 }} />
-        </TouchableOpacity>
-      </View>
     </ScrollView>
   );
 }
@@ -169,9 +180,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   contentContainer: {
+    width: "100%",
+    maxWidth: 720,
+    alignSelf: "center",
     padding: 20,
     paddingBottom: 110,
   },
+  contentCompact: { paddingHorizontal: 12 },
   welcomeSection: {
     marginBottom: 20,
   },
@@ -191,6 +206,7 @@ const styles = StyleSheet.create({
     gap: 12,
     marginBottom: 16,
   },
+  gridCompact: { flexDirection: "column" },
   bentoCard: {
     flex: 1,
     backgroundColor: colors.surfaceContainerLowest,
@@ -230,8 +246,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
 
-  toolsRow: { gap: 10, marginBottom: 24 },
-  toolCard: {
+  setupCard: {
     backgroundColor: colors.surfaceContainerLowest,
     borderWidth: 1,
     borderColor: colors.outlineVariant,
@@ -240,17 +255,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
+    marginBottom: 16,
   },
-  toolIconBox: {
-    width: 42,
-    height: 42,
-    borderRadius: 10,
-    backgroundColor: colors.surfaceContainerLow,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  toolTitle: { fontSize: 15, fontWeight: "700", color: colors.primary },
-  toolSub: { fontSize: 12, color: colors.onSurfaceVariant, marginTop: 2 },
+  setupText: { flex: 1 },
+  setupTitle: { fontSize: 15, fontWeight: "700", color: colors.primary },
+  setupSub: { fontSize: 12, color: colors.onSurfaceVariant, marginTop: 2 },
 
   sectionHeader: {
     flexDirection: "row",
@@ -258,12 +267,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 12,
   },
+  sectionHeaderCompact: { alignItems: "flex-start", gap: 6 },
   linkText: {
     fontSize: 13,
     fontWeight: "700",
     color: colors.primary,
     textDecorationLine: "underline",
   },
+  agendaCount: { fontSize: 12, color: colors.onSurfaceVariant, marginTop: 2 },
+  agendaCard: { minHeight: 76, backgroundColor: colors.surfaceContainerLowest, borderWidth: 1, borderColor: colors.outlineVariant, borderRadius: 14, padding: 14, flexDirection: "row", alignItems: "center", gap: 12, marginBottom: 22 },
+  agendaIcon: { width: 44, height: 44, borderRadius: 12, backgroundColor: colors.surfaceContainerHighest, alignItems: "center", justifyContent: "center" },
+  agendaTimeBox: { minWidth: 58, height: 44, borderRadius: 12, backgroundColor: colors.secondaryFixed, alignItems: "center", justifyContent: "center", paddingHorizontal: 8 },
+  agendaTime: { fontSize: 15, fontWeight: "800", color: colors.onSecondaryFixed },
+  agendaInfo: { flex: 1 }, agendaTitle: { fontSize: 15, fontWeight: "800", color: colors.primary }, agendaSub: { fontSize: 12, color: colors.onSurfaceVariant, marginTop: 3 },
   deliveryList: {
     gap: 10,
     marginBottom: 24,
@@ -278,10 +294,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
+  deliveryCardCompact: { flexDirection: "column", alignItems: "flex-start", gap: 10 },
   deliveryLeft: {
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
+    flex: 1,
+    minWidth: 0,
   },
   iconBox: {
     width: 42,
@@ -301,35 +320,17 @@ const styles = StyleSheet.create({
     color: colors.onSurfaceVariant,
     marginTop: 2,
   },
-  bannerCard: {
-    backgroundColor: colors.primary,
-    borderRadius: 16,
+  emptyBox: {
     padding: 20,
-  },
-  bannerTitle: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: colors.onPrimary,
-    marginBottom: 6,
-  },
-  bannerSub: {
-    fontSize: 14,
-    color: colors.onPrimaryContainer,
-    marginBottom: 16,
-    lineHeight: 20,
-  },
-  bannerButton: {
-    backgroundColor: colors.secondaryFixed,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 8,
-    alignSelf: "flex-start",
-    flexDirection: "row",
+    backgroundColor: colors.surfaceContainerLow,
+    borderRadius: 14,
     alignItems: "center",
+    borderWidth: 1,
+    borderColor: colors.outlineVariant,
+    borderStyle: "dashed",
   },
-  bannerBtnText: {
-    color: colors.onSecondaryFixed,
+  emptyText: {
+    color: colors.onSurfaceVariant,
     fontSize: 14,
-    fontWeight: "700",
   },
 });

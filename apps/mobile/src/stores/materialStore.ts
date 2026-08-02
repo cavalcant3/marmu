@@ -1,16 +1,16 @@
 import { create } from "zustand";
-import { INITIAL_MATERIALS, listMaterials, createMaterial, updateMaterial, type Material } from "../services/materialService";
+import { listMaterials, createMaterial, updateMaterial, type Material } from "../services/materialService";
 
 interface MaterialState {
   materials: Material[];
   setMaterials: (materials: Material[]) => void;
   fetchMaterials: () => Promise<void>;
   addMaterial: (material: Omit<Material, "id">) => Promise<void>;
-  updatePrice: (id: string, preco_por_m2: number) => Promise<void>;
+  updatePrice: (id: string, updates: Partial<Omit<Material, "id">>) => Promise<void>;
 }
 
 export const useMaterialStore = create<MaterialState>((set) => ({
-  materials: INITIAL_MATERIALS,
+  materials: [],
   setMaterials: (materials) => set({ materials }),
   fetchMaterials: async () => {
     const list = await listMaterials();
@@ -20,9 +20,8 @@ export const useMaterialStore = create<MaterialState>((set) => ({
     const created = await createMaterial(materialData);
     set((state) => ({ materials: [...state.materials, created] }));
   },
-  updatePrice: async (id, preco_por_m2) => {
-    const updatedList = await updateMaterial(id, preco_por_m2);
+  updatePrice: async (id, updates) => {
+    const updatedList = await updateMaterial(id, updates);
     set({ materials: updatedList });
   },
 }));
-

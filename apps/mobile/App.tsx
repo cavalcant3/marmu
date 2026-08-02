@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Header from "./src/components/ui/Header";
 import BottomTabBar, { TabType } from "./src/components/ui/BottomTabBar";
 import Fab from "./src/components/ui/Fab";
 
-import LoginScreen from "./src/screens/Login";
 import DashboardScreen from "./src/screens/Dashboard";
 import NovoOrcamentoScreen from "./src/screens/NovoOrcamento";
 import VisualizarOrcamentoScreen from "./src/screens/VisualizarOrcamento";
 import ListaOrcamentosScreen from "./src/screens/ListaOrcamentos";
 import ListaPedidosScreen from "./src/screens/ListaPedidos";
 import DetalhesPedidoScreen from "./src/screens/DetalhesPedido";
-import FotoAnotacaoScreen from "./src/screens/FotoAnotacao";
 import TabelaPrecosScreen from "./src/screens/TabelaPrecos";
-import EstoqueChapasScreen from "./src/screens/EstoqueChapas";
-import AgendaMedicaoScreen from "./src/screens/AgendaMedicao";
-import GestaoPagamentosScreen from "./src/screens/GestaoPagamentos";
 import PerfilUsuarioScreen from "./src/screens/PerfilUsuario";
+import AgendaMedicaoScreen from "./src/screens/AgendaMedicao";
 import { useAuthStore } from "./src/stores/authStore";
+import notifee, { EventType } from "@notifee/react-native";
+import { ensureNotificationChannel, getNotificationTarget, handleNotificationEvent, syncAllNotifications } from "./src/services/notificationService";
+import { listPedidos } from "./src/services/pedidoService";
 
 export default function App() {
   const [currentTab, setCurrentTab] = useState<TabType>("dashboard");
@@ -28,11 +28,42 @@ export default function App() {
   const [pedidoData, setPedidoData] = useState<any>(null);
 
   const loadTokens = useAuthStore((state) => state.loadTokens);
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const user = useAuthStore((state) => state.user);
 
   useEffect(() => {
     loadTokens();
+    ensureNotificationChannel().then(() => syncAllNotifications()).catch(console.error);
+
+    const openFromNotification = async (notification: any) => {
+      const target = getNotificationTarget(notification);
+      if (target === "agenda") {
+        setCurrentTab("dashboard");
+        setSubScreen(null);
+        setTimeout(() => setSubScreen("agendamedicao"), 0);
+      } else if (target === "pedidos") {
+        const pedido = (await listPedidos()).find((item) => item.id === notification?.data?.entityId);
+        if (pedido) {
+          setPedidoData(pedido);
+          setSubScreen("detalhespedido");
+        } else {
+          setCurrentTab("pedidos");
+          setSubScreen(null);
+        }
+      }
+    };
+
+    notifee.getInitialNotification().then(async (initial) => {
+      if (!initial) return;
+      await handleNotificationEvent({ type: EventType.ACTION_PRESS, detail: { notification: initial.notification, pressAction: initial.pressAction } } as any);
+      await openFromNotification(initial.notification);
+    }).catch(console.error);
+
+    return notifee.onForegroundEvent(async (event) => {
+      await handleNotificationEvent(event);
+      if (event.type === EventType.PRESS || event.type === EventType.ACTION_PRESS) {
+        await openFromNotification(event.detail.notification);
+      }
+    });
   }, []);
 
   const navigation = {
@@ -74,19 +105,9 @@ export default function App() {
     if (subScreen === "detalhespedido") {
       return <DetalhesPedidoScreen route={{ params: { pedido: pedidoData } }} navigation={navigation} />;
     }
-    if (subScreen === "fotoanotacao") {
-      return <FotoAnotacaoScreen />;
-    }
-    if (subScreen === "estoquechapas") {
-      return <EstoqueChapasScreen navigation={navigation} />;
-    }
     if (subScreen === "agendamedicao") {
       return <AgendaMedicaoScreen navigation={navigation} />;
     }
-    if (subScreen === "gestaopagamentos") {
-      return <GestaoPagamentosScreen navigation={navigation} />;
-    }
-
     switch (currentTab) {
       case "dashboard":
         return <DashboardScreen navigation={navigation} />;
@@ -104,33 +125,30 @@ export default function App() {
   const displayName = user?.nome || (user?.email ? user.email.split("@")[0] : "Usuário");
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* Top App Bar Header */}
-      <Header
-        userName={displayName}
-        onProfilePress={() => navigation.navigate("perfilusuario")}
-      />
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container} edges={["top"]}>
+        <Header
+          userName={displayName}
+          onProfilePress={() => navigation.navigate("perfilusuario")}
+        />
 
+        <View style={styles.body}>{renderScreen()}</View>
 
-      {/* Main Active Screen Content */}
-      <View style={styles.body}>{renderScreen()}</View>
+        {!subScreen && (
+          <Fab label="Novo Orçamento" onPress={() => navigation.navigate("novoorcamento")} />
+        )}
 
-      {/* Floating Action Button for Novo Orçamento */}
-      {!subScreen && (
-        <Fab label="Novo Orçamento" onPress={() => navigation.navigate("novoorcamento")} />
-      )}
+        <BottomTabBar
+          currentTab={currentTab}
+          onTabChange={(tab) => {
+            setSubScreen(null);
+            setCurrentTab(tab);
+          }}
+        />
 
-      {/* Bottom Navigation Tab Bar */}
-      <BottomTabBar
-        currentTab={currentTab}
-        onTabChange={(tab) => {
-          setSubScreen(null);
-          setCurrentTab(tab);
-        }}
-      />
-
-      <StatusBar style="auto" />
-    </SafeAreaView>
+        <StatusBar style="dark" />
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 

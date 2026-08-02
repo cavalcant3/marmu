@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, useWindowDimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../../theme/colors";
 
@@ -10,11 +10,12 @@ interface HeaderProps {
 }
 
 export default function Header({ userName = "Usuário", onSettingsPress, onProfilePress }: HeaderProps) {
+  const compact = useWindowDimensions().width < 370;
   const initial = (userName || "U")[0].toUpperCase();
   const handleProfileClick = onProfilePress || onSettingsPress;
 
   return (
-    <View style={styles.header}>
+    <View style={[styles.header, compact && styles.headerCompact]}>
       <TouchableOpacity style={styles.left} onPress={handleProfileClick} activeOpacity={0.7}>
         <View style={styles.avatar}>
           <Text style={styles.avatarText}>{initial}</Text>
@@ -40,6 +41,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 20,
   },
+  headerCompact: { paddingHorizontal: 12 },
   left: {
     flexDirection: "row",
     alignItems: "center",

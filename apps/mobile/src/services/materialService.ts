@@ -7,30 +7,45 @@ export interface Material {
   nome: string;
   tipo: string;
   preco_por_m2: number;
+  preco_por_metro_linear?: number;
   observacoes?: string;
 }
 
 const materialStorage = new MMKV({ id: "marmu-local-materials" });
 
-export const INITIAL_MATERIALS: Material[] = [
-  { id: "1", nome: "Granito Preto São Gabriel", tipo: "Granito", preco_por_m2: 350 },
-  { id: "2", nome: "Mármore Branco Carrara", tipo: "Mármore", preco_por_m2: 850 },
-  { id: "3", nome: "Quartzo Branco Puríssimo", tipo: "Quartzo", preco_por_m2: 1200 },
-  { id: "4", nome: "Granito Verde Ubatuba", tipo: "Granito", preco_por_m2: 280 },
-  { id: "5", nome: "Mármore Travertino Romano", tipo: "Mármore", preco_por_m2: 650 },
-];
+export const INITIAL_MATERIALS: Material[] = [];
+
+const LEGACY_SEED_MATERIALS = new Map([
+  ["1", "Granito Preto São Gabriel"],
+  ["2", "Mármore Branco Carrara"],
+  ["3", "Quartzo Branco Puríssimo"],
+  ["4", "Granito Verde Ubatuba"],
+  ["5", "Mármore Travertino Romano"],
+]);
+
+function removeLegacySeeds(items: Material[]): Material[] {
+  return items.filter(
+    (item) => LEGACY_SEED_MATERIALS.get(item.id) !== item.nome
+  );
+}
 
 export async function listMaterials(): Promise<Material[]> {
   if (USE_LOCAL_DB) {
     const dataStr = materialStorage.getString("materials");
     if (!dataStr) {
-      materialStorage.set("materials", JSON.stringify(INITIAL_MATERIALS));
       return INITIAL_MATERIALS;
     }
     try {
-      return JSON.parse(dataStr);
+      const parsed = JSON.parse(dataStr);
+      if (!Array.isArray(parsed)) return [];
+
+      const cleaned = removeLegacySeeds(parsed);
+      if (cleaned.length !== parsed.length) {
+        materialStorage.set("materials", JSON.stringify(cleaned));
+      }
+      return cleaned;
     } catch {
-      return INITIAL_MATERIALS;
+      return [];
     }
   }
   const res = await api.get("/materiais");
@@ -49,14 +64,13 @@ export async function createMaterial(data: Omit<Material, "id">): Promise<Materi
   return res.data.data as Material;
 }
 
-export async function updateMaterial(id: string, preco_por_m2: number): Promise<Material[]> {
+export async function updateMaterial(id: string, updates: Partial<Omit<Material, "id">>): Promise<Material[]> {
   if (USE_LOCAL_DB) {
     const current = await listMaterials();
-    const updated = current.map((m) => (m.id === id ? { ...m, preco_por_m2 } : m));
+    const updated = current.map((m) => (m.id === id ? { ...m, ...updates } : m));
     materialStorage.set("materials", JSON.stringify(updated));
     return updated;
   }
-  const res = await api.patch(`/materiais/${id}`, { preco_por_m2 });
+  const res = await api.patch(`/materiais/${id}`, updates);
   return res.data.data;
 }
-

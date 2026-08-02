@@ -1,45 +1,38 @@
-import { Platform } from "react-native";
-import { MMKV as NativeMMKV } from "react-native-mmkv";
+import { createMMKV, type MMKV as NativeMMKV } from "react-native-mmkv";
 
-class WebStorage {
-  private id: string;
+interface StorageOptions {
+  id?: string;
+  /** Mantido apenas para compatibilidade com chamadas antigas. */
+  encrypt?: boolean;
+  encryptionKey?: string;
+}
 
-  constructor(options?: { id: string; encrypt?: boolean }) {
-    this.id = options?.id || "marmu-default";
+/**
+ * Adaptador da API de armazenamento usada pelo app para react-native-mmkv v4.
+ *
+ * A v4 substituiu o construtor `MMKV` por `createMMKV`. Não usamos fallback
+ * silencioso no Android: uma falha de inicialização deve ser visível, em vez de
+ * simular uma gravação que desaparece quando a tela é recarregada.
+ */
+export class MMKV {
+  private readonly instance: NativeMMKV;
+
+  constructor(options: StorageOptions = {}) {
+    this.instance = createMMKV({
+      id: options.id || "marmu-default",
+      ...(options.encryptionKey ? { encryptionKey: options.encryptionKey } : {}),
+    });
   }
 
-  set(key: string, value: string | number | boolean) {
-    if (typeof window !== "undefined" && window.localStorage) {
-      window.localStorage.setItem(`${this.id}:${key}`, String(value));
-    }
+  set(key: string, value: string | number | boolean): void {
+    this.instance.set(key, value);
   }
 
   getString(key: string): string | undefined {
-    if (typeof window !== "undefined" && window.localStorage) {
-      return window.localStorage.getItem(`${this.id}:${key}`) || undefined;
-    }
-    return undefined;
+    return this.instance.getString(key);
   }
 
-  delete(key: string) {
-    if (typeof window !== "undefined" && window.localStorage) {
-      window.localStorage.removeItem(`${this.id}:${key}`);
-    }
+  delete(key: string): void {
+    this.instance.remove(key);
   }
 }
-
-let MMKVImplementation: any = WebStorage;
-if (Platform.OS !== "web") {
-  try {
-    const MMKVModule = require("react-native-mmkv");
-    if (MMKVModule && MMKVModule.MMKV) {
-      MMKVImplementation = MMKVModule.MMKV;
-    }
-  } catch {
-    MMKVImplementation = WebStorage;
-  }
-}
-
-export const MMKV = MMKVImplementation;
-
-

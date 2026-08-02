@@ -9,12 +9,15 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
+  useWindowDimensions,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../theme/colors";
 import { useAuthStore } from "../stores/authStore";
+import { maskPhone } from "../utils/formatters";
 
 export default function PerfilUsuarioScreen({ navigation }: any) {
+  const compact = useWindowDimensions().width < 390;
   const user = useAuthStore((state) => state.user);
   const updateUser = useAuthStore((state) => state.updateUser);
   const logout = useAuthStore((state) => state.logout);
@@ -22,7 +25,7 @@ export default function PerfilUsuarioScreen({ navigation }: any) {
   const [nome, setNome] = useState(user?.nome || "");
   const [email, setEmail] = useState(user?.email || "");
   const [nomeMarmoaria, setNomeMarmoaria] = useState(user?.nome_marmoaria || "");
-  const [telefone, setTelefone] = useState(user?.telefone || "");
+  const [telefone, setTelefone] = useState(maskPhone(user?.telefone || ""));
   const [saving, setSaving] = useState(false);
 
   const initialLetter = (nome || email || "U")[0].toUpperCase();
@@ -61,7 +64,7 @@ export default function PerfilUsuarioScreen({ navigation }: any) {
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
-      <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      <ScrollView style={styles.container} contentContainerStyle={[styles.content, compact && styles.contentCompact]}>
         {/* Header navigation bar */}
         <View style={styles.topBar}>
           <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
@@ -77,7 +80,7 @@ export default function PerfilUsuarioScreen({ navigation }: any) {
             <Text style={styles.avatarText}>{initialLetter}</Text>
           </View>
           <Text style={styles.userName}>{nome || "Usuário"}</Text>
-          <Text style={styles.userSub}>{nomeMarmoaria || "Marmoaria Marmu"}</Text>
+          <Text style={styles.userSub}>{nomeMarmoaria || "Configure os dados da sua marmoaria"}</Text>
         </View>
 
         {/* Form Fields */}
@@ -132,9 +135,10 @@ export default function PerfilUsuarioScreen({ navigation }: any) {
             <TextInput
               style={styles.input}
               value={telefone}
-              onChangeText={setTelefone}
+              onChangeText={(value) => setTelefone(maskPhone(value))}
               placeholder="(00) 90000-0000"
               keyboardType="phone-pad"
+              maxLength={15}
               placeholderTextColor={colors.onSurfaceVariant}
             />
           </View>
@@ -169,9 +173,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   content: {
+    width: "100%",
+    maxWidth: 720,
+    alignSelf: "center",
     padding: 20,
     paddingBottom: 60,
   },
+  contentCompact: { paddingHorizontal: 12 },
   topBar: {
     flexDirection: "row",
     alignItems: "center",

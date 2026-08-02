@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, FlatList, TouchableOpacity, StyleSheet } from "react-native";
 import { useMaterialStore } from "../stores/materialStore";
+import { formatCurrency } from "../utils/formatters";
 
 export default function SelecionarMaterialScreen({ navigation, route }: any) {
   const materials = useMaterialStore((state) => state.materials);
@@ -33,7 +34,7 @@ export default function SelecionarMaterialScreen({ navigation, route }: any) {
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.item} onPress={() => handleSelect(item)}>
             <Text style={styles.itemName}>{item.nome}</Text>
-            <Text>{item.tipo} — R$ {item.preco_por_m2.toFixed(2)}/m²</Text>
+            <Text>{item.tipo} — {formatCurrency(item.preco_por_m2)}/m²</Text>
           </TouchableOpacity>
         )}
       />

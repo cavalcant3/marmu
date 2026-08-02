@@ -27,12 +27,22 @@ interface AuthState {
 }
 
 const DEFAULT_USER: UserProfile = {
-  id: "1",
-  email: "contato@marmoaria.com",
-  nome: "Minha Marmoaria",
-  nome_marmoaria: "Marmoaria Marmu",
-  telefone: "(11) 99999-9999",
+  id: "local-user",
+  email: "",
+  nome: "",
+  nome_marmoaria: "",
+  telefone: "",
 };
+
+function removeLegacyDemoProfile(user: UserProfile): UserProfile {
+  const isLegacyDemo =
+    user.id === "1" &&
+    user.email === "contato@marmoaria.com" &&
+    user.nome === "Minha Marmoaria" &&
+    user.nome_marmoaria === "Marmoaria Marmu";
+
+  return isLegacyDemo ? DEFAULT_USER : user;
+}
 
 export const useAuthStore = create<AuthState>((set, get) => ({
   accessToken: "local-demo-access-token",
@@ -69,7 +79,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     const userStr = storage.getString("user");
     if (userStr) {
       try {
-        set({ user: JSON.parse(userStr), isAuthenticated: true });
+        const user = removeLegacyDemoProfile(JSON.parse(userStr));
+        if (user === DEFAULT_USER) {
+          storage.delete("user");
+        }
+        set({ user, isAuthenticated: true });
       } catch {
         set({ user: DEFAULT_USER, isAuthenticated: true });
       }
@@ -78,5 +92,3 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
   },
 }));
-
-
